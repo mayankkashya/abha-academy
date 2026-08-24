@@ -852,37 +852,40 @@
       });
     }
 
-    // ---- Flame scroll physics (spring/pendulum sway) ----
+    // ---- Flame scroll physics (fluid flame bend, not rigid rotation) ----
     const flameSway = document.getElementById('flameSway');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (flameSway && !prefersReducedMotion){
       let lastScrollY = window.scrollY;
-      let angle = 0, angleVel = 0;
-      let offsetY = 0, offsetVel = 0;
+      let skew = 0, skewVel = 0;
+      let stretch = 1, stretchVel = 0;
 
       window.addEventListener('scroll', function(){
         const currentY = window.scrollY;
         const delta = currentY - lastScrollY;
         lastScrollY = currentY;
-        // scrolling "kicks" the flame like a gust of wind
-        angleVel += Math.max(-6, Math.min(6, delta * 0.6));
-        offsetVel += Math.max(-4, Math.min(4, delta * 0.15));
+        // scrolling "kicks" the flame tip sideways like a gust of wind bending it
+        skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35));
+        // fast scroll stretches the flame slightly, like it's being pulled
+        stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006));
       }, { passive: true });
 
       function physicsLoop(){
-        // spring back to rest (angle 0), with damping — classic spring-damper
-        const stiffness = 0.06;
-        const damping = 0.88;
+        // light, fluid spring — high stiffness + quick damping = flame-like, not stone-like
+        const skewStiffness = 0.16;
+        const skewDamping = 0.78;
+        skewVel += (0 - skew) * skewStiffness;
+        skewVel *= skewDamping;
+        skew += skewVel;
+        skew = Math.max(-10, Math.min(10, skew));
 
-        angleVel += (0 - angle) * stiffness;
-        angleVel *= damping;
-        angle += angleVel;
+        const stretchStiffness = 0.18;
+        const stretchDamping = 0.8;
+        stretchVel += (1 - stretch) * stretchStiffness;
+        stretchVel *= stretchDamping;
+        stretch += stretchVel;
 
-        offsetVel += (0 - offsetY) * stiffness;
-        offsetVel *= damping;
-        offsetY += offsetVel;
-
-        flameSway.style.transform = 'translateY(' + offsetY.toFixed(2) + 'px) rotate(' + angle.toFixed(2) + 'deg)';
+        flameSway.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')';
         requestAnimationFrame(physicsLoop);
       }
       requestAnimationFrame(physicsLoop);
