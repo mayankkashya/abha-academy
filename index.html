@@ -84,8 +84,15 @@
   .logo .flame-dot{width:9px;height:9px;border-radius:50%;background:var(--flame-500);box-shadow:0 0 12px 3px rgba(245,166,35,0.7);}
   .nav-cluster{display:flex;align-items:center;gap:1.4rem;}
   .nav-links{list-style:none;display:flex;gap:1.6rem;}
-  .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;}
+  .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;display:inline-block;}
   .nav-links a:hover,.nav-links a:focus-visible{color:var(--flame-300);}
+  .nav-links a.nav-pop{animation:nav-bounce 0.42s ease;}
+  @keyframes nav-bounce{
+    0%{transform:scale(1);}
+    35%{transform:scale(1.28) translateY(-3px);color:var(--flame-300);}
+    60%{transform:scale(0.94);}
+    100%{transform:scale(1);}
+  }
   
   /* Google Translate: run it fully invisibly, we build our own dropdown */
   #google_translate_element{
@@ -208,12 +215,56 @@
     0%,100%{opacity:0.75;transform:translateX(-50%) scale(1);}
     50%{opacity:1;transform:translateX(-50%) scale(1.08);}
   }
-  .flame{transform-origin:50% 100%;animation:flicker 2.6s ease-in-out infinite;}
+  .flame{transform-origin:50% 100%;animation:flicker 2.6s ease-in-out infinite;cursor:pointer;}
   @keyframes flicker{
     0%,100%{transform:scaleY(1) scaleX(1) rotate(0deg);}
     20%{transform:scaleY(1.05) scaleX(0.96) rotate(-1.5deg);}
     45%{transform:scaleY(0.94) scaleX(1.03) rotate(1deg);}
     70%{transform:scaleY(1.03) scaleX(0.98) rotate(-0.8deg);}
+  }
+
+  /* scroll progress bar */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--flame-500),var(--ember-500),var(--flame-300));
+    z-index:2000;transition:width 0.1s ease-out;
+    box-shadow:0 0 8px rgba(245,166,35,0.6);
+  }
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-stagger.visible{transition-delay:var(--stagger-delay,0s);}
+
+  /* flame easter egg sparkles */
+  .spark{
+    position:absolute;pointer-events:none;
+    font-size:1.2rem;
+    animation:spark-rise 1.4s ease-out forwards;
+    z-index:50;
+    user-select:none;
+  }
+  @keyframes spark-rise{
+    0%{opacity:0;transform:translate(0,0) scale(0.4) rotate(0deg);}
+    15%{opacity:1;}
+    100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-140px)) scale(1.1) rotate(var(--rot,90deg));}
+  }
+  .flame-toast{
+    position:fixed;left:50%;bottom:2.4rem;transform:translateX(-50%) translateY(20px);
+    background:var(--dusk-800);
+    border:1px solid rgba(245,166,35,0.4);
+    color:var(--cream-100);
+    padding:0.9rem 1.6rem;border-radius:999px;
+    font-size:0.95rem;font-weight:600;
+    box-shadow:0 14px 34px rgba(0,0,0,0.5);
+    opacity:0;transition:opacity 0.35s ease, transform 0.35s ease;
+    z-index:2000;pointer-events:none;
+    display:flex;align-items:center;gap:0.5rem;
+  }
+  .flame-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
   }
 
   /* commitment strip */
@@ -385,6 +436,9 @@
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="flame-toast" id="flameToast"></div>
+
 <div class="sky-glow"></div>
 <div class="stars"></div>
 
@@ -440,10 +494,12 @@
       <div class="diya-stage">
         <div class="diya-glow" aria-hidden="true"></div>
         <svg viewBox="0 0 240 220" width="260" height="240" role="img" aria-label="An illustration of a lit oil lamp, symbolising ABHA Academy">
-          <g class="flame">
-            <ellipse cx="120" cy="86" rx="17" ry="30" fill="#F5A623"/>
-            <ellipse cx="120" cy="92" rx="10" ry="19" fill="#FFD37A"/>
-            <ellipse cx="120" cy="98" rx="4.5" ry="9" fill="#FFF3D6"/>
+          <g id="flameSway" style="transform-origin:120px 126px;">
+            <g class="flame">
+              <ellipse cx="120" cy="86" rx="17" ry="30" fill="#F5A623"/>
+              <ellipse cx="120" cy="92" rx="10" ry="19" fill="#FFD37A"/>
+              <ellipse cx="120" cy="98" rx="4.5" ry="9" fill="#FFF3D6"/>
+            </g>
           </g>
           <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
           <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
@@ -713,6 +769,153 @@
         langLabel.textContent = LANG_NAMES[lang] || 'English';
         langSwitch.classList.remove('open');
         applyLanguage(lang);
+      });
+    });
+
+    // ---- Scroll reveal animations ----
+    const revealSelectors = '.section-head, .subject-card, .schedule-wrap, .teacher-card, .fact, .enroll-panel, .contact-strip';
+    const revealEls = document.querySelectorAll(revealSelectors);
+    revealEls.forEach(function(el, i){
+      el.classList.add('reveal', 'reveal-stagger');
+      el.style.setProperty('--stagger-delay', (i % 4) * 0.09 + 's');
+    });
+    const revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+
+    // ---- Scroll progress bar ----
+    const progressBar = document.getElementById('scrollProgress');
+    function updateProgress(){
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ---- Flame easter egg ----
+    const flame = document.querySelector('.flame');
+    const diyaStage = document.querySelector('.diya-stage');
+    const toast = document.getElementById('flameToast');
+    let flameTaps = 0;
+    let flameTapTimer = null;
+    const flameMessages = [
+      "🪔 Ek diya jal gaya — gyaan ki roshni badhti rahegi!",
+      "✨ Aapne flame jala diya, ab seekhne ka time hai!",
+      "🔥 ABHA Academy mein har shaam ek naya diya jalta hai.",
+      "🪔 Shubh! Har diya ek bachche ke sapno ke liye hai."
+    ];
+
+    function spawnSparks(){
+      const emojis = ['✨','🔥','🪔','⭐'];
+      for (let i = 0; i < 14; i++){
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const dx = (Math.random() - 0.5) * 220;
+        const dy = -(100 + Math.random() * 120);
+        const rot = (Math.random() - 0.5) * 180;
+        s.style.setProperty('--dx', dx + 'px');
+        s.style.setProperty('--dy', dy + 'px');
+        s.style.setProperty('--rot', rot + 'deg');
+        s.style.left = (46 + (Math.random()-0.5) * 20) + '%';
+        s.style.top = '35%';
+        s.style.animationDelay = (Math.random()*0.2) + 's';
+        diyaStage.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 1700);
+      }
+    }
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+    }
+
+    if (flame && diyaStage){
+      flame.addEventListener('click', function(){
+        flameTaps++;
+        clearTimeout(flameTapTimer);
+        flameTapTimer = setTimeout(function(){ flameTaps = 0; }, 2200);
+        if (flameTaps >= 5){
+          flameTaps = 0;
+          spawnSparks();
+          showToast(flameMessages[Math.floor(Math.random()*flameMessages.length)]);
+        }
+      });
+    }
+
+    // ---- Flame scroll physics (spring/pendulum sway) ----
+    const flameSway = document.getElementById('flameSway');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (flameSway && !prefersReducedMotion){
+      let lastScrollY = window.scrollY;
+      let angle = 0, angleVel = 0;
+      let offsetY = 0, offsetVel = 0;
+
+      window.addEventListener('scroll', function(){
+        const currentY = window.scrollY;
+        const delta = currentY - lastScrollY;
+        lastScrollY = currentY;
+        // scrolling "kicks" the flame like a gust of wind
+        angleVel += Math.max(-6, Math.min(6, delta * 0.6));
+        offsetVel += Math.max(-4, Math.min(4, delta * 0.15));
+      }, { passive: true });
+
+      function physicsLoop(){
+        // spring back to rest (angle 0), with damping — classic spring-damper
+        const stiffness = 0.06;
+        const damping = 0.88;
+
+        angleVel += (0 - angle) * stiffness;
+        angleVel *= damping;
+        angle += angleVel;
+
+        offsetVel += (0 - offsetY) * stiffness;
+        offsetVel *= damping;
+        offsetY += offsetVel;
+
+        flameSway.style.transform = 'translateY(' + offsetY.toFixed(2) + 'px) rotate(' + angle.toFixed(2) + 'deg)';
+        requestAnimationFrame(physicsLoop);
+      }
+      requestAnimationFrame(physicsLoop);
+    }
+
+    // ---- Nav link click sparks + bounce ----
+    function spawnSparksAt(x, y, count){
+      const emojis = ['✨','🔥','⭐'];
+      for (let i = 0; i < count; i++){
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.style.position = 'fixed';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const dx = (Math.random() - 0.5) * 130;
+        const dy = -(60 + Math.random() * 90);
+        const rot = (Math.random() - 0.5) * 160;
+        s.style.setProperty('--dx', dx + 'px');
+        s.style.setProperty('--dy', dy + 'px');
+        s.style.setProperty('--rot', rot + 'deg');
+        s.style.left = x + 'px';
+        s.style.top = y + 'px';
+        s.style.fontSize = '1rem';
+        document.body.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 1500);
+      }
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(function(link){
+      link.addEventListener('click', function(e){
+        const rect = link.getBoundingClientRect();
+        spawnSparksAt(rect.left + rect.width/2, rect.top + rect.height/2, 6);
+        link.classList.add('nav-pop');
+        setTimeout(function(){ link.classList.remove('nav-pop'); }, 420);
       });
     });
   });
