@@ -720,9 +720,12 @@
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
+  const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
+
   document.getElementById('enrollForm').addEventListener('submit', function(e){
     e.preventDefault();
     const status = document.getElementById('formStatus');
+    const submitBtn = e.target.querySelector('.submit-btn');
 
     const parentName = document.getElementById('parentName').value.trim();
     const childName = document.getElementById('childName').value.trim();
@@ -730,30 +733,32 @@
     const gradeText = gradeSelect.options[gradeSelect.selectedIndex].text;
     const phone = document.getElementById('phone').value.trim();
 
-    const waMessage =
-      "New enrollment request — ABHA Academy%0A" +
-      "Parent's name: " + encodeURIComponent(parentName) + "%0A" +
-      "Child's name: " + encodeURIComponent(childName) + "%0A" +
-      "Batch: " + encodeURIComponent(gradeText) + "%0A" +
-      "Phone: " + encodeURIComponent(phone);
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
 
-    const emailBody =
-      "New enrollment request - ABHA Academy%0A%0A" +
-      "Parent's name: " + encodeURIComponent(parentName) + "%0A" +
-      "Child's name: " + encodeURIComponent(childName) + "%0A" +
-      "Batch: " + encodeURIComponent(gradeText) + "%0A" +
-      "Phone: " + encodeURIComponent(phone);
-    const mailtoLink = "mailto:kumarjack084@gmail.com?subject=" +
-      encodeURIComponent("New Enrollment - " + childName) + "&body=" + emailBody;
+    const formData = new FormData();
+    formData.append('parentName', parentName);
+    formData.append('childName', childName);
+    formData.append('grade', gradeText);
+    formData.append('phone', phone);
 
-    status.textContent = "Opening WhatsApp and Email — please hit Send in both to complete registration.";
-    status.style.color = '#25d366';
-    status.classList.add('show');
-
-    window.open('https://wa.me/916394254410?text=' + waMessage, '_blank');
-    setTimeout(function(){ window.location.href = mailtoLink; }, 400);
-
-    e.target.reset();
+    fetch(ENROLL_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    }).then(function(){
+      status.textContent = "Thank you, " + parentName + "! " + childName + "'s registration has been received. We'll reach out on WhatsApp within a day.";
+      status.style.color = '#25d366';
+      status.classList.add('show');
+      e.target.reset();
+    }).catch(function(){
+      status.textContent = "Something went wrong — please try again, or reach us directly on WhatsApp below.";
+      status.style.color = '#e2673b';
+      status.classList.add('show');
+    }).finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit registration";
+    });
   });
 </script>
 
