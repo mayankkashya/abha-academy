@@ -87,44 +87,74 @@
   .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;}
   .nav-links a:hover,.nav-links a:focus-visible{color:var(--flame-300);}
   
-  /* Google Translate Dark Mode & Top Banner Fixes */
-  #google_translate_element { display: inline-block; }
-  .goog-te-gadget {
-    font-size: 0px !important; 
-    color: transparent !important; 
+  /* Google Translate: run it fully invisibly, we build our own dropdown */
+  #google_translate_element{
+    position:absolute !important;
+    width:1px !important;height:1px !important;
+    overflow:hidden !important;opacity:0 !important;
+    pointer-events:none !important;
+    top:-9999px !important;left:-9999px !important;
   }
-  .goog-te-gadget .goog-te-combo {
-    font-size: 0.9rem !important;
-    color: var(--cream-100) !important;
-    background: var(--dusk-800) !important;
-    border: 1px solid rgba(248,241,227,0.2) !important;
-    border-radius: 8px !important;
-    padding: 6px 12px !important;
-    font-family: 'Work Sans', sans-serif !important;
-    outline: none !important;
-    cursor: pointer !important;
-    margin: 0 !important;
+  .goog-te-gadget img{ display:none !important; }
+
+  /* NUKE the top google banner iframe + the body offset it injects, permanently */
+  iframe.goog-te-banner-frame,
+  .goog-te-banner-frame,
+  .skiptranslate iframe{
+    display:none !important;
+    visibility:hidden !important;
+    height:0 !important;
   }
-  .goog-te-gadget .goog-te-combo option {
-    background: var(--dusk-900) !important;
-    color: var(--cream-100) !important;
+  html body{
+    top:0 !important;
+    position:static !important;
+    margin-top:0 !important;
+    padding-top:0 !important;
   }
-  .goog-te-gadget img { display: none !important; }
-  
-  /* HIDE THE TOP GOOGLE BANNER COMPLETELY */
-  iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; }
-  .goog-te-banner-frame { display: none !important; visibility: hidden !important; }
-  body { 
-    top: 0px !important; 
-    position: static !important;
-    padding-top: 0px !important; 
-    margin-top: 0px !important; 
+  #goog-gt-tt,.goog-tooltip,.goog-tooltip:hover{ display:none !important; visibility:hidden !important; }
+  .goog-text-highlight{ background:none !important; box-shadow:none !important; }
+
+  /* Our own custom, theme-matched language switcher */
+  .lang-switch{position:relative;}
+  .lang-btn{
+    display:flex;align-items:center;gap:0.5rem;
+    background:var(--dusk-800);
+    border:1px solid rgba(248,241,227,0.2);
+    color:var(--cream-100);
+    font-family:'Work Sans',sans-serif;
+    font-size:0.88rem;font-weight:600;
+    padding:0.55rem 0.9rem;border-radius:999px;
+    cursor:pointer;transition:border-color 0.2s;
   }
-  /* Hides the pop-up tooltip when hovering over text */
-  #goog-gt-tt { display: none !important; visibility: hidden !important; }
+  .lang-btn:hover,.lang-btn:focus-visible{border-color:var(--flame-300);}
+  .lang-btn i.fa-chevron-down{font-size:0.7rem;color:var(--flame-300);transition:transform 0.2s;}
+  .lang-switch.open .lang-btn i.fa-chevron-down{transform:rotate(180deg);}
+  .lang-menu{
+    position:absolute;top:calc(100% + 8px);right:0;
+    min-width:170px;
+    background:var(--dusk-800);
+    border:1px solid rgba(248,241,227,0.14);
+    border-radius:12px;
+    padding:0.4rem;
+    list-style:none;
+    box-shadow:0 14px 34px rgba(0,0,0,0.45);
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity 0.18s, transform 0.18s, visibility 0.18s;
+    z-index:1100;
+    max-height:280px;overflow-y:auto;
+  }
+  .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);}
+  .lang-menu li{
+    padding:0.55rem 0.8rem;border-radius:8px;
+    font-size:0.9rem;color:var(--cream-300);
+    cursor:pointer;transition:background 0.15s, color 0.15s;
+  }
+  .lang-menu li:hover{background:rgba(245,166,35,0.12);color:var(--flame-300);}
+  .lang-menu li.active{color:var(--flame-300);font-weight:600;}
 
   @media (max-width:760px){
     .nav-links{display:none;}
+    .lang-menu{right:auto;left:0;}
   }
 
   /* hero */
@@ -368,6 +398,24 @@
         <li><a href="#teacher">About</a></li>
         <li><a href="#enroll">Enroll</a></li>
       </ul>
+      <div class="lang-switch" id="langSwitch">
+        <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="listbox">
+          <li role="option" data-lang="en" class="active">English</li>
+          <li role="option" data-lang="hi">हिंदी (Hindi)</li>
+          <li role="option" data-lang="bn">বাংলা (Bengali)</li>
+          <li role="option" data-lang="te">తెలుగు (Telugu)</li>
+          <li role="option" data-lang="mr">मराठी (Marathi)</li>
+          <li role="option" data-lang="ta">தமிழ் (Tamil)</li>
+          <li role="option" data-lang="ur">اردو (Urdu)</li>
+          <li role="option" data-lang="gu">ગુજરાતી (Gujarati)</li>
+          <li role="option" data-lang="kn">ಕನ್ನಡ (Kannada)</li>
+          <li role="option" data-lang="ml">മലയാളം (Malayalam)</li>
+          <li role="option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</li>
+        </ul>
+      </div>
       <div id="google_translate_element"></div>
     </div>
   </div>
@@ -579,9 +627,78 @@
     new google.translate.TranslateElement({
       pageLanguage:'en',
       includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en',
+      autoDisplay:false,
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE
     },'google_translate_element');
   }
+
+  // Keep nuking the banner + body offset, since Google re-injects them after load/translate
+  (function watchdog(){
+    const kill = () => {
+      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame').forEach(el=>{
+        el.style.display='none'; el.style.visibility='hidden'; el.style.height='0';
+      });
+      document.body.style.top='0px';
+      document.body.style.position='static';
+    };
+    kill();
+    new MutationObserver(kill).observe(document.documentElement,{attributes:true,childList:true,subtree:true});
+    setInterval(kill, 400);
+  })();
+
+  const LANG_NAMES = {
+    en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)',
+    mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)',
+    kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)'
+  };
+
+  function setGoogTransCookie(lang){
+    const val = lang === 'en' ? '' : ('/en/' + lang);
+    document.cookie = 'googtrans=' + val + '; path=/';
+    document.cookie = 'googtrans=' + val + '; path=/; domain=' + location.hostname;
+  }
+
+  function applyLanguage(lang, retries){
+    retries = retries || 0;
+    const combo = document.querySelector('#google_translate_element select.goog-te-combo');
+    if(combo){
+      combo.value = lang;
+      combo.dispatchEvent(new Event('change'));
+    } else if (retries < 20){
+      setTimeout(()=>applyLanguage(lang, retries+1), 250);
+    }
+    setGoogTransCookie(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const langSwitch = document.getElementById('langSwitch');
+    const langBtn = document.getElementById('langBtn');
+    const langMenu = document.getElementById('langMenu');
+    const langLabel = document.getElementById('langLabel');
+
+    langBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const isOpen = langSwitch.classList.toggle('open');
+      langBtn.setAttribute('aria-expanded', isOpen);
+    });
+
+    document.addEventListener('click', function(){
+      langSwitch.classList.remove('open');
+      langBtn.setAttribute('aria-expanded','false');
+    });
+
+    langMenu.querySelectorAll('li').forEach(function(item){
+      item.addEventListener('click', function(e){
+        e.stopPropagation();
+        const lang = item.getAttribute('data-lang');
+        langMenu.querySelectorAll('li').forEach(li=>li.classList.remove('active'));
+        item.classList.add('active');
+        langLabel.textContent = LANG_NAMES[lang] || 'English';
+        langSwitch.classList.remove('open');
+        applyLanguage(lang);
+      });
+    });
+  });
 </script>
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
