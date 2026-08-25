@@ -55,6 +55,8 @@
       radial-gradient(60% 45% at 82% -6%, rgba(245,166,35,0.16), transparent 60%),
       radial-gradient(50% 40% at 10% 8%, rgba(226,103,59,0.10), transparent 60%),
       var(--dusk-950);
+    transition:transform 0.6s ease-out;
+    will-change:transform;
   }
   .stars{position:fixed;inset:0;z-index:-1;opacity:0.5;
     background-image:radial-gradient(1.5px 1.5px at 20% 30%, rgba(248,241,227,0.5), transparent),
@@ -63,6 +65,8 @@
       radial-gradient(1.5px 1.5px at 88% 45%, rgba(248,241,227,0.4), transparent),
       radial-gradient(1px 1px at 60% 80%, rgba(248,241,227,0.3), transparent);
     background-size:600px 600px;
+    transition:transform 0.8s ease-out;
+    will-change:transform;
   }
 
   /* nav */
@@ -215,12 +219,41 @@
     0%,100%{opacity:0.75;transform:translateX(-50%) scale(1);}
     50%{opacity:1;transform:translateX(-50%) scale(1.08);}
   }
-  .flame{transform-origin:50% 100%;animation:flicker 2.6s ease-in-out infinite;cursor:pointer;}
-  @keyframes flicker{
-    0%,100%{transform:scaleY(1) scaleX(1) rotate(0deg);}
-    20%{transform:scaleY(1.05) scaleX(0.96) rotate(-1.5deg);}
-    45%{transform:scaleY(0.94) scaleX(1.03) rotate(1deg);}
-    70%{transform:scaleY(1.03) scaleX(0.98) rotate(-0.8deg);}
+  #flameSway{transition:opacity 0.5s ease-out;}
+  #flameSway.ignite-init{opacity:0;}
+  #flameSway.igniting{animation:ignite-pop 0.55s cubic-bezier(.2,1.4,.4,1);}
+  @keyframes ignite-pop{
+    0%{transform:scale(0.2);opacity:0;}
+    55%{transform:scale(1.25);opacity:1;}
+    75%{transform:scale(0.9);}
+    100%{transform:scale(1);opacity:1;}
+  }
+  .flame-outer{transform-origin:50% 100%;animation:flicker-outer 2.6s ease-in-out infinite;cursor:pointer;}
+  .flame-mid{transform-origin:50% 100%;animation:flicker-mid 1.7s ease-in-out infinite;}
+  .flame-tip{transform-origin:50% 100%;animation:flicker-tip 0.9s ease-in-out infinite;}
+  @keyframes flicker-outer{
+    0%{transform:scaleY(1) scaleX(1) rotate(0deg);}
+    18%{transform:scaleY(1.06) scaleX(0.95) rotate(-2deg);}
+    34%{transform:scaleY(0.96) scaleX(1.04) rotate(1.5deg);}
+    52%{transform:scaleY(1.04) scaleX(0.97) rotate(-1deg);}
+    68%{transform:scaleY(0.93) scaleX(1.05) rotate(2deg);}
+    83%{transform:scaleY(1.03) scaleX(0.98) rotate(-1.4deg);}
+    100%{transform:scaleY(1) scaleX(1) rotate(0deg);}
+  }
+  @keyframes flicker-mid{
+    0%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);}
+    22%{transform:scaleY(0.94) scaleX(1.06) translateX(1px) rotate(2deg);}
+    40%{transform:scaleY(1.07) scaleX(0.93) translateX(-1px) rotate(-2.5deg);}
+    61%{transform:scaleY(0.96) scaleX(1.03) translateX(1px) rotate(1.5deg);}
+    80%{transform:scaleY(1.05) scaleX(0.95) translateX(-1px) rotate(-1.5deg);}
+    100%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);}
+  }
+  @keyframes flicker-tip{
+    0%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;}
+    25%{transform:scaleY(1.1) translateY(-1px) rotate(3deg);opacity:1;}
+    50%{transform:scaleY(0.9) translateY(0.5px) rotate(-3deg);opacity:0.88;}
+    75%{transform:scaleY(1.06) translateY(-0.5px) rotate(2deg);opacity:0.98;}
+    100%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;}
   }
 
   /* scroll progress bar */
@@ -429,7 +462,7 @@
   footer strong{color:var(--cream-300);}
 
   @media (prefers-reduced-motion:reduce){
-    .flame,.diya-glow{animation:none;}
+    .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;}
   }
   :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
 </style>
@@ -494,24 +527,60 @@
       <div class="diya-stage">
         <div class="diya-glow" aria-hidden="true"></div>
         <svg viewBox="0 0 240 220" width="260" height="240" role="img" aria-label="An illustration of a lit oil lamp, symbolising ABHA Academy">
-          <g id="flameSway" style="transform-origin:120px 126px;">
-            <g class="flame">
-              <ellipse cx="120" cy="86" rx="17" ry="30" fill="#F5A623"/>
-              <ellipse cx="120" cy="92" rx="10" ry="19" fill="#FFD37A"/>
-              <ellipse cx="120" cy="98" rx="4.5" ry="9" fill="#FFF3D6"/>
-            </g>
-          </g>
-          <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
-          <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
-          <ellipse cx="120" cy="168" rx="70" ry="16" fill="#F5A623"/>
-          <ellipse cx="120" cy="168" rx="70" ry="16" fill="url(#lampShade)" opacity="0.5"/>
-          <ellipse cx="120" cy="176" rx="58" ry="10" fill="#C4501F"/>
           <defs>
             <linearGradient id="lampShade" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#FFD37A"/>
               <stop offset="1" stop-color="#E2673B"/>
             </linearGradient>
+
+            <!-- realistic flame colour: cool blue base -> orange -> amber -> white-hot tip -->
+            <linearGradient id="flameOuterGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#3B5B8C"/>
+              <stop offset="22%" stop-color="#E2673B"/>
+              <stop offset="55%" stop-color="#F5A623"/>
+              <stop offset="100%" stop-color="#FFE9B8"/>
+            </linearGradient>
+            <linearGradient id="flameMidGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#E2673B"/>
+              <stop offset="45%" stop-color="#FFC15E"/>
+              <stop offset="100%" stop-color="#FFF3D6"/>
+            </linearGradient>
+
+            <!-- organic dancing distortion, like real fire turbulence -->
+            <filter id="fireTurbulence" x="-80%" y="-80%" width="260%" height="260%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.035 0.14" numOctaves="2" seed="6" result="noise">
+                <animate attributeName="baseFrequency" dur="2.6s" values="0.035 0.14;0.05 0.17;0.03 0.12;0.035 0.14" repeatCount="indefinite"/>
+              </feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <filter id="fireTurbulenceSoft" x="-80%" y="-80%" width="260%" height="260%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05 0.18" numOctaves="2" seed="2" result="noise2">
+                <animate attributeName="baseFrequency" dur="1.8s" values="0.05 0.18;0.07 0.22;0.04 0.15;0.05 0.18" repeatCount="indefinite"/>
+              </feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="noise2" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
           </defs>
+
+          <g id="flameSway" class="ignite-init" style="transform-box: fill-box; transform-origin: 50% 100%;">
+            <!-- outer flame body: slow, wide sway, turbulence-distorted -->
+            <path class="flame-outer" filter="url(#fireTurbulence)"
+              d="M120,58 C136,76 148,94 144,112 C141,126 130,134 120,134 C110,134 99,126 96,112 C92,94 104,76 120,58 Z"
+              fill="url(#flameOuterGrad)"/>
+            <!-- mid flame: faster, tighter flicker -->
+            <path class="flame-mid" filter="url(#fireTurbulenceSoft)"
+              d="M120,76 C129,88 135,99 132,110 C130,119 125,124 120,124 C115,124 110,119 108,110 C105,99 111,88 120,76 Z"
+              fill="url(#flameMidGrad)" opacity="0.92"/>
+            <!-- inner hot core: fastest, tiny jitter, near-white -->
+            <path class="flame-tip"
+              d="M120,90 C125,97 128,103 126,109 C125,114 122,117 120,117 C118,117 115,114 114,109 C112,103 115,97 120,90 Z"
+              fill="#FFF6E0" opacity="0.95"/>
+          </g>
+
+          <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
+          <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
+          <ellipse cx="120" cy="168" rx="70" ry="16" fill="#F5A623"/>
+          <ellipse cx="120" cy="168" rx="70" ry="16" fill="url(#lampShade)" opacity="0.5"/>
+          <ellipse cx="120" cy="176" rx="58" ry="10" fill="#C4501F"/>
         </svg>
       </div>
     </div>
@@ -801,7 +870,7 @@
     updateProgress();
 
     // ---- Flame easter egg ----
-    const flame = document.querySelector('.flame');
+    const flame = document.querySelector('.flame-outer');
     const diyaStage = document.querySelector('.diya-stage');
     const toast = document.getElementById('flameToast');
     let flameTaps = 0;
@@ -812,6 +881,37 @@
       "🔥 ABHA Academy mein har shaam ek naya diya jalta hai.",
       "🪔 Shubh! Har diya ek bachche ke sapno ke liye hai."
     ];
+
+    // ---- Synthesized fire crackle sound (Web Audio, no audio file needed) ----
+    let audioCtx = null;
+    function playCrackle(){
+      try{
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const duration = 0.35;
+        const bufferSize = audioCtx.sampleRate * duration;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++){
+          // white noise with quick random crackle pops + fast decay envelope
+          const decay = Math.pow(1 - i / bufferSize, 2.2);
+          const pop = Math.random() < 0.02 ? (Math.random() - 0.5) * 1.4 : 0;
+          data[i] = ((Math.random() * 2 - 1) * 0.35 + pop) * decay;
+        }
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const bandpass = audioCtx.createBiquadFilter();
+        bandpass.type = 'bandpass';
+        bandpass.frequency.value = 1800;
+        bandpass.Q.value = 0.7;
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        noise.connect(bandpass);
+        bandpass.connect(gain);
+        gain.connect(audioCtx.destination);
+        noise.start();
+      } catch(err){ /* audio not available, fail silently */ }
+    }
 
     function spawnSparks(){
       const emojis = ['✨','🔥','🪔','⭐'];
@@ -847,10 +947,66 @@
         if (flameTaps >= 5){
           flameTaps = 0;
           spawnSparks();
+          playCrackle();
           showToast(flameMessages[Math.floor(Math.random()*flameMessages.length)]);
         }
       });
     }
+
+    // ---- Ignite animation on page load ----
+    const flameSwayEl = document.getElementById('flameSway');
+    if (flameSwayEl){
+      setTimeout(function(){
+        flameSwayEl.classList.remove('ignite-init');
+        flameSwayEl.classList.add('igniting');
+        if (diyaStage) spawnSparks();
+        setTimeout(function(){ flameSwayEl.classList.remove('igniting'); }, 600);
+      }, 350);
+    }
+
+    // ---- Parallax stars + glow on mouse move (desktop only) ----
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      const starsEl = document.querySelector('.stars');
+      const glowEl = document.querySelector('.sky-glow');
+      let parallaxTicking = false;
+      document.addEventListener('mousemove', function(e){
+        if (parallaxTicking) return;
+        parallaxTicking = true;
+        requestAnimationFrame(function(){
+          const px = (e.clientX / window.innerWidth - 0.5);
+          const py = (e.clientY / window.innerHeight - 0.5);
+          if (starsEl) starsEl.style.transform = 'translate(' + (px*14) + 'px,' + (py*14) + 'px)';
+          if (glowEl) glowEl.style.transform = 'translate(' + (px*-8) + 'px,' + (py*-8) + 'px)';
+          parallaxTicking = false;
+        });
+      });
+    }
+
+    // ---- Celebration burst (used on successful enrollment) ----
+    window.celebrationBurst = function(){
+      const emojis = ['🪔','✨','🔥','⭐','🎉'];
+      const count = 26;
+      for (let i = 0; i < count; i++){
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.style.position = 'fixed';
+        s.style.fontSize = (1 + Math.random()*0.8) + 'rem';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const startX = Math.random() * window.innerWidth;
+        const dx = (Math.random() - 0.5) * 160;
+        const dy = -(window.innerHeight * 0.35 + Math.random() * window.innerHeight * 0.35);
+        const rot = (Math.random() - 0.5) * 260;
+        s.style.setProperty('--dx', dx + 'px');
+        s.style.setProperty('--dy', dy + 'px');
+        s.style.setProperty('--rot', rot + 'deg');
+        s.style.left = startX + 'px';
+        s.style.top = (window.innerHeight * 0.85) + 'px';
+        s.style.animationDuration = (1.6 + Math.random()*0.8) + 's';
+        s.style.animationDelay = (Math.random()*0.4) + 's';
+        document.body.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 2600);
+      }
+    };
 
     // ---- Flame scroll physics (fluid flame bend, not rigid rotation) ----
     const flameSway = document.getElementById('flameSway');
@@ -956,6 +1112,7 @@
       status.textContent = "Thank you, " + parentName + "! " + childName + "'s registration has been received. We'll reach out on WhatsApp within a day.";
       status.style.color = '#25d366';
       status.classList.add('show');
+      if (window.celebrationBurst) window.celebrationBurst();
       e.target.reset();
     }).catch(function(){
       status.textContent = "Something went wrong — please try again, or reach us directly on WhatsApp below.";
