@@ -336,7 +336,9 @@
     width:52px;height:52px;border-radius:14px;
     display:flex;align-items:center;justify-content:center;
     background:rgba(245,166,35,0.12);color:var(--flame-300);font-size:1.4rem;margin-bottom:1.3rem;
+    cursor:pointer;transition:background 0.2s, transform 0.2s;
   }
+  .subject-card .icon:active{transform:scale(0.92);background:rgba(245,166,35,0.22);}
   .subject-card h3{font-size:1.3rem;color:var(--cream-100);margin-bottom:0.6rem;}
   .subject-card p{color:var(--cream-muted);font-size:0.96rem;}
 
@@ -465,6 +467,67 @@
     .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;}
   }
   :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
+
+  /* ---- Hidden Quiz Game ---- */
+  .quiz-overlay{
+    position:fixed;inset:0;z-index:3000;
+    background:rgba(9,11,24,0.86);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:1.4rem;
+    opacity:0;visibility:hidden;
+    transition:opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .quiz-overlay.show{opacity:1;visibility:visible;}
+  .quiz-card{
+    width:100%;max-width:440px;
+    background:linear-gradient(165deg, var(--dusk-800), var(--dusk-900));
+    border:1px solid rgba(245,166,35,0.3);
+    border-radius:var(--radius-lg);
+    padding:1.8rem 1.7rem;
+    box-shadow:0 30px 70px rgba(0,0,0,0.55);
+    transform:translateY(18px) scale(0.97);
+    transition:transform 0.3s ease;
+    max-height:88vh;overflow-y:auto;
+  }
+  .quiz-overlay.show .quiz-card{transform:translateY(0) scale(1);}
+  .quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+  .quiz-head h3{font-size:1.25rem;color:var(--cream-100);display:flex;align-items:center;gap:0.5rem;}
+  .quiz-close{
+    background:none;border:none;color:var(--cream-muted);font-size:1.3rem;
+    cursor:pointer;padding:0.2rem 0.5rem;line-height:1;transition:color 0.2s;
+  }
+  .quiz-close:hover{color:var(--flame-300);}
+  .quiz-diyas{display:flex;gap:0.5rem;margin-bottom:1.3rem;}
+  .quiz-diya{font-size:1.3rem;opacity:0.25;transition:opacity 0.3s, transform 0.3s;filter:grayscale(1);}
+  .quiz-diya.lit{opacity:1;filter:grayscale(0);transform:scale(1.15);}
+  .quiz-badge{
+    display:inline-block;font-size:0.72rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.06em;color:var(--dusk-950);
+    background:var(--flame-300);padding:0.25rem 0.6rem;border-radius:999px;margin-bottom:0.8rem;
+  }
+  .quiz-question{font-size:1.08rem;color:var(--cream-100);margin-bottom:1.2rem;line-height:1.5;}
+  .quiz-options{display:flex;flex-direction:column;gap:0.7rem;}
+  .quiz-option{
+    text-align:left;padding:0.8rem 1rem;border-radius:12px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(248,241,227,0.14);
+    color:var(--cream-200,var(--cream-300));font-size:0.98rem;font-family:'Work Sans',sans-serif;
+    cursor:pointer;transition:border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .quiz-option:hover{border-color:rgba(245,166,35,0.4);}
+  .quiz-option:active{transform:scale(0.98);}
+  .quiz-option.correct{background:rgba(37,211,102,0.16);border-color:var(--ok-green);color:var(--cream-100);}
+  .quiz-option.wrong{background:rgba(226,103,59,0.16);border-color:var(--ember-500);color:var(--cream-100);}
+  .quiz-option[disabled]{cursor:default;pointer-events:none;}
+  .quiz-result{text-align:center;padding:1rem 0;}
+  .quiz-result h3{font-size:1.4rem;color:var(--flame-300);margin-bottom:0.6rem;}
+  .quiz-result p{color:var(--cream-300);margin-bottom:1.4rem;}
+  .quiz-restart{
+    display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500));
+    color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px;
+    border:none;cursor:pointer;font-size:0.95rem;
+  }
 </style>
 </head>
 <body>
@@ -614,17 +677,17 @@
       </div>
       <div class="subject-grid">
         <div class="subject-card">
-          <div class="icon"><i class="fas fa-book-open"></i></div>
+          <div class="icon" data-subject="english"><i class="fas fa-book-open"></i></div>
           <h3>English</h3>
           <p>Reading, handwriting, spoken confidence and everyday vocabulary — built through stories, not just textbooks.</p>
         </div>
         <div class="subject-card">
-          <div class="icon"><i class="fas fa-calculator"></i></div>
+          <div class="icon" data-subject="maths"><i class="fas fa-calculator"></i></div>
           <h3>Mathematics</h3>
           <p>Tables, arithmetic and logical thinking, practised until the basics are genuinely secure, not just memorised.</p>
         </div>
         <div class="subject-card">
-          <div class="icon"><i class="fas fa-desktop"></i></div>
+          <div class="icon" data-subject="computer"><i class="fas fa-desktop"></i></div>
           <h3>Computer Basics</h3>
           <p>Typing, using a mouse and keyboard, and simple digital skills every child will need going forward.</p>
         </div>
@@ -742,6 +805,11 @@
 <a href="https://wa.me/916394254410" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
+
+<!-- Hidden Quiz Game: unlocked by tapping English -> Maths -> Computer icons in order -->
+<div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-label="ABHA Quiz Challenge">
+  <div class="quiz-card" id="quizCard"></div>
+</div>
 
 <footer>
   <p><strong>ABHA Academy</strong> &middot; Free evening classes for Class 0–8</p>
@@ -1007,6 +1075,136 @@
         setTimeout(function(){ s.remove(); }, 2600);
       }
     };
+
+    // ---- Hidden Quiz Game: tap English -> Maths -> Computer icons in order ----
+    (function(){
+      const questionBank = [
+        { subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 },
+        { subject: 'English', q: "Choose the correctly spelled word:", options: ["Skool","School","Schoool","Skul"], correct: 1 },
+        { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 },
+        { subject: 'Maths', q: "What is 6 × 3?", options: ["16","18","21","24"], correct: 1 },
+        { subject: 'Computer', q: "Which of these is used to type on a computer?", options: ["Mouse","Monitor","Keyboard","Speaker"], correct: 2 },
+        { subject: 'Computer', q: "What do we call clicking a button twice quickly?", options: ["Single-click","Right-click","Double-click","Drag"], correct: 2 }
+      ];
+
+      function shuffledQuestions(){
+        return questionBank.slice().sort(function(){ return Math.random() - 0.5; });
+      }
+
+      const overlay = document.getElementById('quizOverlay');
+      const card = document.getElementById('quizCard');
+      let questions = [];
+      let qIndex = 0;
+      let score = 0;
+
+      function openQuiz(){
+        questions = shuffledQuestions();
+        qIndex = 0;
+        score = 0;
+        overlay.classList.add('show');
+        renderQuestion();
+      }
+      function closeQuiz(){
+        overlay.classList.remove('show');
+      }
+
+      function renderDiyas(){
+        let html = '<div class="quiz-diyas">';
+        for (let i = 0; i < questions.length; i++){
+          html += '<span class="quiz-diya' + (i < qIndex ? ' lit' : '') + '">🪔</span>';
+        }
+        html += '</div>';
+        return html;
+      }
+
+      function renderQuestion(){
+        if (qIndex >= questions.length){
+          renderResult();
+          return;
+        }
+        const item = questions[qIndex];
+        let optionsHtml = '';
+        item.options.forEach(function(opt, i){
+          optionsHtml += '<button class="quiz-option" data-index="' + i + '">' + opt + '</button>';
+        });
+        card.innerHTML =
+          '<div class="quiz-head"><h3>🪔 ABHA Quiz Challenge</h3><button class="quiz-close" id="quizCloseBtn" aria-label="Close">&times;</button></div>' +
+          renderDiyas() +
+          '<span class="quiz-badge">' + item.subject + '</span>' +
+          '<div class="quiz-question">' + item.q + '</div>' +
+          '<div class="quiz-options">' + optionsHtml + '</div>';
+
+        document.getElementById('quizCloseBtn').addEventListener('click', closeQuiz);
+        card.querySelectorAll('.quiz-option').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            const chosen = parseInt(btn.getAttribute('data-index'), 10);
+            const allBtns = card.querySelectorAll('.quiz-option');
+            allBtns.forEach(function(b){ b.disabled = true; });
+            if (chosen === item.correct){
+              btn.classList.add('correct');
+              score++;
+              if (typeof playCrackle === 'function') playCrackle();
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+            setTimeout(function(){
+              qIndex++;
+              renderQuestion();
+            }, 900);
+          });
+        });
+      }
+
+      function renderResult(){
+        const total = questions.length;
+        let msg;
+        if (score === total) msg = "Perfect score! Aap sab jaante hain — bahut badhiya!";
+        else if (score >= total * 0.6) msg = "Bahut achha kiya! Thoda aur practice aur aap master ban jayenge.";
+        else msg = "Koi baat nahi — ABHA Academy mein aakar aur seekhte hain!";
+
+        card.innerHTML =
+          '<div class="quiz-head"><h3>🪔 Result</h3><button class="quiz-close" id="quizCloseBtn2" aria-label="Close">&times;</button></div>' +
+          renderDiyas() +
+          '<div class="quiz-result">' +
+            '<h3>' + score + ' / ' + total + ' Correct</h3>' +
+            '<p>' + msg + '</p>' +
+            '<button class="quiz-restart" id="quizRestartBtn">Play Again</button>' +
+          '</div>';
+
+        document.getElementById('quizCloseBtn2').addEventListener('click', closeQuiz);
+        document.getElementById('quizRestartBtn').addEventListener('click', openQuiz);
+
+        if (score === total && window.celebrationBurst) window.celebrationBurst();
+      }
+
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) closeQuiz();
+      });
+
+      // secret unlock sequence: English -> Maths -> Computer
+      const secretSequence = ['english', 'maths', 'computer'];
+      let tapProgress = [];
+      let tapResetTimer = null;
+      document.querySelectorAll('.subject-card .icon[data-subject]').forEach(function(icon){
+        icon.addEventListener('click', function(){
+          const subject = icon.getAttribute('data-subject');
+          tapProgress.push(subject);
+          clearTimeout(tapResetTimer);
+          tapResetTimer = setTimeout(function(){ tapProgress = []; }, 3000);
+
+          if (tapProgress.length > secretSequence.length){
+            tapProgress = tapProgress.slice(-secretSequence.length);
+          }
+          const matches = tapProgress.length === secretSequence.length &&
+            tapProgress.every(function(v, i){ return v === secretSequence[i]; });
+          if (matches){
+            tapProgress = [];
+            openQuiz();
+          }
+        });
+      });
+    })();
 
     // ---- Flame scroll physics (fluid flame bend, not rigid rotation) ----
     const flameSway = document.getElementById('flameSway');
