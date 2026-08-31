@@ -206,6 +206,40 @@
 
   .hero-note{margin-top:1.6rem;font-size:0.9rem;color:var(--cream-muted);}
 
+  /* live class status badge */
+  .live-status{
+    margin-top:1.1rem;display:inline-flex;align-items:center;gap:0.6rem;
+    font-size:0.88rem;font-weight:600;color:var(--cream-300);
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(248,241,227,0.14);
+    padding:0.55rem 1rem;border-radius:999px;
+  }
+  .live-status.is-live{border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.08);color:var(--cream-100);}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--cream-muted);flex-shrink:0;}
+  .live-dot.pulse{background:var(--ok-green);box-shadow:0 0 8px rgba(37,211,102,0.7);animation:live-pulse 1.4s ease-in-out infinite;}
+  @keyframes live-pulse{
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:0.45;transform:scale(1.35);}
+  }
+
+  /* ambient floating particles */
+  .ambient-particles{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
+  .particle{
+    position:absolute;bottom:-20px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,211,122,0.9), rgba(245,166,35,0.15) 65%, transparent 75%);
+    filter:blur(0.3px);
+    animation:particle-float linear infinite;
+  }
+  @keyframes particle-float{
+    0%{transform:translateY(0) translateX(0);opacity:0;}
+    8%{opacity:var(--p-opacity,0.5);}
+    92%{opacity:var(--p-opacity,0.5);}
+    100%{transform:translateY(-115vh) translateX(var(--drift,20px));opacity:0;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .particle{display:none;}
+  }
+
   /* diya art */
   .diya-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:340px;}
   .diya-glow{
@@ -534,6 +568,7 @@
 
 <div class="scroll-progress" id="scrollProgress"></div>
 <div class="flame-toast" id="flameToast"></div>
+<div class="ambient-particles" id="ambientParticles"></div>
 
 <div class="sky-glow"></div>
 <div class="stars"></div>
@@ -585,6 +620,7 @@
           <a href="#schedule" class="btn-ghost">See today's timing →</a>
         </div>
         <p class="hero-note">No fees. No hidden charges. Just show up.</p>
+        <div class="live-status" id="liveStatus"><span class="live-dot" id="liveDot"></span><span id="liveText">Checking today's schedule…</span></div>
       </div>
 
       <div class="diya-stage">
@@ -638,6 +674,9 @@
               d="M120,90 C125,97 128,103 126,109 C125,114 122,117 120,117 C118,117 115,114 114,109 C112,103 115,97 120,90 Z"
               fill="#FFF6E0" opacity="0.95"/>
           </g>
+
+          <!-- large invisible tap target around the flame, easy to hit on mobile -->
+          <circle id="flameHitArea" cx="120" cy="95" r="55" fill="transparent" style="cursor:pointer;"/>
 
           <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
           <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
@@ -938,7 +977,7 @@
     updateProgress();
 
     // ---- Flame easter egg ----
-    const flame = document.querySelector('.flame-outer');
+    const flame = document.getElementById('flameHitArea');
     const diyaStage = document.querySelector('.diya-stage');
     const toast = document.getElementById('flameToast');
     let flameTaps = 0;
@@ -1079,16 +1118,41 @@
     // ---- Hidden Quiz Game: tap English -> Maths -> Computer icons in order ----
     (function(){
       const questionBank = [
+        // English
         { subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 },
         { subject: 'English', q: "Choose the correctly spelled word:", options: ["Skool","School","Schoool","Skul"], correct: 1 },
+        { subject: 'English', q: "Which of these is a vowel?", options: ["B","C","A","D"], correct: 2 },
+        { subject: 'English', q: "What is the opposite of 'HOT'?", options: ["Warm","Cold","Big","Fast"], correct: 1 },
+        { subject: 'English', q: "Which word means the same as 'HAPPY'?", options: ["Sad","Angry","Joyful","Tired"], correct: 2 },
+        { subject: 'English', q: "Pick the plural of 'CHILD':", options: ["Childs","Childes","Children","Childrens"], correct: 2 },
+        // Maths
         { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 },
         { subject: 'Maths', q: "What is 6 × 3?", options: ["16","18","21","24"], correct: 1 },
+        { subject: 'Maths', q: "What is 9 − 4?", options: ["3","4","5","6"], correct: 2 },
+        { subject: 'Maths', q: "How many sides does a triangle have?", options: ["2","3","4","5"], correct: 1 },
+        { subject: 'Maths', q: "What is 10 ÷ 2?", options: ["2","4","5","8"], correct: 2 },
+        { subject: 'Maths', q: "What comes after 19?", options: ["18","20","21","29"], correct: 1 },
+        // Computer
         { subject: 'Computer', q: "Which of these is used to type on a computer?", options: ["Mouse","Monitor","Keyboard","Speaker"], correct: 2 },
-        { subject: 'Computer', q: "What do we call clicking a button twice quickly?", options: ["Single-click","Right-click","Double-click","Drag"], correct: 2 }
+        { subject: 'Computer', q: "What do we call clicking a button twice quickly?", options: ["Single-click","Right-click","Double-click","Drag"], correct: 2 },
+        { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 },
+        { subject: 'Computer', q: "What do we use to move the pointer on screen?", options: ["Keyboard","Printer","Mouse","Speaker"], correct: 2 },
+        { subject: 'Computer', q: "Which key deletes a letter you just typed?", options: ["Enter","Backspace","Shift","Tab"], correct: 1 }
       ];
 
       function shuffledQuestions(){
-        return questionBank.slice().sort(function(){ return Math.random() - 0.5; });
+        const perSubject = {};
+        questionBank.forEach(function(item){
+          if (!perSubject[item.subject]) perSubject[item.subject] = [];
+          perSubject[item.subject].push(item);
+        });
+        // pick 2 random questions from each subject, so every play covers all 3 subjects with fresh variety
+        let picked = [];
+        Object.keys(perSubject).forEach(function(subject){
+          const pool = perSubject[subject].slice().sort(function(){ return Math.random() - 0.5; });
+          picked = picked.concat(pool.slice(0, 2));
+        });
+        return picked.sort(function(){ return Math.random() - 0.5; });
       }
 
       const overlay = document.getElementById('quizOverlay');
@@ -1205,6 +1269,139 @@
         });
       });
     })();
+
+    // ---- Live class status badge (real-time, based on the actual schedule) ----
+    (function(){
+      const liveEl = document.getElementById('liveStatus');
+      const dotEl = document.getElementById('liveDot');
+      const textEl = document.getElementById('liveText');
+      if (!liveEl) return;
+
+      // days: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat (matches JS Date.getDay())
+      const batches = [
+        { name: 'Class 0–3 (Juniors)', days: [1,3,5], start: '18:00', end: '19:15' },
+        { name: 'Class 4–6 (Middle)', days: [2,4,6], start: '19:30', end: '20:45' },
+        { name: 'Class 7–8 (Seniors)', days: [1,3,5], start: '20:45', end: '22:00' }
+      ];
+      const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+      function toMinutes(t){
+        const parts = t.split(':');
+        return parseInt(parts[0],10)*60 + parseInt(parts[1],10);
+      }
+      function formatTime12(t){
+        const mins = toMinutes(t);
+        let h = Math.floor(mins/60), m = mins%60;
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12; if (h === 0) h = 12;
+        return h + (m ? ':' + (m<10?'0':'') + m : '') + ' ' + ampm;
+      }
+
+      function updateStatus(){
+        const now = new Date();
+        const day = now.getDay();
+        const nowMin = now.getHours()*60 + now.getMinutes();
+
+        // 1. Check if a class is live right now
+        for (let i = 0; i < batches.length; i++){
+          const b = batches[i];
+          if (b.days.indexOf(day) !== -1 && nowMin >= toMinutes(b.start) && nowMin < toMinutes(b.end)){
+            liveEl.classList.add('is-live');
+            dotEl.classList.add('pulse');
+            textEl.textContent = 'LIVE NOW — ' + b.name + ' is in session';
+            return;
+          }
+        }
+
+        // 2. Otherwise find the nearest upcoming class across the week
+        let best = null;
+        for (let offset = 0; offset < 8; offset++){
+          const d = (day + offset) % 7;
+          for (let i = 0; i < batches.length; i++){
+            const b = batches[i];
+            if (b.days.indexOf(d) === -1) continue;
+            const startAbs = offset*1440 + toMinutes(b.start);
+            const nowAbs = nowMin;
+            if (offset === 0 && toMinutes(b.start) <= nowMin) continue; // already started/passed today
+            const minutesFromNow = startAbs - nowAbs;
+            if (best === null || minutesFromNow < best.minutesFromNow){
+              best = { minutesFromNow: minutesFromNow, batch: b, dayIndex: d, offset: offset };
+            }
+          }
+        }
+
+        liveEl.classList.remove('is-live');
+        dotEl.classList.remove('pulse');
+
+        if (!best){
+          textEl.textContent = 'See today\'s class timings below';
+          return;
+        }
+        if (best.minutesFromNow < 24*60 && best.offset <= 1){
+          const h = Math.floor(best.minutesFromNow/60), m = best.minutesFromNow%60;
+          const countdown = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm');
+          textEl.textContent = 'Next: ' + best.batch.name + ' starts in ' + countdown;
+        } else {
+          textEl.textContent = 'Next: ' + best.batch.name + ' on ' + dayNames[best.dayIndex] + ' at ' + formatTime12(best.batch.start);
+        }
+      }
+
+      updateStatus();
+      setInterval(updateStatus, 30000);
+    })();
+
+    // ---- Ambient floating particles ----
+    (function(){
+      const container = document.getElementById('ambientParticles');
+      if (!container) return;
+      const count = window.innerWidth < 640 ? 7 : 12;
+      for (let i = 0; i < count; i++){
+        const p = document.createElement('span');
+        p.className = 'particle';
+        const size = 3 + Math.random()*5;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = (Math.random()*100) + '%';
+        p.style.setProperty('--drift', ((Math.random()-0.5)*80) + 'px');
+        p.style.setProperty('--p-opacity', (0.3 + Math.random()*0.4).toFixed(2));
+        p.style.animationDuration = (14 + Math.random()*14) + 's';
+        p.style.animationDelay = (-Math.random()*20) + 's';
+        container.appendChild(p);
+      }
+    })();
+
+    // ---- 3D tilt on subject cards + magnetic enroll button (desktop only) ----
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      document.querySelectorAll('.subject-card').forEach(function(card){
+        card.style.transition = 'transform 0.15s ease-out, border-color 0.3s';
+        card.addEventListener('mousemove', function(e){
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left, y = e.clientY - rect.top;
+          const cx = rect.width/2, cy = rect.height/2;
+          const rotateY = ((x-cx)/cx) * 7;
+          const rotateX = -((y-cy)/cy) * 7;
+          card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-6px)';
+        });
+        card.addEventListener('mouseleave', function(){
+          card.style.transform = '';
+        });
+      });
+
+      const magneticBtn = document.querySelector('.hero .btn-primary');
+      if (magneticBtn){
+        magneticBtn.addEventListener('mousemove', function(e){
+          const rect = magneticBtn.getBoundingClientRect();
+          const relX = e.clientX - rect.left - rect.width/2;
+          const relY = e.clientY - rect.top - rect.height/2;
+          magneticBtn.style.transition = 'transform 0.05s linear';
+          magneticBtn.style.transform = 'translate(' + (relX*0.22).toFixed(1) + 'px,' + (relY*0.22 - 2).toFixed(1) + 'px)';
+        });
+        magneticBtn.addEventListener('mouseleave', function(){
+          magneticBtn.style.transition = 'transform 0.3s ease';
+          magneticBtn.style.transform = 'translate(0,0)';
+        });
+      }
+    }
 
     // ---- Flame scroll physics (fluid flame bend, not rigid rotation) ----
     const flameSway = document.getElementById('flameSway');
