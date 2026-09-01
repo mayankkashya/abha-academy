@@ -9,7 +9,7 @@
 
 <!-- Stable CDNs for React 18, ReactDOM, Babel, and Tailwind -->
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom-client.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -54,7 +54,7 @@
 <body>
 <div id="root"></div>
 
-<script type="text/babel" data-presets="react">
+<script type="text/javascript" data-presets="react">
 const { useState, useEffect, useRef } = React;
 
 const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
@@ -418,14 +418,14 @@ function SkillTree({ C }){
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           {EDGES.map(([a,b],i)=>{
             const from=findSkill(a), to=findSkill(b), isActive=active===a||active===b;
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.6:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
+            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.6:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s", filter: isActive ? `drop-shadow(0 0 4px ${C.cyan})` : "none" }} />;
           })}
         </svg>
         {SKILLS.map(skill=>{
           const isActive = active===skill.id;
           return (
             <button key={skill.id} onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>setActive(isActive?null:skill.id)}
-              className="float-fast absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 outline-none" style={{ left:`${skill.x}%`, top:`${skill.y}%`, animationDelay:`${skill.x%3}s` }}>
+              className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 outline-none" style={{ left:`${skill.x}%`, top:`${skill.y}%` }}>
               <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
                 style={{ borderColor:skill.color, background:isActive?`${skill.color}22`:"rgba(255,255,255,0.03)", boxShadow:isActive?`0 0 30px ${skill.color}88`:`0 0 12px ${skill.color}33`, transform:isActive?"scale(1.12)":"scale(1)" }}>
                 <Icon size={skill.id==="core"?30:24}>{skill.emoji}</Icon>
