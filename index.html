@@ -1,884 +1,1530 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import {
-  Sparkles,
-  BookOpenText,
-  Calculator,
-  MonitorSmartphone,
-  Brain,
-  Radio,
-  X,
-  ChevronRight,
-  Users,
-  Award,
-  Clock,
-  Wifi,
-  Terminal as TerminalIcon,
-  Moon,
-  Gauge,
-  RotateCcw,
-} from "lucide-react";
-
-/**
- * ============================================================================
- * ABHA ACADEMY — "NEURAL LINK" v2 (2086 concept build)
- * ============================================================================
- * TOOLING NOTE: Framer Motion, Matter.js and Three.js physics are not part of
- * this sandbox's supported import list, so every "physics-based" moment in
- * this build — floating idle motion, drag-repair, glitch — is done with CSS
- * keyframes/transitions plus small hand-rolled pointer-drag math. It reads
- * the same to a visitor; only the engine underneath is lighter.
- *
- * This is a CONCEPT / SHOWCASE build, not the production ABHA Academy site.
- * The real site (dark-diya theme) stays simple and fast for low-end phones —
- * this file is the "what if" version for demos, pitches, or a portfolio.
- * ============================================================================
- */
-
-const COLORS = {
-  void: "#030014",
-  panel: "rgba(255,255,255,0.04)",
-  panelBorder: "rgba(255,255,255,0.08)",
-  cyan: "#22e6ff",
-  purple: "#a855f7",
-  red: "#ff2954",
-};
-
-const NIGHT_COLORS = {
-  void: "#0a0014",
-  panel: "rgba(255,255,255,0.05)",
-  panelBorder: "rgba(255,42,120,0.25)",
-  cyan: "#ff2fa0",
-  purple: "#7c3aed",
-  red: "#ff2954",
-};
-
-export default function AbhaNeuralLink() {
-  const [nightMode, setNightMode] = useState(false);
-  const [syncMode, setSyncMode] = useState(false);
-  const [showVoid, setShowVoid] = useState(false);
-  const C = nightMode ? NIGHT_COLORS : COLORS;
-
-  // ---- Night Owl Protocol: detect real system time, midnight–5am ----
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 0 && hour < 5) setNightMode(true);
-  }, []);
-
-  return (
-    <div
-      className="relative min-h-screen w-full overflow-x-hidden text-white transition-colors duration-700"
-      style={{ background: C.void, fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
-    >
-      <GlobalStyles />
-      {!syncMode && <BackgroundField C={C} />}
-      <TerminalHack C={C} />
-      <NightOwlBanner nightMode={nightMode} />
-
-      <BootSequenceHero C={C} syncMode={syncMode} />
-      {!syncMode && <SkillTree C={C} />}
-      {!syncMode && <CyberStats C={C} />}
-      {nightMode && !syncMode && <MidnightNotes C={C} />}
-
-      <ControlDock
-        C={C}
-        nightMode={nightMode}
-        setNightMode={setNightMode}
-        syncMode={syncMode}
-        setSyncMode={setSyncMode}
-        setShowVoid={setShowVoid}
-      />
-      <FloatingOrb C={C} syncMode={syncMode} />
-      {showVoid && <ZeroGravityVoid C={C} onClose={() => setShowVoid(false)} />}
-
-      <Footer />
-    </div>
-  );
-}
-
-/* ============================================================================
-   GLOBAL STYLES
-   ============================================================================ */
-function GlobalStyles() {
-  return (
-    <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
-      .font-mono-cyber { font-family: 'JetBrains Mono', ui-monospace, monospace; }
-
-      @keyframes float-y { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-      .float-slow{animation:float-y 6s ease-in-out infinite;}
-      .float-med{animation:float-y 4.2s ease-in-out infinite;}
-      .float-fast{animation:float-y 3s ease-in-out infinite;}
-
-      @keyframes glitch-1{
-        0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);}
-        93%{clip-path:inset(10% 0 60% 0);transform:translate(-2px,0);}
-        95%{clip-path:inset(60% 0 5% 0);transform:translate(2px,0);}
-        97%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,0);}
-      }
-      .glitch-layer{animation:glitch-1 3.4s infinite linear;}
-
-      @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(34,230,255,0.45);}100%{box-shadow:0 0 0 22px rgba(34,230,255,0);}}
-      .pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4,0,0.6,1) infinite;}
-
-      @keyframes dash-flow{to{stroke-dashoffset:-200;}}
-      .flow-line{stroke-dasharray:6 10;animation:dash-flow 3s linear infinite;}
-
-      .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease, transform 0.8s ease;}
-      .reveal.in{opacity:1;transform:translateY(0);}
-
-      @keyframes shake{
-        0%,100%{transform:translate(0,0) rotate(0deg);}
-        20%{transform:translate(-4px,2px) rotate(-3deg);}
-        40%{transform:translate(4px,-2px) rotate(3deg);}
-        60%{transform:translate(-3px,-2px) rotate(-2deg);}
-        80%{transform:translate(3px,2px) rotate(2deg);}
-      }
-      .shake{animation:shake 0.4s ease-in-out;}
-
-      @keyframes glitch-flash{0%{opacity:1;}100%{opacity:0;}}
-      .glitch-flash{animation:glitch-flash 1.4s ease-out forwards;}
-
-      @keyframes blink{50%{opacity:0;}}
-      .caret{animation:blink 1s step-end infinite;}
-
-      ::selection{background:${COLORS.cyan};color:#000;}
-
-      @media (prefers-reduced-motion: reduce){
-        .float-slow,.float-med,.float-fast,.glitch-layer,.pulse-ring,.flow-line,.shake{animation:none !important;}
-      }
-    `}</style>
-  );
-}
-
-/* ============================================================================
-   BACKGROUND FIELD
-   ============================================================================ */
-function BackgroundField({ C }) {
-  const particles = Array.from({ length: 22 });
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(34,230,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,230,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "42px 42px",
-          maskImage: "radial-gradient(ellipse 70% 60% at 50% 20%, black 40%, transparent 100%)",
-        }}
-      />
-      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-3xl" style={{ background: `radial-gradient(circle, ${C.purple}33, transparent 70%)` }} />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full blur-3xl" style={{ background: `radial-gradient(circle, ${C.cyan}2a, transparent 70%)` }} />
-      {particles.map((_, i) => (
-        <span
-          key={i}
-          className="absolute rounded-full float-slow"
-          style={{
-            left: `${(i * 37) % 100}%`,
-            top: `${(i * 53) % 100}%`,
-            width: 2 + (i % 3),
-            height: 2 + (i % 3),
-            background: i % 3 === 0 ? C.cyan : i % 3 === 1 ? C.purple : C.red,
-            opacity: 0.5,
-            animationDelay: `${(i % 7) * 0.6}s`,
-            animationDuration: `${5 + (i % 5)}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-/* ============================================================================
-   1. TERMINAL HACK — secret keyboard code unlocks a puzzle terminal
-   ============================================================================ */
-const SECRET_CODE = ["a", "b", "h", "a", "2", "0", "8", "6"];
-
-const PUZZLES = [
-  { q: "12 x 8 = ?", a: "96" },
-  { q: "Next in sequence: 2, 4, 8, 16, ?", a: "32" },
-  { q: "If today is Monday, what day is it in 10 days?", a: "thursday" },
-  { q: "Binary 101 in decimal = ?", a: "5" },
-  { q: "A train covers 60km in 1hr. Distance in 45 min?", a: "45" },
-];
-
-function TerminalHack({ C }) {
-  const [open, setOpen] = useState(false);
-  const [glitching, setGlitching] = useState(false);
-  const bufferRef = useRef([]);
-  const [puzzle] = useState(() => PUZZLES[Math.floor(Math.random() * PUZZLES.length)]);
-  const [input, setInput] = useState("");
-  const [seconds, setSeconds] = useState(30);
-  const [result, setResult] = useState(null); // null | 'won' | 'lost'
-
-  useEffect(() => {
-    function onKey(e) {
-      const k = e.key.toLowerCase();
-      bufferRef.current = [...bufferRef.current, k].slice(-SECRET_CODE.length);
-      if (bufferRef.current.join("") === SECRET_CODE.join("")) {
-        setGlitching(true);
-        setTimeout(() => {
-          setGlitching(false);
-          setOpen(true);
-        }, 700);
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
-    if (!open || result) return;
-    if (seconds <= 0) {
-      setResult("lost");
-      return;
-    }
-    const t = setTimeout(() => setSeconds((s) => s - 1), 1000);
-    return () => clearTimeout(t);
-  }, [open, seconds, result]);
-
-  function submit() {
-    if (input.trim().toLowerCase() === puzzle.a.toLowerCase()) {
-      setResult("won");
-    } else {
-      setResult("lost");
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABHA Academy — Free Evening Classes, Class 0 to 8</title>
+<meta name="description" content="Free evening coaching for Class 0 to 8 in English, Maths and Computers. Classes run 6 PM to 10 PM, taught personally.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root{
+    --dusk-950:#0d1024;
+    --dusk-900:#12162e;
+    --dusk-800:#1b2140;
+    --dusk-700:#262d52;
+    --flame-500:#f5a623;
+    --flame-300:#ffd37a;
+    --ember-500:#e2673b;
+    --cream-100:#f8f1e3;
+    --cream-300:#e4dac5;
+    --cream-muted:#b9b1c9;
+    --ok-green:#25d366;
+    --radius-lg:22px;
+    --radius-md:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--dusk-950);
+    color:var(--cream-100);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1180px;margin:0 auto;padding-left:6%;padding-right:6%;}
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--flame-300);
   }
 
-  function close() {
-    setOpen(false);
-    setResult(null);
-    setInput("");
-    setSeconds(30);
-    bufferRef.current = [];
+  /* ambient dusk texture */
+  .sky-glow{position:fixed;inset:0;z-index:-2;background:
+      radial-gradient(60% 45% at 82% -6%, rgba(245,166,35,0.16), transparent 60%),
+      radial-gradient(50% 40% at 10% 8%, rgba(226,103,59,0.10), transparent 60%),
+      var(--dusk-950);
+    transition:transform 0.6s ease-out;
+    will-change:transform;
+  }
+  .stars{position:fixed;inset:0;z-index:-1;opacity:0.5;
+    background-image:radial-gradient(1.5px 1.5px at 20% 30%, rgba(248,241,227,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 70% 15%, rgba(248,241,227,0.4), transparent),
+      radial-gradient(1px 1px at 45% 60%, rgba(248,241,227,0.35), transparent),
+      radial-gradient(1.5px 1.5px at 88% 45%, rgba(248,241,227,0.4), transparent),
+      radial-gradient(1px 1px at 60% 80%, rgba(248,241,227,0.3), transparent);
+    background-size:600px 600px;
+    transition:transform 0.8s ease-out;
+    will-change:transform;
   }
 
-  return (
-    <>
-      {glitching && (
-        <div className="glitch-flash fixed inset-0 z-[200] bg-white mix-blend-difference" />
-      )}
-      {open && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-6 backdrop-blur-sm">
-          <div
-            className="font-mono-cyber w-full max-w-md rounded-xl border p-6 text-sm"
-            style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 40px ${C.cyan}55` }}
-          >
-            <div className="mb-3 flex items-center justify-between text-cyan-300">
-              <span className="flex items-center gap-2">
-                <TerminalIcon size={14} /> ROOT ACCESS — ABHA::TERMINAL
-              </span>
-              <button onClick={close} aria-label="Close terminal"><X size={16} /></button>
-            </div>
-
-            {result === null && (
-              <>
-                <p className="mb-2 text-white/70">&gt; secret sequence accepted.</p>
-                <p className="mb-2 text-white/70">&gt; solve to decrypt CYBER-SCHOLAR badge:</p>
-                <p className="mb-4 text-lg text-white">{puzzle.q}</p>
-                <input
-                  autoFocus
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && submit()}
-                  className="mb-3 w-full rounded border bg-black/60 px-3 py-2 text-white outline-none"
-                  style={{ borderColor: C.panelBorder }}
-                  placeholder="answer_"
-                />
-                <div className="flex items-center justify-between">
-                  <span style={{ color: seconds <= 10 ? C.red : "white" }}>{seconds}s remaining</span>
-                  <button
-                    onClick={submit}
-                    className="rounded-full px-4 py-1.5 text-black"
-                    style={{ background: C.cyan }}
-                  >
-                    DECRYPT
-                  </button>
-                </div>
-              </>
-            )}
-
-            {result === "won" && (
-              <div className="text-center">
-                <p className="mb-2 text-lg" style={{ color: C.cyan }}>ACCESS GRANTED</p>
-                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
-                <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor: C.cyan, color: C.cyan }}>
-                  CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86
-                </p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.cyan }}>CLOSE</button>
-              </div>
-            )}
-
-            {result === "lost" && (
-              <div className="text-center">
-                <p className="mb-2 text-lg" style={{ color: C.red }}>CONNECTION LOST</p>
-                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.red }}>CLOSE</button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-/* ============================================================================
-   2. ZERO-GRAVITY VOID — drag-to-repair mini game (custom lightweight physics)
-   ============================================================================ */
-function ZeroGravityVoid({ C, onClose }) {
-  const targets = [
-    { id: "p", letter: "P", tx: 20, ty: 50 },
-    { id: "a", letter: "A", tx: 32, ty: 50 },
-    { id: "g", letter: "G", tx: 44, ty: 50 },
-    { id: "e", letter: "E", tx: 56, ty: 50 },
-    { id: "4", letter: "4", tx: 68, ty: 50 },
-    { id: "0", letter: "0", tx: 80, ty: 50 },
-  ];
-  const [pieces, setPieces] = useState(
-    targets.map((t) => ({ ...t, x: 10 + Math.random() * 80, y: 10 + Math.random() * 30, placed: false }))
-  );
-  const [repaired, setRepaired] = useState(false);
-  const dragRef = useRef(null);
-
-  function onPointerDown(id, e) {
-    dragRef.current = { id, offsetX: 0, offsetY: 0 };
+  /* nav */
+  header.nav{
+    position:sticky; top:0; z-index:1000;
+    background:rgba(13,16,36,0.82);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(248,241,227,0.08);
   }
-  function onPointerMove(e) {
-    if (!dragRef.current) return;
-    const containerRect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-    const y = ((e.clientY - containerRect.top) / containerRect.height) * 100;
-    setPieces((prev) =>
-      prev.map((p) => (p.id === dragRef.current.id ? { ...p, x, y } : p))
-    );
+  .nav-inner{
+    max-width:1180px;margin:0 auto;padding:0.9rem 6%;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
   }
-  function onPointerUp() {
-    if (!dragRef.current) return;
-    const id = dragRef.current.id;
-    setPieces((prev) => {
-      const next = prev.map((p) => {
-        if (p.id !== id) return p;
-        const dist = Math.hypot(p.x - p.tx, p.y - p.ty);
-        if (dist < 7) return { ...p, x: p.tx, y: p.ty, placed: true };
-        return p;
-      });
-      if (next.every((p) => p.placed)) setRepaired(true);
-      return next;
-    });
-    dragRef.current = null;
+  .logo{
+    font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem;
+    display:flex;align-items:center;gap:0.55rem;text-decoration:none;color:var(--cream-100);
+  }
+  .logo .flame-dot{width:9px;height:9px;border-radius:50%;background:var(--flame-500);box-shadow:0 0 12px 3px rgba(245,166,35,0.7);}
+  .nav-cluster{display:flex;align-items:center;gap:1.4rem;}
+  .nav-links{list-style:none;display:flex;gap:1.6rem;}
+  .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;display:inline-block;padding:0.5rem 0.2rem;min-height:44px;line-height:1.6;}
+  .nav-links a:hover,.nav-links a:focus-visible{color:var(--flame-300);}
+  .nav-links a.nav-pop{animation:nav-bounce 0.42s ease;}
+  @keyframes nav-bounce{
+    0%{transform:scale(1);}
+    35%{transform:scale(1.28) translateY(-3px);color:var(--flame-300);}
+    60%{transform:scale(0.94);}
+    100%{transform:scale(1);}
+  }
+  
+  /* Google Translate: run it fully invisibly, we build our own dropdown */
+  #google_translate_element{
+    position:absolute !important;
+    width:1px !important;height:1px !important;
+    overflow:hidden !important;opacity:0 !important;
+    pointer-events:none !important;
+    top:-9999px !important;left:-9999px !important;
+  }
+  .goog-te-gadget img{ display:none !important; }
+
+  /* NUKE the top google banner iframe + the body offset it injects, permanently */
+  iframe.goog-te-banner-frame,
+  .goog-te-banner-frame,
+  .skiptranslate iframe{
+    display:none !important;
+    visibility:hidden !important;
+    height:0 !important;
+  }
+  html body{
+    top:0 !important;
+    position:static !important;
+    margin-top:0 !important;
+    padding-top:0 !important;
+  }
+  #goog-gt-tt,.goog-tooltip,.goog-tooltip:hover{ display:none !important; visibility:hidden !important; }
+  .goog-text-highlight{ background:none !important; box-shadow:none !important; }
+
+  /* Our own custom, theme-matched language switcher */
+  .lang-switch{position:relative;}
+  .lang-btn{
+    display:flex;align-items:center;gap:0.5rem;
+    background:var(--dusk-800);
+    border:1px solid rgba(248,241,227,0.2);
+    color:var(--cream-100);
+    font-family:'Work Sans',sans-serif;
+    font-size:0.88rem;font-weight:600;
+    padding:0.55rem 0.9rem;border-radius:999px;
+    cursor:pointer;transition:border-color 0.2s;
+  }
+  .lang-btn:hover,.lang-btn:focus-visible{border-color:var(--flame-300);}
+  .lang-btn i.fa-chevron-down{font-size:0.7rem;color:var(--flame-300);transition:transform 0.2s;}
+  .lang-switch.open .lang-btn i.fa-chevron-down{transform:rotate(180deg);}
+  .lang-menu{
+    position:absolute;top:calc(100% + 8px);right:0;
+    min-width:170px;
+    background:var(--dusk-800);
+    border:1px solid rgba(248,241,227,0.14);
+    border-radius:12px;
+    padding:0.4rem;
+    list-style:none;
+    box-shadow:0 14px 34px rgba(0,0,0,0.45);
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity 0.18s, transform 0.18s, visibility 0.18s;
+    z-index:1100;
+    max-height:280px;overflow-y:auto;
+  }
+  .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);}
+  .lang-menu li{
+    padding:0.55rem 0.8rem;border-radius:8px;
+    font-size:0.9rem;color:var(--cream-300);
+    cursor:pointer;transition:background 0.15s, color 0.15s;
+  }
+  .lang-menu li:hover{background:rgba(245,166,35,0.12);color:var(--flame-300);}
+  .lang-menu li.active{color:var(--flame-300);font-weight:600;}
+
+  @media (max-width:760px){
+    .nav-links{display:none;}
+    .lang-menu{right:auto;left:0;}
   }
 
-  return (
-    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black p-6">
-      <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color: C.red }}>
-        404 — GRAVITY OFFLINE. Drag each glyph back into its slot to repair the page.
-      </p>
-      <div
-        className="relative h-72 w-full max-w-xl touch-none select-none rounded-xl border"
-        style={{ borderColor: C.panelBorder, background: "rgba(255,255,255,0.02)" }}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerLeave={onPointerUp}
-      >
-        {/* target slots */}
-        {targets.map((t) => (
-          <div
-            key={t.id}
-            className="font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded border border-dashed text-white/20"
-            style={{ left: `${t.tx}%`, top: `${t.ty}%`, borderColor: C.panelBorder }}
-          >
-            {t.letter}
-          </div>
-        ))}
-        {/* draggable pieces */}
-        {pieces.map((p) => (
-          <button
-            key={p.id}
-            onPointerDown={(e) => onPointerDown(p.id, e)}
-            className={`font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${
-              !p.placed ? "float-fast" : ""
-            }`}
-            style={{
-              left: `${p.x}%`,
-              top: `${p.y}%`,
-              borderColor: p.placed ? C.cyan : C.purple,
-              background: p.placed ? `${C.cyan}22` : `${C.purple}22`,
-              color: "white",
-              transition: p.placed ? "left 0.2s, top 0.2s" : "none",
-            }}
-          >
-            {p.letter}
-          </button>
-        ))}
-      </div>
+  /* hero */
+  .hero{padding:5.5rem 0 4rem;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center;}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
 
-      {repaired ? (
-        <div className="mt-6 max-w-md rounded-xl border p-5 text-center" style={{ borderColor: C.cyan, background: C.panel }}>
-          <p className="mb-2 font-mono-cyber text-sm" style={{ color: C.cyan }}>PAGE REPAIRED</p>
-          <p className="mb-4 text-sm text-white/80">Secret stash unlocked: quick revision notes for English, Maths &amp; Computer are waiting at ABHA Academy — ask your teacher for the "404 Repair" handout.</p>
-          <button onClick={onClose} className="rounded-full px-5 py-2 text-black" style={{ background: C.cyan }}>RETURN TO SITE</button>
-        </div>
-      ) : (
-        <button onClick={onClose} className="mt-6 font-mono-cyber text-xs text-white/50 underline">skip / close</button>
-      )}
-    </div>
-  );
-}
+  .badge{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    border:1px solid rgba(245,166,35,0.4);
+    background:rgba(245,166,35,0.08);
+    color:var(--flame-300);
+    padding:0.4rem 0.9rem;border-radius:999px;
+    font-size:0.82rem;font-weight:600;margin-bottom:1.4rem;
+  }
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--ok-green);}
 
-/* ============================================================================
-   3 + control dock: Neural Sync focus mode, Night Owl manual preview, Void trigger
-   ============================================================================ */
-function useAmbientTone(active) {
-  const ctxRef = useRef(null);
-  useEffect(() => {
-    if (!active) {
-      if (ctxRef.current) {
-        ctxRef.current.ctx.close();
-        ctxRef.current = null;
-      }
-      return;
-    }
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioCtx();
-      const osc1 = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      osc1.frequency.value = 110; // low drone
-      osc2.frequency.value = 114; // slight detune -> beating "focus" texture
-      const gain = ctx.createGain();
-      gain.gain.value = 0.025; // very quiet ambient bed
-      osc1.connect(gain);
-      osc2.connect(gain);
-      gain.connect(ctx.destination);
-      osc1.start();
-      osc2.start();
-      ctxRef.current = { ctx, osc1, osc2 };
-    } catch (err) {
-      /* audio unavailable, fail silently */
-    }
-    return () => {
-      if (ctxRef.current) {
-        try { ctxRef.current.ctx.close(); } catch (e) {}
-        ctxRef.current = null;
-      }
-    };
-  }, [active]);
-}
+  .hero h1{font-size:clamp(2.3rem,5vw,3.4rem);line-height:1.08;margin-bottom:1.2rem;color:var(--cream-100);}
+  .hero h1 em{font-style:normal;color:var(--flame-300);}
+  .hero p.lede{font-size:1.15rem;color:var(--cream-300);max-width:520px;margin-bottom:2rem;}
 
-function FocusHealthBar({ active, C }) {
-  const [seconds, setSeconds] = useState(0);
-  const CAP = 25 * 60; // 25 min pomodoro-style cap
-  useEffect(() => {
-    if (!active) { setSeconds(0); return; }
-    const id = setInterval(() => {
-      if (document.visibilityState === "visible") setSeconds((s) => Math.min(s + 1, CAP));
-    }, 1000);
-    return () => clearInterval(id);
-  }, [active]);
-  if (!active) return null;
-  const pct = (seconds / CAP) * 100;
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
-  return (
-    <div className="font-mono-cyber fixed left-1/2 top-4 z-50 w-64 -translate-x-1/2 rounded-full border px-4 py-2 text-[10px]" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.6)" }}>
-      <div className="mb-1 flex justify-between text-white/60"><span>FOCUS HEALTH</span><span>{mm}:{ss}</span></div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: C.cyan, transition: "width 1s linear" }} />
-      </div>
-    </div>
-  );
-}
+  .cta-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:0.6rem;
+    background:linear-gradient(135deg,var(--flame-500),var(--ember-500));
+    color:var(--dusk-950);font-weight:700;font-size:1.02rem;
+    padding:0.95rem 1.8rem;border-radius:999px;text-decoration:none;border:none;cursor:pointer;
+    box-shadow:0 8px 24px rgba(245,166,35,0.35);
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,166,35,0.5);}
+  .btn-ghost{
+    display:inline-flex;align-items:center;gap:0.55rem;
+    color:var(--cream-100);text-decoration:none;font-weight:600;font-size:1rem;
+    padding:0.95rem 0.4rem;border-bottom:1px solid rgba(248,241,227,0.3);
+  }
+  .btn-ghost:hover{border-color:var(--flame-300);color:var(--flame-300);}
 
-function MidnightNotes({ C }) {
-  const tips = [
-    "Tables trick: for 9x, hold up 10 fingers, fold the nth finger — fingers before = tens, after = units.",
-    "Spelling trick: 'because' = Big Elephants Can Always Understand Small Elephants.",
-    "Typing trick: rest fingers on ASDF / JKL; — home row — to type without looking down.",
-  ];
-  return (
-    <section className="reveal in relative z-10 mx-auto max-w-3xl px-6 py-16">
-      <div className="rounded-2xl border p-6" style={{ borderColor: C.panelBorder, background: C.panel }}>
-        <p className="font-mono-cyber mb-3 text-xs tracking-widest" style={{ color: C.red }}>MIDNIGHT SNACKS — VISIBLE ONLY LATE NIGHT</p>
-        <ul className="space-y-2 text-sm text-white/80">
-          {tips.map((t, i) => <li key={i}>• {t}</li>)}
+  .hero-note{margin-top:1.6rem;font-size:0.9rem;color:var(--cream-muted);}
+
+  /* live class status badge */
+  .live-status{
+    margin-top:1.1rem;display:inline-flex;align-items:center;gap:0.6rem;
+    font-size:0.88rem;font-weight:600;color:var(--cream-300);
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(248,241,227,0.14);
+    padding:0.55rem 1rem;border-radius:999px;
+  }
+  .live-status.is-live{border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.08);color:var(--cream-100);}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--cream-muted);flex-shrink:0;}
+  .live-dot.pulse{background:var(--ok-green);box-shadow:0 0 8px rgba(37,211,102,0.7);animation:live-pulse 1.4s ease-in-out infinite;}
+  @keyframes live-pulse{
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:0.45;transform:scale(1.35);}
+  }
+
+  /* ambient floating particles */
+  .ambient-particles{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
+  .particle{
+    position:absolute;bottom:-20px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,211,122,0.9), rgba(245,166,35,0.15) 65%, transparent 75%);
+    filter:blur(0.3px);
+    animation:particle-float linear infinite;
+  }
+  @keyframes particle-float{
+    0%{transform:translateY(0) translateX(0);opacity:0;}
+    8%{opacity:var(--p-opacity,0.5);}
+    92%{opacity:var(--p-opacity,0.5);}
+    100%{transform:translateY(-115vh) translateX(var(--drift,20px));opacity:0;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .particle{display:none;}
+  }
+
+  /* diya art */
+  .diya-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:340px;}
+  .diya-glow{
+    position:absolute;bottom:38%;left:50%;transform:translateX(-50%);
+    width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,211,122,0.55), rgba(245,166,35,0.12) 55%, transparent 72%);
+    filter:blur(6px);
+    animation:glow-pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes glow-pulse{
+    0%,100%{opacity:0.75;transform:translateX(-50%) scale(1);}
+    50%{opacity:1;transform:translateX(-50%) scale(1.08);}
+  }
+  #flameSway{transition:opacity 0.5s ease-out;}
+  #flameSway.ignite-init{opacity:0;}
+  #flameSway.igniting{animation:ignite-pop 0.55s cubic-bezier(.2,1.4,.4,1);}
+  @keyframes ignite-pop{
+    0%{transform:scale(0.2);opacity:0;}
+    55%{transform:scale(1.25);opacity:1;}
+    75%{transform:scale(0.9);}
+    100%{transform:scale(1);opacity:1;}
+  }
+  .flame-outer{transform-origin:50% 100%;animation:flicker-outer 2.6s ease-in-out infinite;cursor:pointer;}
+  .flame-mid{transform-origin:50% 100%;animation:flicker-mid 1.7s ease-in-out infinite;}
+  .flame-tip{transform-origin:50% 100%;animation:flicker-tip 0.9s ease-in-out infinite;}
+  @keyframes flicker-outer{
+    0%{transform:scaleY(1) scaleX(1) rotate(0deg);}
+    18%{transform:scaleY(1.06) scaleX(0.95) rotate(-2deg);}
+    34%{transform:scaleY(0.96) scaleX(1.04) rotate(1.5deg);}
+    52%{transform:scaleY(1.04) scaleX(0.97) rotate(-1deg);}
+    68%{transform:scaleY(0.93) scaleX(1.05) rotate(2deg);}
+    83%{transform:scaleY(1.03) scaleX(0.98) rotate(-1.4deg);}
+    100%{transform:scaleY(1) scaleX(1) rotate(0deg);}
+  }
+  @keyframes flicker-mid{
+    0%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);}
+    22%{transform:scaleY(0.94) scaleX(1.06) translateX(1px) rotate(2deg);}
+    40%{transform:scaleY(1.07) scaleX(0.93) translateX(-1px) rotate(-2.5deg);}
+    61%{transform:scaleY(0.96) scaleX(1.03) translateX(1px) rotate(1.5deg);}
+    80%{transform:scaleY(1.05) scaleX(0.95) translateX(-1px) rotate(-1.5deg);}
+    100%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);}
+  }
+  @keyframes flicker-tip{
+    0%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;}
+    25%{transform:scaleY(1.1) translateY(-1px) rotate(3deg);opacity:1;}
+    50%{transform:scaleY(0.9) translateY(0.5px) rotate(-3deg);opacity:0.88;}
+    75%{transform:scaleY(1.06) translateY(-0.5px) rotate(2deg);opacity:0.98;}
+    100%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;}
+  }
+
+  /* scroll progress bar */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--flame-500),var(--ember-500),var(--flame-300));
+    z-index:2000;transition:width 0.1s ease-out;
+    box-shadow:0 0 8px rgba(245,166,35,0.6);
+  }
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-stagger.visible{transition-delay:var(--stagger-delay,0s);}
+
+  /* flame easter egg sparkles */
+  .spark{
+    position:absolute;pointer-events:none;
+    font-size:1.2rem;
+    animation:spark-rise 1.4s ease-out forwards;
+    z-index:50;
+    user-select:none;
+  }
+  @keyframes spark-rise{
+    0%{opacity:0;transform:translate(0,0) scale(0.4) rotate(0deg);}
+    15%{opacity:1;}
+    100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-140px)) scale(1.1) rotate(var(--rot,90deg));}
+  }
+  .flame-toast{
+    position:fixed;left:50%;bottom:2.4rem;transform:translateX(-50%) translateY(20px);
+    background:var(--dusk-800);
+    border:1px solid rgba(245,166,35,0.4);
+    color:var(--cream-100);
+    padding:0.9rem 1.6rem;border-radius:999px;
+    font-size:0.95rem;font-weight:600;
+    box-shadow:0 14px 34px rgba(0,0,0,0.5);
+    opacity:0;transition:opacity 0.35s ease, transform 0.35s ease;
+    z-index:2000;pointer-events:none;
+    display:flex;align-items:center;gap:0.5rem;
+  }
+  .flame-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  /* commitment strip */
+  .strip{
+    border-top:1px solid rgba(248,241,227,0.08);
+    border-bottom:1px solid rgba(248,241,227,0.08);
+    background:rgba(255,255,255,0.02);
+  }
+  .strip-inner{
+    max-width:1180px;margin:0 auto;padding:1.6rem 6%;
+    display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between;
+  }
+  .strip-item{display:flex;gap:0.8rem;align-items:flex-start;flex:1 1 220px;}
+  .strip-item i{color:var(--flame-300);font-size:1.15rem;margin-top:0.2rem;}
+  .strip-item h4{font-family:'Work Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--cream-100);margin-bottom:0.15rem;}
+  .strip-item p{font-size:0.86rem;color:var(--cream-muted);}
+
+  /* sections */
+  section{padding:5.5rem 0;}
+  .section-head{max-width:640px;margin-bottom:3rem;}
+  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem);color:var(--cream-100);margin-top:0.5rem;}
+  .section-head p{color:var(--cream-muted);margin-top:0.9rem;font-size:1.05rem;}
+
+  /* subjects */
+  .subject-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
+  @media (max-width:820px){.subject-grid{grid-template-columns:1fr;}}
+  .subject-card{
+    border:1px solid rgba(248,241,227,0.1);
+    background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+    border-radius:var(--radius-lg);
+    padding:2.2rem 1.9rem;
+    transition:border-color 0.3s, transform 0.3s;
+  }
+  .subject-card:hover{border-color:rgba(245,166,35,0.45);transform:translateY(-6px);}
+  .subject-card .icon{
+    width:52px;height:52px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(245,166,35,0.12);color:var(--flame-300);font-size:1.4rem;margin-bottom:1.3rem;
+    cursor:pointer;transition:background 0.2s, transform 0.2s;
+  }
+  .subject-card .icon:active{transform:scale(0.92);background:rgba(245,166,35,0.22);}
+  .subject-card h3{font-size:1.3rem;color:var(--cream-100);margin-bottom:0.6rem;}
+  .subject-card p{color:var(--cream-muted);font-size:0.96rem;}
+
+  /* schedule */
+  .schedule-wrap{
+    border:1px solid rgba(248,241,227,0.1);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    background:rgba(255,255,255,0.02);
+  }
+  .schedule-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{width:100%;min-width:480px;border-collapse:collapse;}
+  th{
+    text-align:left;padding:1.1rem 1.6rem;
+    font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--flame-300);background:rgba(245,166,35,0.06);
+    font-weight:600;
+  }
+  td{padding:1.15rem 1.6rem;border-top:1px solid rgba(248,241,227,0.08);font-size:0.98rem;}
+  tr td:first-child{color:var(--cream-100);font-weight:600;}
+  tr td:not(:first-child){color:var(--cream-muted);}
+
+  /* teacher note */
+  .teacher{
+    display:grid;grid-template-columns:0.85fr 1.15fr;gap:3rem;align-items:center;
+  }
+  @media (max-width:860px){.teacher{grid-template-columns:1fr;}}
+  .teacher-card{
+    border:1px solid rgba(248,241,227,0.1);
+    border-radius:var(--radius-lg);
+    padding:2.4rem;
+    background:linear-gradient(160deg, rgba(226,103,59,0.08), rgba(255,255,255,0.02));
+  }
+  .teacher-card .quote-mark{font-family:'Fraunces',serif;font-size:3rem;color:var(--flame-300);line-height:0.6;margin-bottom:1rem;display:block;}
+  .teacher-card p{font-size:1.05rem;color:var(--cream-300);}
+  .teacher-card .sign{margin-top:1.4rem;font-weight:600;color:var(--cream-100);font-family:'Fraunces',serif;font-size:1.1rem;}
+  .teacher-facts{display:flex;flex-direction:column;gap:1.3rem;}
+  .fact{display:flex;gap:1rem;align-items:flex-start;}
+  .fact i{color:var(--flame-300);font-size:1.2rem;margin-top:0.15rem;width:22px;}
+  .fact h4{font-size:1rem;color:var(--cream-100);margin-bottom:0.15rem;}
+  .fact p{font-size:0.92rem;color:var(--cream-muted);}
+
+  /* enroll */
+  .enroll-panel{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border:1px solid rgba(245,166,35,0.25);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    background:rgba(255,255,255,0.02);
+  }
+  @media (max-width:860px){.enroll-panel{grid-template-columns:1fr;}}
+  .enroll-side{
+    padding:3rem 2.6rem;
+    background:linear-gradient(160deg, rgba(245,166,35,0.14), rgba(226,103,59,0.06));
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .enroll-side h3{font-size:1.7rem;color:var(--cream-100);margin-bottom:1rem;}
+  .enroll-side p{color:var(--cream-300);font-size:0.98rem;margin-bottom:1.6rem;}
+  .enroll-side ul{list-style:none;display:flex;flex-direction:column;gap:0.7rem;}
+  .enroll-side li{display:flex;gap:0.6rem;align-items:center;font-size:0.92rem;color:var(--cream-300);}
+  .enroll-side li i{color:var(--ok-green);}
+
+  .enroll-form{padding:3rem 2.6rem;}
+  .form-row{margin-bottom:1.25rem;}
+  .form-row label{
+    display:block;font-size:0.82rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:0.05em;color:var(--cream-muted);margin-bottom:0.5rem;
+  }
+  .form-row input,.form-row select{
+    width:100%;padding:0.85rem 1rem;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(248,241,227,0.16);
+    border-radius:10px;color:var(--cream-100);font-size:1rem;font-family:'Work Sans',sans-serif;
+    outline:none;transition:border-color 0.25s, box-shadow 0.25s;
+  }
+  .form-row select option{background:var(--dusk-900);}
+  .form-row input:focus,.form-row select:focus{
+    border-color:var(--flame-500);
+    box-shadow:0 0 0 3px rgba(245,166,35,0.18);
+  }
+  .form-row input::placeholder{color:rgba(248,241,227,0.35);}
+  .submit-btn{
+    width:100%;padding:1rem;border:none;border-radius:10px;cursor:pointer;
+    background:linear-gradient(135deg,var(--flame-500),var(--ember-500));
+    color:var(--dusk-950);font-weight:700;font-size:1.02rem;
+    transition:transform 0.2s, box-shadow 0.2s;
+    box-shadow:0 6px 18px rgba(245,166,35,0.3);
+  }
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(245,166,35,0.45);}
+  .form-foot{margin-top:0.9rem;font-size:0.82rem;color:var(--cream-muted);text-align:center;}
+  .form-status{margin-top:1rem;font-size:0.9rem;text-align:center;display:none;}
+  .form-status.show{display:block;}
+
+  /* contact strip */
+  .contact-strip{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;margin-top:3rem;}
+  .contact-pill{
+    display:flex;align-items:center;gap:0.7rem;
+    border:1px solid rgba(248,241,227,0.12);
+    background:rgba(255,255,255,0.02);
+    padding:0.9rem 1.5rem;border-radius:999px;
+    text-decoration:none;color:var(--cream-100);font-size:0.95rem;
+    transition:border-color 0.25s;
+  }
+  .contact-pill:hover{border-color:var(--flame-300);}
+  .contact-pill i{color:var(--flame-300);}
+
+  /* whatsapp float */
+  .wa-float{
+    position:fixed;bottom:1.8rem;right:1.8rem;z-index:900;
+    width:58px;height:58px;border-radius:50%;
+    background:var(--ok-green);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.6rem;text-decoration:none;
+    box-shadow:0 8px 22px rgba(37,211,102,0.45);
+    transition:transform 0.25s;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+
+  footer{
+    border-top:1px solid rgba(248,241,227,0.08);
+    padding:2.6rem 0;
+    text-align:center;color:var(--cream-muted);font-size:0.88rem;
+  }
+  footer strong{color:var(--cream-300);}
+
+  @media (prefers-reduced-motion:reduce){
+    .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;}
+  }
+  :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
+
+  /* ---- Hidden Quiz Game ---- */
+  .quiz-overlay{
+    position:fixed;inset:0;z-index:3000;
+    background:rgba(9,11,24,0.86);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:1.4rem;
+    opacity:0;visibility:hidden;
+    transition:opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .quiz-overlay.show{opacity:1;visibility:visible;}
+  .quiz-card{
+    width:100%;max-width:440px;
+    background:linear-gradient(165deg, var(--dusk-800), var(--dusk-900));
+    border:1px solid rgba(245,166,35,0.3);
+    border-radius:var(--radius-lg);
+    padding:1.8rem 1.7rem;
+    box-shadow:0 30px 70px rgba(0,0,0,0.55);
+    transform:translateY(18px) scale(0.97);
+    transition:transform 0.3s ease;
+    max-height:88vh;overflow-y:auto;
+  }
+  .quiz-overlay.show .quiz-card{transform:translateY(0) scale(1);}
+  .quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+  .quiz-head h3{font-size:1.25rem;color:var(--cream-100);display:flex;align-items:center;gap:0.5rem;}
+  .quiz-close{
+    background:none;border:none;color:var(--cream-muted);font-size:1.3rem;
+    cursor:pointer;padding:0.2rem 0.5rem;line-height:1;transition:color 0.2s;
+  }
+  .quiz-close:hover{color:var(--flame-300);}
+  .quiz-diyas{display:flex;gap:0.5rem;margin-bottom:1.3rem;}
+  .quiz-diya{font-size:1.3rem;opacity:0.25;transition:opacity 0.3s, transform 0.3s;filter:grayscale(1);}
+  .quiz-diya.lit{opacity:1;filter:grayscale(0);transform:scale(1.15);}
+  .quiz-badge{
+    display:inline-block;font-size:0.72rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.06em;color:var(--dusk-950);
+    background:var(--flame-300);padding:0.25rem 0.6rem;border-radius:999px;margin-bottom:0.8rem;
+  }
+  .quiz-question{font-size:1.08rem;color:var(--cream-100);margin-bottom:1.2rem;line-height:1.5;}
+  .quiz-options{display:flex;flex-direction:column;gap:0.7rem;}
+  .quiz-option{
+    text-align:left;padding:0.8rem 1rem;border-radius:12px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(248,241,227,0.14);
+    color:var(--cream-200,var(--cream-300));font-size:0.98rem;font-family:'Work Sans',sans-serif;
+    cursor:pointer;transition:border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .quiz-option:hover{border-color:rgba(245,166,35,0.4);}
+  .quiz-option:active{transform:scale(0.98);}
+  .quiz-option.correct{background:rgba(37,211,102,0.16);border-color:var(--ok-green);color:var(--cream-100);}
+  .quiz-option.wrong{background:rgba(226,103,59,0.16);border-color:var(--ember-500);color:var(--cream-100);}
+  .quiz-option[disabled]{cursor:default;pointer-events:none;}
+  .quiz-result{text-align:center;padding:1rem 0;}
+  .quiz-result h3{font-size:1.4rem;color:var(--flame-300);margin-bottom:0.6rem;}
+  .quiz-result p{color:var(--cream-300);margin-bottom:1.4rem;}
+  .quiz-restart{
+    display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500));
+    color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px;
+    border:none;cursor:pointer;font-size:0.95rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="flame-toast" id="flameToast"></div>
+<div class="ambient-particles" id="ambientParticles"></div>
+
+<div class="sky-glow"></div>
+<div class="stars"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo"><span class="flame-dot"></span>ABHA Academy</a>
+    <div class="nav-cluster">
+      <ul class="nav-links">
+        <li><a href="#subjects">Subjects</a></li>
+        <li><a href="#schedule">Timings</a></li>
+        <li><a href="#teacher">About</a></li>
+        <li><a href="#enroll">Enroll</a></li>
+      </ul>
+      <div class="lang-switch" id="langSwitch">
+        <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="listbox">
+          <li role="option" data-lang="en" class="active">English</li>
+          <li role="option" data-lang="hi">हिंदी (Hindi)</li>
+          <li role="option" data-lang="bn">বাংলা (Bengali)</li>
+          <li role="option" data-lang="te">తెలుగు (Telugu)</li>
+          <li role="option" data-lang="mr">मराठी (Marathi)</li>
+          <li role="option" data-lang="ta">தமிழ் (Tamil)</li>
+          <li role="option" data-lang="ur">اردو (Urdu)</li>
+          <li role="option" data-lang="gu">ગુજરાતી (Gujarati)</li>
+          <li role="option" data-lang="kn">ಕನ್ನಡ (Kannada)</li>
+          <li role="option" data-lang="ml">മലയാളം (Malayalam)</li>
+          <li role="option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</li>
         </ul>
       </div>
-    </section>
-  );
-}
-
-function NightOwlBanner({ nightMode }) {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    if (nightMode) {
-      setShow(true);
-      const t = setTimeout(() => setShow(false), 3200);
-      return () => clearTimeout(t);
-    }
-  }, [nightMode]);
-  if (!show) return null;
-  return (
-    <div className="glitch-flash fixed inset-0 z-[190] flex items-center justify-center bg-black/95">
-      <p className="font-mono-cyber text-center text-sm text-pink-300">
-        Late night dedication detected.<br />Accessing midnight protocols<span className="caret">_</span>
-      </p>
+      <div id="google_translate_element"></div>
     </div>
-  );
-}
+  </div>
+</header>
 
-function ControlDock({ C, nightMode, setNightMode, syncMode, setSyncMode, setShowVoid }) {
-  useAmbientTone(syncMode);
-  return (
-    <>
-      <FocusHealthBar active={syncMode} C={C} />
-      <div className="font-mono-cyber fixed bottom-6 left-6 z-50 flex flex-col gap-2 text-[10px]">
-        <button
-          onClick={() => setSyncMode((s) => !s)}
-          className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
-          style={{ borderColor: syncMode ? C.cyan : C.panelBorder, background: syncMode ? `${C.cyan}22` : "rgba(0,0,0,0.4)", color: syncMode ? C.cyan : "white" }}
-        >
-          <Gauge size={12} /> NEURAL SYNC {syncMode ? "ON" : "OFF"}
-        </button>
-        <button
-          onClick={() => setNightMode((n) => !n)}
-          className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
-          style={{ borderColor: nightMode ? C.red : C.panelBorder, background: nightMode ? `${C.red}22` : "rgba(0,0,0,0.4)", color: nightMode ? C.red : "white" }}
-        >
-          <Moon size={12} /> NIGHT OWL PREVIEW
-        </button>
-        <button
-          onClick={() => setShowVoid(true)}
-          className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70"
-          style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.4)" }}
-        >
-          <RotateCcw size={12} /> SIMULATE 404 VOID
-        </button>
-      </div>
-    </>
-  );
-}
+<main id="top">
 
-/* ============================================================================
-   BOOT SEQUENCE HERO
-   ============================================================================ */
-function BootSequenceHero({ C, syncMode }) {
-  const bootLines = [
-    "> initializing abha academy neural link...",
-    "> authenticating local node — holambi kalan, delhi",
-    "> loading curriculum modules: english / maths / computer",
-    "> zero-cost protocol confirmed — no fees, ever",
-    "> connection established.",
-  ];
-  const [visibleLines, setVisibleLines] = useState(0);
-  const [booted, setBooted] = useState(false);
-
-  useEffect(() => {
-    if (visibleLines < bootLines.length) {
-      const t = setTimeout(() => setVisibleLines((v) => v + 1), 380);
-      return () => clearTimeout(t);
-    } else {
-      const t = setTimeout(() => setBooted(true), 400);
-      return () => clearTimeout(t);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleLines]);
-
-  return (
-    <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24">
-      <div
-        className="font-mono-cyber absolute left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 text-xs sm:text-sm"
-        style={{ color: C.cyan, opacity: booted ? 0 : 1, pointerEvents: booted ? "none" : "auto" }}
-      >
-        {bootLines.slice(0, visibleLines).map((line, i) => (
-          <p key={i} className="mb-1.5 leading-relaxed">
-            {line}{i === visibleLines - 1 && <span className="ml-1 caret">▍</span>}
-          </p>
-        ))}
-      </div>
-
-      <div
-        className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center transition-all duration-1000"
-        style={{ opacity: booted ? 1 : 0, transform: booted ? "translateY(0)" : "translateY(24px)" }}
-      >
-        <div className="font-mono-cyber mb-6 flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] tracking-wide" style={{ borderColor: C.panelBorder, background: C.panel, color: C.cyan }}>
-          <Wifi size={12} />
-          NEURAL LINK ACTIVE — FREE EVENING ACCESS
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span> Free, forever &middot; Class 0 to 8</div>
+        <h1>Every evening, we <em>light one more lamp</em> of learning.</h1>
+        <p class="lede">ABHA Academy runs free English, Maths and Computer classes for Class 0–8 students, every evening from 6 to 10 PM — taught personally, at no cost to any family.</p>
+        <div class="cta-row">
+          <a href="#enroll" class="btn-primary"><i class="fas fa-graduation-cap"></i> Enroll your child</a>
+          <a href="#schedule" class="btn-ghost">See today's timing →</a>
         </div>
-
-        <h1 className="relative select-none text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-          {!syncMode && (
-            <>
-              <span className="glitch-layer absolute inset-0" style={{ color: C.red, animationDelay: "0.15s", opacity: 0.6 }} aria-hidden="true">ABHA ACADEMY</span>
-              <span className="glitch-layer absolute inset-0" style={{ color: C.cyan, animationDelay: "0.3s", opacity: 0.6 }} aria-hidden="true">ABHA ACADEMY</span>
-            </>
-          )}
-          <span className="relative bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(120deg, #ffffff, ${C.cyan})` }}>
-            ABHA ACADEMY
-          </span>
-        </h1>
-
-        <p className="font-mono-cyber mt-5 text-sm tracking-[0.3em]" style={{ color: `${C.purple}cc` }}>
-          EVENING PROTOCOL · 18:00 — 22:00 · CLASS 0—8
-        </p>
-
-        <div className="float-med relative mt-12 max-w-xl rounded-3xl border p-8 backdrop-blur-xl" style={{ borderColor: C.panelBorder, background: C.panel }}>
-          <div className="absolute -inset-px -z-10 rounded-3xl opacity-40 blur-lg" style={{ background: `linear-gradient(135deg, ${C.cyan}, ${C.purple})` }} />
-          <p className="text-base leading-relaxed text-white/80">
-            A free, evening learning node for children in Class 0 to 8 — English, Maths and Computer fundamentals, taught in person, at zero cost.
-          </p>
-          <a href="#skill-tree" className="font-mono-cyber mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-black transition-transform hover:scale-105" style={{ background: `linear-gradient(120deg, ${C.cyan}, ${C.purple})` }}>
-            ENTER THE SKILL TREE <ChevronRight size={16} />
-          </a>
-          <p className="font-mono-cyber mt-4 text-[10px] text-white/40">psst — type ABHA2086 anywhere on this page.</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================================
-   SKILL TREE
-   ============================================================================ */
-function SkillTree({ C }) {
-  const SKILLS = [
-    { id: "core", label: "FOUNDATION CORE", icon: Brain, x: 50, y: 50, color: C.purple, desc: "The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
-    { id: "english", label: "ENGLISH", icon: BookOpenText, x: 18, y: 20, color: C.cyan, desc: "Reading, handwriting and spoken confidence — built through stories, not just textbooks." },
-    { id: "maths", label: "MATHEMATICS", icon: Calculator, x: 82, y: 20, color: C.red, desc: "Tables, arithmetic and logical thinking, practised until the basics are genuinely secure." },
-    { id: "computer", label: "COMPUTER BASICS", icon: MonitorSmartphone, x: 50, y: 88, color: C.cyan, desc: "Typing, mouse and keyboard fluency, and the digital skills every child will need going forward." },
-  ];
-  const EDGES = [["core", "english"], ["core", "maths"], ["core", "computer"]];
-  const [active, setActive] = useState(null);
-  const [revealed, setRevealed] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.2 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  const findSkill = (id) => SKILLS.find((s) => s.id === id);
-
-  return (
-    <section id="skill-tree" ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-28">
-      <div className={`reveal ${revealed ? "in" : ""} mb-16 text-center`}>
-        <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color: `${C.cyan}b3` }}>CURRICULUM MAP</p>
-        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Not subjects. A network of foundations.</h2>
+        <p class="hero-note">No fees. No hidden charges. Just show up.</p>
+        <div class="live-status" id="liveStatus"><span class="live-dot" id="liveDot"></span><span id="liveText">Checking today's schedule…</span></div>
       </div>
 
-      <div className={`reveal ${revealed ? "in" : ""} relative mx-auto aspect-square w-full max-w-2xl`}>
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          {EDGES.map(([a, b], i) => {
-            const from = findSkill(a), to = findSkill(b);
-            const isActive = active === a || active === b;
-            return (
-              <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y}
-                stroke={isActive ? C.cyan : "rgba(255,255,255,0.12)"}
-                strokeWidth={isActive ? 0.6 : 0.3}
-                className={isActive ? "flow-line" : ""}
-                style={{ transition: "stroke 0.3s, stroke-width 0.3s" }} />
-            );
-          })}
+      <div class="diya-stage">
+        <div class="diya-glow" aria-hidden="true"></div>
+        <svg viewBox="0 0 240 220" width="260" height="240" role="img" aria-label="An illustration of a lit oil lamp, symbolising ABHA Academy">
+          <defs>
+            <linearGradient id="lampShade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFD37A"/>
+              <stop offset="1" stop-color="#E2673B"/>
+            </linearGradient>
+
+            <!-- realistic flame colour: cool blue base -> orange -> amber -> white-hot tip -->
+            <linearGradient id="flameOuterGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#3B5B8C"/>
+              <stop offset="22%" stop-color="#E2673B"/>
+              <stop offset="55%" stop-color="#F5A623"/>
+              <stop offset="100%" stop-color="#FFE9B8"/>
+            </linearGradient>
+            <linearGradient id="flameMidGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#E2673B"/>
+              <stop offset="45%" stop-color="#FFC15E"/>
+              <stop offset="100%" stop-color="#FFF3D6"/>
+            </linearGradient>
+
+            <!-- organic dancing distortion, like real fire turbulence -->
+            <filter id="fireTurbulence" x="-80%" y="-80%" width="260%" height="260%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.035 0.14" numOctaves="2" seed="6" result="noise">
+                <animate attributeName="baseFrequency" dur="2.6s" values="0.035 0.14;0.05 0.17;0.03 0.12;0.035 0.14" repeatCount="indefinite"/>
+              </feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <filter id="fireTurbulenceSoft" x="-80%" y="-80%" width="260%" height="260%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05 0.18" numOctaves="2" seed="2" result="noise2">
+                <animate attributeName="baseFrequency" dur="1.8s" values="0.05 0.18;0.07 0.22;0.04 0.15;0.05 0.18" repeatCount="indefinite"/>
+              </feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="noise2" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </defs>
+
+          <g id="flameSway" class="ignite-init" style="transform-box: fill-box; transform-origin: 50% 100%;">
+            <!-- outer flame body: slow, wide sway, turbulence-distorted -->
+            <path class="flame-outer" filter="url(#fireTurbulence)"
+              d="M120,58 C136,76 148,94 144,112 C141,126 130,134 120,134 C110,134 99,126 96,112 C92,94 104,76 120,58 Z"
+              fill="url(#flameOuterGrad)"/>
+            <!-- mid flame: faster, tighter flicker -->
+            <path class="flame-mid" filter="url(#fireTurbulenceSoft)"
+              d="M120,76 C129,88 135,99 132,110 C130,119 125,124 120,124 C115,124 110,119 108,110 C105,99 111,88 120,76 Z"
+              fill="url(#flameMidGrad)" opacity="0.92"/>
+            <!-- inner hot core: fastest, tiny jitter, near-white -->
+            <path class="flame-tip"
+              d="M120,90 C125,97 128,103 126,109 C125,114 122,117 120,117 C118,117 115,114 114,109 C112,103 115,97 120,90 Z"
+              fill="#FFF6E0" opacity="0.95"/>
+          </g>
+
+          <!-- large invisible tap target around the flame, easy to hit on mobile -->
+          <circle id="flameHitArea" cx="120" cy="95" r="55" fill="transparent" style="cursor:pointer;"/>
+
+          <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
+          <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
+          <ellipse cx="120" cy="168" rx="70" ry="16" fill="#F5A623"/>
+          <ellipse cx="120" cy="168" rx="70" ry="16" fill="url(#lampShade)" opacity="0.5"/>
+          <ellipse cx="120" cy="176" rx="58" ry="10" fill="#C4501F"/>
         </svg>
-        {SKILLS.map((skill) => {
-          const Icon = skill.icon;
-          const isActive = active === skill.id;
-          return (
-            <button key={skill.id}
-              onMouseEnter={() => setActive(skill.id)}
-              onMouseLeave={() => setActive(null)}
-              onClick={() => setActive(isActive ? null : skill.id)}
-              className="float-fast absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 outline-none"
-              style={{ left: `${skill.x}%`, top: `${skill.y}%`, animationDelay: `${skill.x % 3}s` }}>
-              <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id === "core" ? "h-20 w-20 sm:h-24 sm:w-24" : "h-16 w-16 sm:h-20 sm:w-20"}`}
-                style={{ borderColor: skill.color, background: isActive ? `${skill.color}22` : "rgba(255,255,255,0.03)", boxShadow: isActive ? `0 0 30px ${skill.color}88` : `0 0 12px ${skill.color}33`, transform: isActive ? "scale(1.12)" : "scale(1)" }}>
-                <Icon size={skill.id === "core" ? 30 : 24} color={skill.color} />
-              </span>
-              <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs">{skill.label}</span>
-            </button>
-          );
-        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMITMENT STRIP -->
+  <div class="strip">
+    <div class="wrap strip-inner">
+      <div class="strip-item">
+        <i class="fas fa-clock"></i>
+        <div><h4>6 PM – 10 PM, every evening</h4><p>Right after school hours, before dinner time.</p></div>
+      </div>
+      <div class="strip-item">
+        <i class="fas fa-hand-holding-heart"></i>
+        <div><h4>Zero fees</h4><p>No admission cost, no monthly charge, ever.</p></div>
+      </div>
+      <div class="strip-item">
+        <i class="fas fa-language"></i>
+        <div><h4>Explained in your language</h4><p>Switch the site to Hindi and 9 more Indian languages above.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBJECTS -->
+  <section id="subjects">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">What we teach</span>
+        <h2>Three subjects, built up patiently</h2>
+        <p>Every batch starts from where the child actually is — not where the syllabus assumes they are.</p>
+      </div>
+      <div class="subject-grid">
+        <div class="subject-card">
+          <div class="icon" data-subject="english"><i class="fas fa-book-open"></i></div>
+          <h3>English</h3>
+          <p>Reading, handwriting, spoken confidence and everyday vocabulary — built through stories, not just textbooks.</p>
+        </div>
+        <div class="subject-card">
+          <div class="icon" data-subject="maths"><i class="fas fa-calculator"></i></div>
+          <h3>Mathematics</h3>
+          <p>Tables, arithmetic and logical thinking, practised until the basics are genuinely secure, not just memorised.</p>
+        </div>
+        <div class="subject-card">
+          <div class="icon" data-subject="computer"><i class="fas fa-desktop"></i></div>
+          <h3>Computer Basics</h3>
+          <p>Typing, using a mouse and keyboard, and simple digital skills every child will need going forward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Timing</span>
+        <h2>Evening batches, by grade</h2>
+        <p>Classes are grouped by age so every child gets material at the right level.</p>
+      </div>
+      <div class="schedule-wrap">
+        <div class="schedule-scroll">
+          <table>
+            <thead>
+              <tr><th>Grade</th><th>Days</th><th>Time</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Class 0 – 3 (Juniors)</td><td>Mon · Wed · Fri</td><td>6:00 – 7:15 PM</td></tr>
+              <tr><td>Class 4 – 6 (Middle)</td><td>Tue · Thu · Sat</td><td>7:30 – 8:45 PM</td></tr>
+              <tr><td>Class 7 – 8 (Seniors)</td><td>Mon · Wed · Fri</td><td>8:45 – 10:00 PM</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHER -->
+  <section id="teacher">
+    <div class="wrap teacher">
+      <div class="teacher-card">
+        <span class="quote-mark">&ldquo;</span>
+        <p>I work a regular day job till 5:30. These evening hours are set aside on purpose — because I believe no child should miss out on a strong foundation just because their family can't afford tuition.</p>
+        <p class="sign">— Founder, ABHA Academy</p>
+      </div>
+      <div class="teacher-facts">
+        <div class="fact">
+          <i class="fas fa-briefcase"></i>
+          <div><h4>A teacher who shows up daily</h4><p>Classes are taught in person, every evening, without exception.</p></div>
+        </div>
+        <div class="fact">
+          <i class="fas fa-users"></i>
+          <div><h4>Small, focused batches</h4><p>Grouped by grade so lessons stay relevant to each child.</p></div>
+        </div>
+        <div class="fact">
+          <i class="fas fa-hands-helping"></i>
+          <div><h4>Built for the neighbourhood</h4><p>A local, free initiative — not a franchise or a paid course.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENROLL -->
+  <section id="enroll">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Join us</span>
+        <h2>Enroll your child</h2>
+        <p>Fill in a few details below, or call/WhatsApp directly — whichever is easier for you.</p>
       </div>
 
-      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300"
-        style={{ borderColor: C.panelBorder, background: C.panel, opacity: active ? 1 : 0.35, transform: active ? "translateY(0)" : "translateY(6px)" }}>
-        <p className="text-sm leading-relaxed text-white/85">{active ? findSkill(active).desc : "Hover or tap a node to inspect its module."}</p>
+      <div class="enroll-panel">
+        <div class="enroll-side">
+          <h3>Why families choose ABHA</h3>
+          <p>A steady, honest option for foundational learning — close to home, and free of cost.</p>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> No fees at any point</li>
+            <li><i class="fas fa-check-circle"></i> Evening batches that fit school hours</li>
+            <li><i class="fas fa-check-circle"></i> Grouped by grade, taught in person</li>
+            <li><i class="fas fa-check-circle"></i> Site available in your language</li>
+          </ul>
+        </div>
+        <form class="enroll-form" id="enrollForm">
+          <div class="form-row">
+            <label for="parentName">Parent's name</label>
+            <input type="text" id="parentName" required placeholder="Enter full name">
+          </div>
+          <div class="form-row">
+            <label for="childName">Child's name</label>
+            <input type="text" id="childName" required placeholder="Enter child's name">
+          </div>
+          <div class="form-row">
+            <label for="grade">Grade</label>
+            <select id="grade" required>
+              <option value="" disabled selected>Choose a batch</option>
+              <option value="0-3">Class 0–3 · 6:00 PM</option>
+              <option value="4-6">Class 4–6 · 7:30 PM</option>
+              <option value="7-8">Class 7–8 · 8:45 PM</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="phone">Phone / WhatsApp number</label>
+            <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number">
+          </div>
+          <button type="submit" class="submit-btn">Submit registration</button>
+          <p class="form-foot">We'll reply on WhatsApp within a day. No payment is ever required.</p>
+          <p class="form-status" id="formStatus"></p>
+        </form>
       </div>
-    </section>
-  );
-}
 
-/* ============================================================================
-   CYBER STATS
-   ============================================================================ */
-function useCountUp(target, active, duration = 1400) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    let start = null, raf;
-    const step = (ts) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      setValue(Math.round(target * (1 - Math.pow(1 - progress, 3))));
-      if (progress < 1) raf = requestAnimationFrame(step);
+      <div class="contact-strip">
+        <a href="tel:+916394254410" class="contact-pill"><i class="fas fa-phone-alt"></i> +91 63942 54410</a>
+        <a href="mailto:kumarjack084@gmail.com" class="contact-pill"><i class="fas fa-envelope"></i> kumarjack084@gmail.com</a>
+        <a href="https://wa.me/916394254410" target="_blank" rel="noopener" class="contact-pill"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=B870+Phase+1+Metro+Vihar+Holambi+Kalan+Delhi" target="_blank" rel="noopener" class="contact-pill"><i class="fas fa-map-marker-alt"></i> B870, Phase 1, Metro Vihar, Holambi Kalan, Delhi</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<a href="https://wa.me/916394254410" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Hidden Quiz Game: unlocked by tapping English -> Maths -> Computer icons in order -->
+<div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-label="ABHA Quiz Challenge">
+  <div class="quiz-card" id="quizCard"></div>
+</div>
+
+<footer>
+  <p><strong>ABHA Academy</strong> &middot; Free evening classes for Class 0–8</p>
+  <p style="margin-top:0.4rem;">B870, Phase 1, Metro Vihar, Holambi Kalan, Delhi</p>
+  <p style="margin-top:0.4rem;">&copy; 2026 ABHA Academy. Every evening, a little more light.</p>
+</footer>
+
+<script type="text/javascript">
+  function googleTranslateElementInit(){
+    new google.translate.TranslateElement({
+      pageLanguage:'en',
+      includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en',
+      autoDisplay:false,
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    },'google_translate_element');
+  }
+
+  // Keep nuking the banner + body offset, since Google re-injects them after load/translate
+  (function watchdog(){
+    const kill = () => {
+      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame').forEach(el=>{
+        el.style.display='none'; el.style.visibility='hidden'; el.style.height='0';
+      });
+      document.body.style.top='0px';
+      document.body.style.position='static';
     };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [active, target, duration]);
-  return value;
-}
+    kill();
+    new MutationObserver(kill).observe(document.documentElement,{attributes:true,childList:true,subtree:true});
+    setInterval(kill, 400);
+  })();
 
-function ProgressRing({ percent, active, color, label, icon: Icon, suffix = "%" }) {
-  const radius = 42, circumference = 2 * Math.PI * radius;
-  const displayed = useCountUp(percent, active);
-  const offset = circumference - (displayed / 100) * circumference;
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative h-32 w-32">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
-          <circle cx="50" cy="50" r={radius} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
-            strokeDasharray={circumference} strokeDashoffset={active ? offset : circumference}
-            style={{ transition: "stroke-dashoffset 1.4s ease-out", filter: `drop-shadow(0 0 6px ${color})` }} />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Icon size={18} color={color} className="mb-1" />
-          <span className="font-mono-cyber text-xl font-bold text-white">{displayed}{suffix}</span>
-        </div>
-      </div>
-      <p className="font-mono-cyber text-center text-xs tracking-wide text-white/60">{label}</p>
-    </div>
-  );
-}
+  const LANG_NAMES = {
+    en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)',
+    mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)',
+    kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)'
+  };
 
-function CyberStats({ C }) {
-  const [revealed, setRevealed] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.3 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return (
-    <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-28">
-      <div className={`reveal ${revealed ? "in" : ""} mb-16 text-center`}>
-        <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color: `${C.purple}b3` }}>SYSTEM TELEMETRY</p>
-        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Read directly from the source.</h2>
-      </div>
-      <div className={`reveal ${revealed ? "in" : ""} grid grid-cols-2 gap-10 sm:grid-cols-4`}>
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="FREE — ZERO FEES" icon={Award} />
-        <ProgressRing percent={92} active={revealed} color={C.purple} label="ATTENDANCE RATE" icon={Users} />
-        <ProgressRing percent={80} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" icon={Clock} />
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" icon={Radio} />
-      </div>
-    </section>
-  );
-}
+  function getCookie(name){
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  }
 
-/* ============================================================================
-   5. FLOATING ORB — now with an "annoyed" state
-   ============================================================================ */
-function FloatingOrb({ C, syncMode }) {
-  const [open, setOpen] = useState(false);
-  const [annoyed, setAnnoyed] = useState(false);
-  const [shake, setShake] = useState(false);
-  const [challenge, setChallenge] = useState(null);
-  const clickTimes = useRef([]);
-
-  const links = [
-    { label: "Skill Tree", href: "#skill-tree" },
-    { label: "Enrol on WhatsApp", href: "https://wa.me/916394254410" },
-    { label: "Call", href: "tel:+916394254410" },
-  ];
-
-  function handleOrbClick() {
-    const now = Date.now();
-    clickTimes.current = [...clickTimes.current, now].filter((t) => now - t < 6000);
-    setShake(true);
-    setTimeout(() => setShake(false), 400);
-
-    if (clickTimes.current.length >= 10 && !annoyed) {
-      setAnnoyed(true);
-      setChallenge(PUZZLES[Math.floor(Math.random() * PUZZLES.length)]);
-      setOpen(false);
-      return;
+  function setGoogTransCookie(lang){
+    const domains = [location.hostname, '.' + location.hostname, ''];
+    if(lang === 'en'){
+      domains.forEach(d=>{
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' + (d ? (' domain=' + d + ';') : '');
+      });
+    } else {
+      const val = '/en/' + lang;
+      document.cookie = 'googtrans=' + val + '; path=/';
+      document.cookie = 'googtrans=' + val + '; path=/; domain=' + location.hostname;
     }
-    if (!annoyed) setOpen((o) => !o);
   }
 
-  if (syncMode) return null;
-
-  return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-      {open && !annoyed && (
-        <div className="reveal in font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor: C.panelBorder, background: "rgba(3,0,20,0.85)" }}>
-          {links.map((l) => (
-            <a key={l.label} href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-white/80 transition-colors hover:bg-white/5"
-              style={{ "--tw-text-opacity": 1 }}
-              onClick={() => setOpen(false)}>
-              <ChevronRight size={12} /> {l.label}
-            </a>
-          ))}
-        </div>
-      )}
-
-      {annoyed && challenge && (
-        <div className="reveal in font-mono-cyber w-64 rounded-2xl border p-4 text-xs" style={{ borderColor: C.red, background: "rgba(20,0,5,0.9)" }}>
-          <p className="mb-2" style={{ color: C.red }}>Stop playing with the interface. Your exams are coming. Solve this:</p>
-          <p className="mb-3 text-sm text-white">{challenge.q}</p>
-          <AnnoyedAnswer C={C} challenge={challenge} onDone={() => { setAnnoyed(false); setChallenge(null); clickTimes.current = []; }} />
-        </div>
-      )}
-
-      <button
-        onClick={handleOrbClick}
-        aria-label="Neural link assistant"
-        className={`float-slow pulse-ring relative flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md transition-transform hover:scale-110 ${shake ? "shake" : ""}`}
-        style={{
-          borderColor: annoyed ? C.red : C.cyan,
-          background: annoyed
-            ? `radial-gradient(circle at 30% 30%, ${C.red}66, ${C.red}22)`
-            : `radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)`,
-        }}
-      >
-        {open && !annoyed ? <X size={22} color="#fff" /> : <Sparkles size={22} color="#fff" />}
-      </button>
-    </div>
-  );
-}
-
-function AnnoyedAnswer({ C, challenge, onDone }) {
-  const [val, setVal] = useState("");
-  const [msg, setMsg] = useState(null);
-  function submit() {
-    const correct = val.trim().toLowerCase() === challenge.a.toLowerCase();
-    setMsg(correct ? "Correct. I'll allow it." : `Wrong. It was ${challenge.a}. Go revise.`);
-    setTimeout(onDone, 1600);
+  function applyLanguage(lang){
+    setGoogTransCookie(lang);
+    location.reload();
   }
-  if (msg) return <p style={{ color: C.cyan }}>{msg}</p>;
-  return (
-    <div className="flex gap-2">
-      <input autoFocus value={val} onChange={(e) => setVal(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()}
-        className="w-full rounded border bg-black/60 px-2 py-1 text-white outline-none" style={{ borderColor: C.panelBorder }} />
-      <button onClick={submit} className="rounded px-3 text-black" style={{ background: C.red }}>GO</button>
-    </div>
-  );
-}
 
-/* ============================================================================
-   FOOTER
-   ============================================================================ */
-function Footer() {
-  return (
-    <footer className="relative z-10 border-t px-6 py-10 text-center" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <p className="font-mono-cyber text-xs tracking-widest text-white/40">
-        ABHA ACADEMY · NEURAL LINK BUILD · HOLAMBI KALAN, DELHI
-      </p>
-    </footer>
-  );
-}
+  document.addEventListener('DOMContentLoaded', function(){
+    const langSwitch = document.getElementById('langSwitch');
+    const langBtn = document.getElementById('langBtn');
+    const langMenu = document.getElementById('langMenu');
+    const langLabel = document.getElementById('langLabel');
+
+    // Restore selected language on load (cookie set on previous choice)
+    const savedCookie = getCookie('googtrans'); // format: /en/bn
+    const savedLang = savedCookie && savedCookie.split('/')[2] ? savedCookie.split('/')[2] : 'en';
+    if (LANG_NAMES[savedLang]) {
+      langLabel.textContent = LANG_NAMES[savedLang];
+      langMenu.querySelectorAll('li').forEach(li=>{
+        li.classList.toggle('active', li.getAttribute('data-lang') === savedLang);
+      });
+    }
+
+    langBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const isOpen = langSwitch.classList.toggle('open');
+      langBtn.setAttribute('aria-expanded', isOpen);
+    });
+
+    document.addEventListener('click', function(){
+      langSwitch.classList.remove('open');
+      langBtn.setAttribute('aria-expanded','false');
+    });
+
+    langMenu.querySelectorAll('li').forEach(function(item){
+      item.addEventListener('click', function(e){
+        e.stopPropagation();
+        const lang = item.getAttribute('data-lang');
+        langMenu.querySelectorAll('li').forEach(li=>li.classList.remove('active'));
+        item.classList.add('active');
+        langLabel.textContent = LANG_NAMES[lang] || 'English';
+        langSwitch.classList.remove('open');
+        applyLanguage(lang);
+      });
+    });
+
+    // ---- Scroll reveal animations ----
+    const revealSelectors = '.section-head, .subject-card, .schedule-wrap, .teacher-card, .fact, .enroll-panel, .contact-strip';
+    const revealEls = document.querySelectorAll(revealSelectors);
+    revealEls.forEach(function(el, i){
+      el.classList.add('reveal', 'reveal-stagger');
+      el.style.setProperty('--stagger-delay', (i % 4) * 0.09 + 's');
+    });
+    const revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+
+    // ---- Scroll progress bar ----
+    const progressBar = document.getElementById('scrollProgress');
+    function updateProgress(){
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ---- Flame easter egg ----
+    const flame = document.getElementById('flameHitArea');
+    const diyaStage = document.querySelector('.diya-stage');
+    const toast = document.getElementById('flameToast');
+    let flameTaps = 0;
+    let flameTapTimer = null;
+    const flameMessages = [
+      "🪔 Ek diya jal gaya — gyaan ki roshni badhti rahegi!",
+      "✨ Aapne flame jala diya, ab seekhne ka time hai!",
+      "🔥 ABHA Academy mein har shaam ek naya diya jalta hai.",
+      "🪔 Shubh! Har diya ek bachche ke sapno ke liye hai."
+    ];
+
+    // ---- Synthesized fire crackle sound (Web Audio, no audio file needed) ----
+    let audioCtx = null;
+    function playCrackle(){
+      try{
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const duration = 0.35;
+        const bufferSize = audioCtx.sampleRate * duration;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++){
+          // white noise with quick random crackle pops + fast decay envelope
+          const decay = Math.pow(1 - i / bufferSize, 2.2);
+          const pop = Math.random() < 0.02 ? (Math.random() - 0.5) * 1.4 : 0;
+          data[i] = ((Math.random() * 2 - 1) * 0.35 + pop) * decay;
+        }
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const bandpass = audioCtx.createBiquadFilter();
+        bandpass.type = 'bandpass';
+        bandpass.frequency.value = 1800;
+        bandpass.Q.value = 0.7;
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        noise.connect(bandpass);
+        bandpass.connect(gain);
+        gain.connect(audioCtx.destination);
+        noise.start();
+      } catch(err){ /* audio not available, fail silently */ }
+    }
+
+    function spawnSparks(){
+      const emojis = ['✨','🔥','🪔','⭐'];
+      for (let i = 0; i < 14; i++){
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const dx = (Math.random() - 0.5) * 220;
+        const dy = -(100 + Math.random() * 120);
+        const rot = (Math.random() - 0.5) * 180;
+        s.style.setProperty('--dx', dx + 'px');
+        s.style.setProperty('--dy', dy + 'px');
+        s.style.setProperty('--rot', rot + 'deg');
+        s.style.left = (46 + (Math.random()-0.5) * 20) + '%';
+        s.style.top = '35%';
+        s.style.animationDelay = (Math.random()*0.2) + 's';
+        diyaStage.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 1700);
+      }
+    }
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+    }
+
+    if (flame && diyaStage){
+      flame.addEventListener('click', function(){
+        flameTaps++;
+        clearTimeout(flameTapTimer);
+        flameTapTimer = setTimeout(function(){ flameTaps = 0; }, 2200);
+        if (flameTaps >= 5){
+          flameTaps = 0;
+          spawnSparks();
+          playCrackle();
+          showToast(flameMessages[Math.floor(Math.random()*flameMessages.length)]);
+        }
+      });
+    }
+
+    // ---- Ignite animation on page load ----
+    const flameSwayEl = document.getElementById('flameSway');
+    if (flameSwayEl){
+      setTimeout(function(){
+        flameSwayEl.classList.remove('ignite-init');
+        flameSwayEl.classList.add('igniting');
+        if (diyaStage) spawnSparks();
+        setTimeout(function(){ flameSwayEl.classList.remove('igniting'); }, 600);
+      }, 350);
+    }
+
+    // ---- Parallax stars + glow on mouse move (desktop only) ----
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      const starsEl = document.querySelector('.stars');
+      const glowEl = document.querySelector('.sky-glow');
+      let parallaxTicking = false;
+      document.addEventListener('mousemove', function(e){
+        if (parallaxTicking) return;
+        parallaxTicking = true;
+        requestAnimationFrame(function(){
+          const px = (e.clientX / window.innerWidth - 0.5);
+          const py = (e.clientY / window.innerHeight - 0.5);
+          if (starsEl) starsEl.style.transform = 'translate(' + (px*14) + 'px,' + (py*14) + 'px)';
+          if (glowEl) glowEl.style.transform = 'translate(' + (px*-8) + 'px,' + (py*-8) + 'px)';
+          parallaxTicking = false;
+        });
+      });
+    }
+
+    // ---- Celebration burst (used on successful enrollment) ----
+    window.celebrationBurst = function(){
+      const emojis = ['🪔','✨','🔥','⭐','🎉'];
+      const count = 26;
+      for (let i = 0; i < count; i++){
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.style.position = 'fixed';
+        s.style.fontSize = (1 + Math.random()*0.8) + 'rem';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const startX = Math.random() * window.innerWidth;
+        const dx = (Math.random() - 0.5) * 160;
+        const dy = -(window.innerHeight * 0.35 + Math.random() * window.innerHeight * 0.35);
+        const rot = (Math.random() - 0.5) * 260;
+        s.style.setProperty('--dx', dx + 'px');
+        s.style.setProperty('--dy', dy + 'px');
+        s.style.setProperty('--rot', rot + 'deg');
+        s.style.left = startX + 'px';
+        s.style.top = (window.innerHeight * 0.85) + 'px';
+        s.style.animationDuration = (1.6 + Math.random()*0.8) + 's';
+        s.style.animationDelay = (Math.random()*0.4) + 's';
+        document.body.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 2600);
+      }
+    };
+
+    // ---- Hidden Quiz Game: tap English -> Maths -> Computer icons in order ----
+    (function(){
+      const questionBank = [
+        // English
+        { subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 },
+        { subject: 'English', q: "Choose the correctly spelled word:", options: ["Skool","School","Schoool","Skul"], correct: 1 },
+        { subject: 'English', q: "Which of these is a vowel?", options: ["B","C","A","D"], correct: 2 },
+        { subject: 'English', q: "What is the opposite of 'HOT'?", options: ["Warm","Cold","Big","Fast"], correct: 1 },
+        { subject: 'English', q: "Which word means the same as 'HAPPY'?", options: ["Sad","Angry","Joyful","Tired"], correct: 2 },
+        { subject: 'English', q: "Pick the plural of 'CHILD':", options: ["Childs","Childes","Children","Childrens"], correct: 2 },
+        // Maths
+        { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 },
+        { subject: 'Maths', q: "What is 6 × 3?", options: ["16","18","21","24"], correct: 1 },
+        { subject: 'Maths', q: "What is 9 − 4?", options: ["3","4","5","6"], correct: 2 },
+        { subject: 'Maths', q: "How many sides does a triangle have?", options: ["2","3","4","5"], correct: 1 },
+        { subject: 'Maths', q: "What is 10 ÷ 2?", options: ["2","4","5","8"], correct: 2 },
+        { subject: 'Maths', q: "What comes after 19?", options: ["18","20","21","29"], correct: 1 },
+        // Computer
+        { subject: 'Computer', q: "Which of these is used to type on a computer?", options: ["Mouse","Monitor","Keyboard","Speaker"], correct: 2 },
+        { subject: 'Computer', q: "What do we call clicking a button twice quickly?", options: ["Single-click","Right-click","Double-click","Drag"], correct: 2 },
+        { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 },
+        { subject: 'Computer', q: "What do we use to move the pointer on screen?", options: ["Keyboard","Printer","Mouse","Speaker"], correct: 2 },
+        { subject: 'Computer', q: "Which key deletes a letter you just typed?", options: ["Enter","Backspace","Shift","Tab"], correct: 1 }
+      ];
+
+      function shuffledQuestions(){
+        const perSubject = {};
+        questionBank.forEach(function(item){
+          if (!perSubject[item.subject]) perSubject[item.subject] = [];
+          perSubject[item.subject].push(item);
+        });
+        // pick 2 random questions from each subject, so every play covers all 3 subjects with fresh variety
+        let picked = [];
+        Object.keys(perSubject).forEach(function(subject){
+          const pool = perSubject[subject].slice().sort(function(){ return Math.random() - 0.5; });
+          picked = picked.concat(pool.slice(0, 2));
+        });
+        return picked.sort(function(){ return Math.random() - 0.5; });
+      }
+
+      const overlay = document.getElementById('quizOverlay');
+      const card = document.getElementById('quizCard');
+      let questions = [];
+      let qIndex = 0;
+      let score = 0;
+
+      function openQuiz(){
+        questions = shuffledQuestions();
+        qIndex = 0;
+        score = 0;
+        overlay.classList.add('show');
+        renderQuestion();
+      }
+      function closeQuiz(){
+        overlay.classList.remove('show');
+      }
+
+      function renderDiyas(){
+        let html = '<div class="quiz-diyas">';
+        for (let i = 0; i < questions.length; i++){
+          html += '<span class="quiz-diya' + (i < qIndex ? ' lit' : '') + '">🪔</span>';
+        }
+        html += '</div>';
+        return html;
+      }
+
+      function renderQuestion(){
+        if (qIndex >= questions.length){
+          renderResult();
+          return;
+        }
+        const item = questions[qIndex];
+        let optionsHtml = '';
+        item.options.forEach(function(opt, i){
+          optionsHtml += '<button class="quiz-option" data-index="' + i + '">' + opt + '</button>';
+        });
+        card.innerHTML =
+          '<div class="quiz-head"><h3>🪔 ABHA Quiz Challenge</h3><button class="quiz-close" id="quizCloseBtn" aria-label="Close">&times;</button></div>' +
+          renderDiyas() +
+          '<span class="quiz-badge">' + item.subject + '</span>' +
+          '<div class="quiz-question">' + item.q + '</div>' +
+          '<div class="quiz-options">' + optionsHtml + '</div>';
+
+        document.getElementById('quizCloseBtn').addEventListener('click', closeQuiz);
+        card.querySelectorAll('.quiz-option').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            const chosen = parseInt(btn.getAttribute('data-index'), 10);
+            const allBtns = card.querySelectorAll('.quiz-option');
+            allBtns.forEach(function(b){ b.disabled = true; });
+            if (chosen === item.correct){
+              btn.classList.add('correct');
+              score++;
+              if (typeof playCrackle === 'function') playCrackle();
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+            setTimeout(function(){
+              qIndex++;
+              renderQuestion();
+            }, 900);
+          });
+        });
+      }
+
+      function renderResult(){
+        const total = questions.length;
+        let msg;
+        if (score === total) msg = "Perfect score! Aap sab jaante hain — bahut badhiya!";
+        else if (score >= total * 0.6) msg = "Bahut achha kiya! Thoda aur practice aur aap master ban jayenge.";
+        else msg = "Koi baat nahi — ABHA Academy mein aakar aur seekhte hain!";
+
+        card.innerHTML =
+          '<div class="quiz-head"><h3>🪔 Result</h3><button class="quiz-close" id="quizCloseBtn2" aria-label="Close">&times;</button></div>' +
+          renderDiyas() +
+          '<div class="quiz-result">' +
+            '<h3>' + score + ' / ' + total + ' Correct</h3>' +
+            '<p>' + msg + '</p>' +
+            '<button class="quiz-restart" id="quizRestartBtn">Play Again</button>' +
+          '</div>';
+
+        document.getElementById('quizCloseBtn2').addEventListener('click', closeQuiz);
+        document.getElementById('quizRestartBtn').addEventListener('click', openQuiz);
+
+        if (score === total && window.celebrationBurst) window.celebrationBurst();
+      }
+
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) closeQuiz();
+      });
+
+      // secret unlock sequence: English -> Maths -> Computer
+      const secretSequence = ['english', 'maths', 'computer'];
+      let tapProgress = [];
+      let tapResetTimer = null;
+      document.querySelectorAll('.subject-card .icon[data-subject]').forEach(function(icon){
+        icon.addEventListener('click', function(){
+          const subject = icon.getAttribute('data-subject');
+          tapProgress.push(subject);
+          clearTimeout(tapResetTimer);
+          tapResetTimer = setTimeout(function(){ tapProgress = []; }, 3000);
+
+          if (tapProgress.length > secretSequence.length){
+            tapProgress = tapProgress.slice(-secretSequence.length);
+          }
+          const matches = tapProgress.length === secretSequence.length &&
+            tapProgress.every(function(v, i){ return v === secretSequence[i]; });
+          if (matches){
+            tapProgress = [];
+            openQuiz();
+          }
+        });
+      });
+    })();
+
+    // ---- Live class status badge (real-time, based on the actual schedule) ----
+    (function(){
+      const liveEl = document.getElementById('liveStatus');
+      const dotEl = document.getElementById('liveDot');
+      const textEl = document.getElementById('liveText');
+      if (!liveEl) return;
+
+      // days: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat (matches JS Date.getDay())
+      const batches = [
+        { name: 'Class 0–3 (Juniors)', days: [1,3,5], start: '18:00', end: '19:15' },
+        { name: 'Class 4–6 (Middle)', days: [2,4,6], start: '19:30', end: '20:45' },
+        { name: 'Class 7–8 (Seniors)', days: [1,3,5], start: '20:45', end: '22:00' }
+      ];
+      const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+      function toMinutes(t){
+        const parts = t.split(':');
+        return parseInt(parts[0],10)*60 + parseInt(parts[1],10);
+      }
+      function formatTime12(t){
+        const mins = toMinutes(t);
+        let h = Math.floor(mins/60), m = mins%60;
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12; if (h === 0) h = 12;
+        return h + (m ? ':' + (m<10?'0':'') + m : '') + ' ' + ampm;
+      }
+
+      function updateStatus(){
+        const now = new Date();
+        const day = now.getDay();
+        const nowMin = now.getHours()*60 + now.getMinutes();
+
+        // 1. Check if a class is live right now
+        for (let i = 0; i < batches.length; i++){
+          const b = batches[i];
+          if (b.days.indexOf(day) !== -1 && nowMin >= toMinutes(b.start) && nowMin < toMinutes(b.end)){
+            liveEl.classList.add('is-live');
+            dotEl.classList.add('pulse');
+            textEl.textContent = 'LIVE NOW — ' + b.name + ' is in session';
+            return;
+          }
+        }
+
+        // 2. Otherwise find the nearest upcoming class across the week
+        let best = null;
+        for (let offset = 0; offset < 8; offset++){
+          const d = (day + offset) % 7;
+          for (let i = 0; i < batches.length; i++){
+            const b = batches[i];
+            if (b.days.indexOf(d) === -1) continue;
+            const startAbs = offset*1440 + toMinutes(b.start);
+            const nowAbs = nowMin;
+            if (offset === 0 && toMinutes(b.start) <= nowMin) continue; // already started/passed today
+            const minutesFromNow = startAbs - nowAbs;
+            if (best === null || minutesFromNow < best.minutesFromNow){
+              best = { minutesFromNow: minutesFromNow, batch: b, dayIndex: d, offset: offset };
+            }
+          }
+        }
+
+        liveEl.classList.remove('is-live');
+        dotEl.classList.remove('pulse');
+
+        if (!best){
+          textEl.textContent = 'See today\'s class timings below';
+          return;
+        }
+        if (best.minutesFromNow < 24*60 && best.offset <= 1){
+          const h = Math.floor(best.minutesFromNow/60), m = best.minutesFromNow%60;
+          const countdown = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm');
+          textEl.textContent = 'Next: ' + best.batch.name + ' starts in ' + countdown;
+        } else {
+          textEl.textContent = 'Next: ' + best.batch.name + ' on ' + dayNames[best.dayIndex] + ' at ' + formatTime12(best.batch.start);
+        }
+      }
+
+      updateStatus();
+      setInterval(updateStatus, 30000);
+    })();
+
+    // ---- Ambient floating particles ----
+    (function(){
+      const container = document.getElementById('ambientParticles');
+      if (!container) return;
+      const count = window.innerWidth < 640 ? 7 : 12;
+      for (let i = 0; i < count; i++){
+        const p = document.createElement('span');
+        p.className = 'particle';
+        const size = 3 + Math.random()*5;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = (Math.random()*100) + '%';
+        p.style.setProperty('--drift', ((Math.random()-0.5)*80) + 'px');
+        p.style.setProperty('--p-opacity', (0.3 + Math.random()*0.4).toFixed(2));
+        p.style.animationDuration = (14 + Math.random()*14) + 's';
+        p.style.animationDelay = (-Math.random()*20) + 's';
+        container.appendChild(p);
+      }
+    })();
+
+    // ---- 3D tilt on subject cards + magnetic enroll button (desktop only) ----
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      document.querySelectorAll('.subject-card').forEach(function(card){
+        card.style.transition = 'transform 0.15s ease-out, border-color 0.3s';
+        card.addEventListener('mousemove', function(e){
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left, y = e.clientY - rect.top;
+          const cx = rect.width/2, cy = rect.height/2;
+          const rotateY = ((x-cx)/cx) * 7;
+          const rotateX = -((y-cy)/cy) * 7;
+          card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-6px)';
+        });
+        card.addEventListener('mouseleave', function(){
+          card.style.transform = '';
+        });
+      });
+
+      const magneticBtn = document.querySelector('.hero .btn-primary');
+      if (magneticBtn){
+        magneticBtn.addEventListener('mousemove', function(e){
+          const rect = magneticBtn.getBoundingClientRect();
+          const relX = e.clientX - rect.left - rect.width/2;
+          const relY = e.clientY - rect.top - rect.height/2;
+          magneticBtn.style.transition = 'transform 0.05s linear';
+          magneticBtn.style.transform = 'translate(' + (relX*0.22).toFixed(1) + 'px,' + (relY*0.22 - 2).toFixed(1) + 'px)';
+        });
+        magneticBtn.addEventListener('mouseleave', function(){
+          magneticBtn.style.transition = 'transform 0.3s ease';
+          magneticBtn.style.transform = 'translate(0,0)';
+        });
+      }
+    }
+
+    // ---- Flame scroll physics (fluid flame bend, not rigid rotation) ----
+    const flameSway = document.getElementById('flameSway');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (flameSway && !prefersReducedMotion){
+      let lastScrollY = window.scrollY;
+      let skew = 0, skewVel = 0;
+      let stretch = 1, stretchVel = 0;
+
+      window.addEventListener('scroll', function(){
+        const currentY = window.scrollY;
+        const delta = currentY - lastScrollY;
+        lastScrollY = currentY;
+        // scrolling "kicks" the flame tip sideways like a gust of wind bending it
+        skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35));
+        // fast scroll stretches the flame slightly, like it's being pulled
+        stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006));
+      }, { passive: true });
+
+      function physicsLoop(){
+        // light, fluid spring — high stiffness + quick damping = flame-like, not stone-like
+        const skewStiffness = 0.16;
+        const skewDamping = 0.78;
+        skewVel += (0 - skew) * skewStiffness;
+        skewVel *= skewDamping;
+        skew += skewVel;
+        skew = Math.max(-10, Math.min(10, skew));
+
+        const stretchStiffness = 0.18;
+        const stretchDamping = 0.8;
+        stretchVel += (1 - stretch) * stretchStiffness;
+        stretchVel *= stretchDamping;
+        stretch += stretchVel;
+
+        flameSway.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')';
+        requestAnimationFrame(physicsLoop);
+      }
+      requestAnimationFrame(physicsLoop);
+    }
+
+    // ---- Nav link click sparks + bounce ----
+    function spawnSparksAt(x, y, count){
+      const emojis = ['✨','🔥','⭐'];
+      for (let i = 0; i < count; i++){
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.style.position = 'fixed';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const dx = (Math.random() - 0.5) * 130;
+        const dy = -(60 + Math.random() * 90);
+        const rot = (Math.random() - 0.5) * 160;
+        s.style.setProperty('--dx', dx + 'px');
+        s.style.setProperty('--dy', dy + 'px');
+        s.style.setProperty('--rot', rot + 'deg');
+        s.style.left = x + 'px';
+        s.style.top = y + 'px';
+        s.style.fontSize = '1rem';
+        document.body.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 1500);
+      }
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(function(link){
+      link.addEventListener('click', function(e){
+        const rect = link.getBoundingClientRect();
+        spawnSparksAt(rect.left + rect.width/2, rect.top + rect.height/2, 6);
+        link.classList.add('nav-pop');
+        setTimeout(function(){ link.classList.remove('nav-pop'); }, 420);
+      });
+    });
+  });
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+  const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
+
+  document.getElementById('enrollForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const status = document.getElementById('formStatus');
+    const submitBtn = e.target.querySelector('.submit-btn');
+
+    const parentName = document.getElementById('parentName').value.trim();
+    const childName = document.getElementById('childName').value.trim();
+    const gradeSelect = document.getElementById('grade');
+    const gradeText = gradeSelect.options[gradeSelect.selectedIndex].text;
+    const phone = document.getElementById('phone').value.trim();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    const formData = new FormData();
+    formData.append('parentName', parentName);
+    formData.append('childName', childName);
+    formData.append('grade', gradeText);
+    formData.append('phone', phone);
+
+    fetch(ENROLL_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    }).then(function(){
+      status.textContent = "Thank you, " + parentName + "! " + childName + "'s registration has been received. We'll reach out on WhatsApp within a day.";
+      status.style.color = '#25d366';
+      status.classList.add('show');
+      if (window.celebrationBurst) window.celebrationBurst();
+      e.target.reset();
+    }).catch(function(){
+      status.textContent = "Something went wrong — please try again, or reach us directly on WhatsApp below.";
+      status.style.color = '#e2673b';
+      status.classList.add('show');
+    }).finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit registration";
+    });
+  });
+</script>
+
+</body>
+</html>
