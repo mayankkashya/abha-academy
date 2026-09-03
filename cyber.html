@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ABHA Academy — Neural Link</title>
+<title>ABHA Academy — Neural Link (2086 Concept)</title>
 
-<!-- MOBILE ERROR TRACKER (Agar fail hua to screen par error likha aayega) -->
 <script>
   window.onerror = function(msg, url, line) {
     document.body.innerHTML = "<div style='color:red; padding:20px; font-family:sans-serif; font-size:14px; background:black; height:100vh;'><b>Mobile Error:</b> " + msg + "<br><br><b>Line:</b> " + line + "</div>";
@@ -15,7 +14,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- FAST CLOUDFLARE CDNS (Mobile friendly) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.20/babel.min.js" crossorigin="anonymous"></script>
@@ -108,15 +106,33 @@ function AbhaNeuralLink(){
 function EnrollmentProtocol({ C, onClose }){
   const [step, setStep] = useState(0); 
   const [formData, setFormData] = useState({ name:"", cls:"", phone:"" });
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
 
   function handleSubmit(e){
     e.preventDefault();
     setStep(1);
-    setTimeout(() => {
-      const text = `INITIATING NEURAL LINK ENROLLMENT:%0A%0A> Name: ${formData.name}%0A> Class: ${formData.cls}%0A> Contact: ${formData.phone}%0A%0A[System Auth: ABHA2086]`;
-      window.open(`https://wa.me/916394254410?text=${text}`, "_blank");
-      onClose();
-    }, 1800);
+    setErrorMsg("");
+
+    const data = new FormData();
+    data.append('parentName', formData.name); 
+    data.append('childName', formData.name); 
+    data.append('grade', formData.cls);
+    data.append('phone', formData.phone);
+
+    fetch(ENROLL_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    }).then(() => {
+      setTimeout(() => {
+        setStep(2);
+      }, 1800);
+    }).catch((err) => {
+      setErrorMsg("Transmission failed. Retrying logic error...");
+      setStep(0);
+    });
   }
 
   return (
@@ -128,6 +144,7 @@ function EnrollmentProtocol({ C, onClose }){
               <h2 className="font-mono-cyber text-sm tracking-widest" style={{ color:C.cyan }}>ENROLLMENT PROTOCOL</h2>
               <button type="button" onClick={onClose} className="text-white/50 hover:text-white">✕</button>
             </div>
+            {errorMsg && <p className="font-mono-cyber mb-4 text-xs" style={{ color:C.red }}>{errorMsg}</p>}
             
             <div className="mb-4">
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">STUDENT IDENTIFIER (NAME)</label>
@@ -141,7 +158,7 @@ function EnrollmentProtocol({ C, onClose }){
             </div>
             <div className="mb-8">
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">PARENT COMM LINK (PHONE)</label>
-              <input required type="tel" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})}
+              <input required type="tel" pattern="[0-9]{10}" maxLength="10" placeholder="10-digit mobile number" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})}
                 className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none focus:border-cyan-400" style={{ borderColor:C.panelBorder }} />
             </div>
 
@@ -149,11 +166,22 @@ function EnrollmentProtocol({ C, onClose }){
               INITIATE DATA SYNC ➔
             </button>
           </form>
-        ) : (
+        ) : step === 1 ? (
           <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
             <div className="mb-4 h-12 w-12 rounded-full border-4 border-t-transparent animate-spin" style={{ borderColor:`${C.cyan}44`, borderTopColor:C.cyan }}></div>
             <p className="font-mono-cyber glitch-layer text-sm" style={{ color:C.cyan }}>TRANSMITTING TO MAIN NODE...</p>
-            <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Redirecting to secure comms (WhatsApp).</p>
+            <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Establishing secure connection.</p>
+          </div>
+        ) : (
+          <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
+             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background:`${C.cyan}33`, color:C.cyan, border:`1px solid ${C.cyan}` }}>
+                <Icon size={24}>✓</Icon>
+             </div>
+             <p className="font-mono-cyber text-sm" style={{ color:C.cyan }}>SYNC COMPLETE</p>
+             <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Data logged successfully. An operative will contact the Comm Link within 24 standard hours.</p>
+             <button type="button" onClick={onClose} className="font-mono-cyber mt-6 w-full rounded py-3 text-xs font-bold text-black transition-transform hover:scale-[1.02]" style={{ background:C.cyan }}>
+              CLOSE TERMINAL
+            </button>
           </div>
         )}
       </div>
