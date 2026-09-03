@@ -2,29 +2,120 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ABHA Academy — Neural Link (2086 Concept)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ABHA Academy — Free Evening Classes, Class 0 to 8</title>
+<meta name="description" content="Free evening coaching for Class 0 to 8 in English, Maths and Computers. Classes run 6 PM to 10 PM, taught personally.">
 
+<!-- Error Tracker for Mobile -->
 <script>
-  window.onerror = function(msg, url, line) {
-    document.body.innerHTML = "<div style='color:red; padding:20px; font-family:sans-serif; font-size:14px; background:black; height:100vh;'><b>Mobile Error:</b> " + msg + "<br><br><b>Line:</b> " + line + "</div>";
-    return true;
-  };
+  window.onerror = function(msg, url, line) { console.error("Mobile Error: " + msg + " at " + line); return false; };
 </script>
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Fonts for Both Worlds -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<!-- Fast CDNs for 2086 Neural Mode -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.20/babel.min.js" crossorigin="anonymous"></script>
+<!-- Tailwind (Preflight Disabled to protect normal CSS) -->
 <script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { corePlugins: { preflight: false } }</script>
 
 <style>
-  body{margin:0;font-family:'Space Grotesk','Inter',sans-serif; background-color: #030014;}
+  /* =========================================
+     NORMAL SITE CSS (2026 MODE)
+     ========================================= */
+  :root{
+    --dusk-950:#0d1024; --dusk-900:#12162e; --dusk-800:#1b2140; --dusk-700:#262d52;
+    --flame-500:#f5a623; --flame-300:#ffd37a; --ember-500:#e2673b;
+    --cream-100:#f8f1e3; --cream-300:#e4dac5; --cream-muted:#b9b1c9;
+    --ok-green:#25d366; --radius-lg:22px; --radius-md:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth; -webkit-tap-highlight-color: transparent;}
+  body{
+    background:var(--dusk-950); color:var(--cream-100);
+    font-family:'Work Sans',sans-serif; line-height:1.65; overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-0.01em; }
+  a{color:inherit;} img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1180px;margin:0 auto;padding-left:6%;padding-right:6%;}
+  .eyebrow{ text-transform:uppercase; letter-spacing:0.14em; font-size:0.78rem; font-weight:600; color:var(--flame-300); }
+
+  .sky-glow{position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 45% at 82% -6%, rgba(245,166,35,0.16), transparent 60%),radial-gradient(50% 40% at 10% 8%, rgba(226,103,59,0.10), transparent 60%),var(--dusk-950); transition:transform 0.6s ease-out; will-change:transform;}
+  .stars{position:fixed;inset:0;z-index:-1;opacity:0.5; background-image:radial-gradient(1.5px 1.5px at 20% 30%, rgba(248,241,227,0.5), transparent),radial-gradient(1.5px 1.5px at 70% 15%, rgba(248,241,227,0.4), transparent),radial-gradient(1px 1px at 45% 60%, rgba(248,241,227,0.35), transparent),radial-gradient(1.5px 1.5px at 88% 45%, rgba(248,241,227,0.4), transparent),radial-gradient(1px 1px at 60% 80%, rgba(248,241,227,0.3), transparent); background-size:600px 600px;}
+
+  header.nav{ position:sticky; top:0; z-index:1000; background:rgba(13,16,36,0.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(248,241,227,0.08); }
+  .nav-inner{ max-width:1180px;margin:0 auto;padding:0.9rem 6%; display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap; }
+  .logo{ font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem; display:flex;align-items:center;gap:0.55rem;text-decoration:none;color:var(--cream-100); }
+  .logo .flame-dot{width:9px;height:9px;border-radius:50%;background:var(--flame-500);box-shadow:0 0 12px 3px rgba(245,166,35,0.7);}
+  .nav-cluster{display:flex;align-items:center;gap:1.4rem;}
+  .nav-links{list-style:none;display:flex;gap:1.6rem;}
+  .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;display:inline-block;padding:0.5rem 0.2rem;}
+  .nav-links a:hover{color:var(--flame-300);}
+
+  #google_translate_element, iframe.goog-te-banner-frame, .goog-te-banner-frame, .skiptranslate iframe{ display:none !important; visibility:hidden !important; height:0 !important; }
+  html body{ top:0 !important; position:static !important; margin-top:0 !important; padding-top:0 !important; }
+  
+  .hero{padding:5.5rem 0 4rem;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center;}
+  .badge{ display:inline-flex;align-items:center;gap:0.5rem; border:1px solid rgba(245,166,35,0.4); background:rgba(245,166,35,0.08); color:var(--flame-300); padding:0.4rem 0.9rem;border-radius:999px; font-size:0.82rem;font-weight:600;margin-bottom:1.4rem; }
+  .hero h1{font-size:clamp(2.3rem,5vw,3.4rem);line-height:1.08;margin-bottom:1.2rem;color:var(--cream-100);}
+  .hero h1 em{font-style:normal;color:var(--flame-300);}
+  .hero p.lede{font-size:1.15rem;color:var(--cream-300);max-width:520px;margin-bottom:2rem;}
+  .btn-primary{ display:inline-flex;align-items:center;gap:0.6rem; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; padding:0.95rem 1.8rem;border-radius:999px;text-decoration:none;border:none;cursor:pointer; box-shadow:0 8px 24px rgba(245,166,35,0.35); transition:transform 0.25s ease;}
+  .btn-primary:active{transform:scale(0.95);}
+
+  .diya-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:340px;}
+  .diya-glow{ position:absolute;bottom:38%;left:50%;transform:translateX(-50%); width:260px;height:260px;border-radius:50%; background:radial-gradient(circle, rgba(255,211,122,0.55), rgba(245,166,35,0.12) 55%, transparent 72%); filter:blur(6px); animation:glow-pulse 3.2s ease-in-out infinite; }
+
+  .strip{ border-top:1px solid rgba(248,241,227,0.08); border-bottom:1px solid rgba(248,241,227,0.08); background:rgba(255,255,255,0.02); }
+  .strip-inner{ max-width:1180px;margin:0 auto;padding:1.6rem 6%; display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between; }
+  .strip-item{display:flex;gap:0.8rem;align-items:flex-start;flex:1 1 220px;}
+  
+  /* MOBILE FRIENDLY TIME TRAVEL SWITCH */
+  .time-switch-btn{
+    background:rgba(245,166,35,0.1); border:1px solid rgba(245,166,35,0.3); color:var(--flame-300);
+    width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; cursor:pointer; outline:none; transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:0 0 15px rgba(245,166,35,0.2); position:relative; z-index:10;
+  }
+  .time-switch-btn:hover, .time-switch-btn:active{ transform:rotate(-180deg) scale(1.15); box-shadow:0 0 25px rgba(245,166,35,0.6); background:rgba(245,166,35,0.2); }
+  .time-switch-btn::after{ content:''; position:absolute; inset:-5px; border-radius:50%; animation:pulse-ring 2s infinite; }
+
+  .strip-item h4{font-size:0.95rem;font-weight:600;color:var(--cream-100);margin-bottom:0.15rem;}
+  .strip-item p{font-size:0.86rem;color:var(--cream-muted);}
+
+  section{padding:5.5rem 0;}
+  .section-head{max-width:640px;margin-bottom:3rem;}
+  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem);color:var(--cream-100);margin-top:0.5rem;}
+  .subject-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
+  .subject-card{ border:1px solid rgba(248,241,227,0.1); background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01)); border-radius:var(--radius-lg); padding:2.2rem 1.9rem; }
+  .subject-card .icon{ width:52px;height:52px;border-radius:14px; display:flex;align-items:center;justify-content:center; background:rgba(245,166,35,0.12);color:var(--flame-300);font-size:1.4rem;margin-bottom:1.3rem; }
+
+  .enroll-panel{ display:grid;grid-template-columns:1fr 1fr; border:1px solid rgba(245,166,35,0.25); border-radius:var(--radius-lg); overflow:hidden; background:rgba(255,255,255,0.02); }
+  .enroll-side{ padding:3rem 2.6rem; background:linear-gradient(160deg, rgba(245,166,35,0.14), rgba(226,103,59,0.06)); display:flex;flex-direction:column;justify-content:center; }
+  .enroll-form{padding:3rem 2.6rem;}
+  .form-row{margin-bottom:1.25rem;}
+  .form-row label{ display:block;font-size:0.82rem;font-weight:600;text-transform:uppercase; color:var(--cream-muted);margin-bottom:0.5rem; }
+  .form-row input,.form-row select{ width:100%;padding:0.85rem 1rem; background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.16); border-radius:10px;color:var(--cream-100);font-size:1rem; outline:none; }
+  .submit-btn{ width:100%;padding:1rem;border:none;border-radius:10px;cursor:pointer; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; }
+
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  @media (max-width:860px){.enroll-panel{grid-template-columns:1fr;}}
+  @media (max-width:820px){.subject-grid{grid-template-columns:1fr;}}
+  @media (max-width:760px){.nav-links{display:none;}}
+
+  /* =========================================
+     2086 NEURAL MODE CSS ANIMATIONS
+     ========================================= */
   .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
   @keyframes float-y{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   .float-slow{animation:float-y 6s ease-in-out infinite;}
-  .float-med{animation:float-y 4.2s ease-in-out infinite;}
   .float-fast{animation:float-y 3s ease-in-out infinite;}
   @keyframes glitch-1{
     0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);}
@@ -35,69 +126,300 @@
   .glitch-layer{animation:glitch-1 3.4s infinite linear;}
   @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(34,230,255,0.45);}100%{box-shadow:0 0 0 22px rgba(34,230,255,0);}}
   .pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4,0,0.6,1) infinite;}
-  @keyframes dash-flow{to{stroke-dashoffset:-200;}}
-  .flow-line{stroke-dasharray:6 10;animation:dash-flow 3s linear infinite;}
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease, transform 0.8s ease;}
-  .reveal.in{opacity:1;transform:translateY(0);}
-  @keyframes shake{
-    0%,100%{transform:translate(0,0) rotate(0deg);}
-    20%{transform:translate(-4px,2px) rotate(-3deg);}
-    40%{transform:translate(4px,-2px) rotate(3deg);}
-    60%{transform:translate(-3px,-2px) rotate(-2deg);}
-    80%{transform:translate(3px,2px) rotate(2deg);}
-  }
-  .shake{animation:shake 0.4s ease-in-out;}
-  @keyframes glitch-flash{0%{opacity:1;}100%{opacity:0;}}
-  .glitch-flash{animation:glitch-flash 1.4s ease-out forwards;}
-  @keyframes blink{50%{opacity:0;}}
-  .caret{animation:blink 1s step-end infinite;}
-  ::selection{background:#22e6ff;color:#000;}
-  @media (prefers-reduced-motion: reduce){
-    .float-slow,.float-med,.float-fast,.glitch-layer,.pulse-ring,.flow-line,.shake{animation:none !important;}
+
+  /* PORTAL EFFECT CSS */
+  .time-portal{
+    position:fixed; width:20px; height:20px;
+    background:#030014; border-radius:50%; z-index:99998;
+    pointer-events:none; transform:scale(0);
+    box-shadow:0 0 100px 40px #22e6ff, inset 0 0 50px 20px #a855f7;
+    transition:transform 0.9s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.4s ease;
   }
 </style>
 </head>
 <body>
-<div id="root"></div>
 
+<!-- =======================================================
+     NORMAL 2026 HTML CONTENT
+     ======================================================= -->
+<div id="normal-app" style="transition: opacity 0.4s ease;">
+  <div class="sky-glow"></div>
+  <div class="stars"></div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="logo"><span class="flame-dot"></span>ABHA Academy</a>
+      <div class="nav-cluster">
+        <ul class="nav-links">
+          <li><a href="#subjects">Subjects</a></li>
+          <li><a href="#enroll">Enroll</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="badge"><span class="dot"></span> Free, forever &middot; Class 0 to 8</div>
+          <h1>Every evening, we <em>light one more lamp</em> of learning.</h1>
+          <p class="lede">ABHA Academy runs free English, Maths and Computer classes for Class 0–8 students, every evening from 6 to 10 PM.</p>
+          <div class="cta-row">
+            <a href="#enroll" class="btn-primary"><i class="fas fa-graduation-cap"></i> Enroll your child</a>
+          </div>
+        </div>
+
+        <div class="diya-stage">
+          <div class="diya-glow" aria-hidden="true"></div>
+          <svg viewBox="0 0 240 220" width="260" height="240" role="img">
+            <defs>
+              <linearGradient id="lampShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD37A"/><stop offset="1" stop-color="#E2673B"/></linearGradient>
+              <linearGradient id="flameOuterGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#3B5B8C"/><stop offset="22%" stop-color="#E2673B"/><stop offset="55%" stop-color="#F5A623"/><stop offset="100%" stop-color="#FFE9B8"/></linearGradient>
+            </defs>
+            <g id="flameSway" style="transform-origin: 50% 100%;">
+              <path class="flame-outer" d="M120,58 C136,76 148,94 144,112 C141,126 130,134 120,134 C110,134 99,126 96,112 C92,94 104,76 120,58 Z" fill="url(#flameOuterGrad)"/>
+            </g>
+            <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
+            <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
+            <ellipse cx="120" cy="168" rx="70" ry="16" fill="#F5A623"/>
+            <ellipse cx="120" cy="168" rx="70" ry="16" fill="url(#lampShade)" opacity="0.5"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMITMENT STRIP WITH PORTAL SWITCH (WORKS ON MOBILE/PC) -->
+    <div class="strip">
+      <div class="wrap strip-inner">
+        <div class="strip-item">
+          <!-- MOBILE FRIENDLY SWITCH BUTTON -->
+          <button type="button" class="time-switch-btn" onclick="triggerTimeTravel(event)" aria-label="Access Neural Link">
+            <i class="fas fa-clock"></i>
+          </button>
+          <div><h4>6 PM – 10 PM, every evening</h4><p>Click the clock for a surprise.</p></div>
+        </div>
+        <div class="strip-item">
+          <i class="fas fa-hand-holding-heart"></i>
+          <div><h4>Zero fees</h4><p>No admission cost, no monthly charge, ever.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="subjects">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">What we teach</span>
+          <h2>Three subjects, built up patiently</h2>
+        </div>
+        <div class="subject-grid">
+          <div class="subject-card"><div class="icon"><i class="fas fa-book-open"></i></div><h3>English</h3></div>
+          <div class="subject-card"><div class="icon"><i class="fas fa-calculator"></i></div><h3>Mathematics</h3></div>
+          <div class="subject-card"><div class="icon"><i class="fas fa-desktop"></i></div><h3>Computer Basics</h3></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="enroll">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Join us</span>
+          <h2>Enroll your child</h2>
+        </div>
+        <div class="enroll-panel">
+          <div class="enroll-side">
+            <h3>Why families choose ABHA</h3>
+            <p>A steady, honest option for foundational learning — close to home, and free of cost.</p>
+          </div>
+          <form class="enroll-form" id="enrollForm">
+            <div class="form-row"><label>Parent's name</label><input type="text" id="parentName" required></div>
+            <div class="form-row"><label>Child's name</label><input type="text" id="childName" required></div>
+            <div class="form-row">
+              <label>Grade</label>
+              <select id="grade" required>
+                <option value="0-3">Class 0–3 · 6:00 PM</option>
+                <option value="4-6">Class 4–6 · 7:30 PM</option>
+                <option value="7-8">Class 7–8 · 8:45 PM</option>
+              </select>
+            </div>
+            <div class="form-row"><label>Phone / WhatsApp</label><input type="tel" id="phone" required pattern="[0-9]{10}"></div>
+            <button type="submit" class="submit-btn">Submit registration</button>
+            <p class="form-status" id="formStatus" style="margin-top:10px; display:none;"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer style="text-align:center; padding:2rem 0; border-top:1px solid rgba(255,255,255,0.1);">
+    <p><strong>ABHA Academy</strong> &middot; B870, Phase 1, Metro Vihar, Delhi</p>
+  </footer>
+</div>
+
+<!-- =======================================================
+     2086 NEURAL LINK OVERLAY (REACT APP ROOT)
+     ======================================================= -->
+<div id="neural-root"></div>
+
+
+<!-- =======================================================
+     PORTAL TRANSITION & FORM LOGIC
+     ======================================================= -->
+<script>
+  // Normal Site Form Logic
+  const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
+  window.ENROLL_SCRIPT_URL = ENROLL_SCRIPT_URL; // Expose to React
+
+  document.getElementById('enrollForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const status = document.getElementById('formStatus');
+    const submitBtn = e.target.querySelector('.submit-btn');
+    submitBtn.textContent = "Submitting...";
+
+    const formData = new FormData();
+    formData.append('parentName', document.getElementById('parentName').value);
+    formData.append('childName', document.getElementById('childName').value);
+    formData.append('grade', document.getElementById('grade').value);
+    formData.append('phone', document.getElementById('phone').value);
+
+    fetch(ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData })
+    .then(() => {
+      status.textContent = "Registration received successfully!"; status.style.color = '#25d366'; status.style.display = 'block';
+      e.target.reset(); submitBtn.textContent = "Submit registration";
+      if(window.celebrationBurst) window.celebrationBurst();
+    });
+  });
+
+  // Global Celebration Burst
+  window.celebrationBurst = function(){
+      const emojis = ['🪔','✨','🔥'];
+      for (let i = 0; i < 20; i++){
+        const s = document.createElement('span'); s.style.position = 'fixed'; s.style.zIndex='999999';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        s.style.left = (Math.random() * window.innerWidth) + 'px';
+        s.style.top = window.innerHeight + 'px';
+        s.style.transition = 'all 2s ease-out';
+        document.body.appendChild(s);
+        setTimeout(() => { s.style.transform = `translate(${(Math.random()-0.5)*200}px, -400px)`; s.style.opacity = '0'; }, 50);
+        setTimeout(() => s.remove(), 2000);
+      }
+  };
+
+  // --- SPECIAL EFFECT: TIME PORTAL ---
+  window.triggerTimeTravel = function(e) {
+    // Prevent normal click actions
+    e.preventDefault();
+
+    // Find exactly where the user tapped (Works on Mobile touch and PC Mouse)
+    const rect = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches ? e.touches[0] : null;
+    const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2);
+    const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
+
+    // Create the Portal Circle
+    const portal = document.createElement('div');
+    portal.className = 'time-portal';
+    portal.style.left = x + 'px';
+    portal.style.top = y + 'px';
+    portal.style.marginTop = '-10px';
+    portal.style.marginLeft = '-10px';
+    document.body.appendChild(portal);
+
+    // Vibrate phone if supported
+    if(navigator.vibrate) navigator.vibrate(100);
+
+    // Start expanding the portal immediately
+    setTimeout(() => {
+      // Scale 400 makes a 20px circle become 8000px, covering any phone/monitor screen perfectly
+      portal.style.transform = 'scale(400)'; 
+    }, 20);
+
+    // Wait for screen to turn black, then activate 2086 mode
+    setTimeout(() => {
+      if(window.setReactActive) window.setReactActive(true);
+      document.body.style.overflow = 'hidden';
+      document.getElementById('normal-app').style.display = 'none'; // Hide normal site
+      
+      // Fade out the portal element itself
+      portal.style.opacity = '0';
+      setTimeout(() => portal.remove(), 500);
+    }, 900);
+  };
+
+  // --- SPECIAL EFFECT: RETURN TO 2026 ---
+  window.returnTo2026 = function() {
+    const normalApp = document.getElementById('normal-app');
+    normalApp.style.display = 'block';
+    normalApp.style.opacity = '0';
+
+    // Create Glitch Flash
+    const flash = document.createElement('div');
+    flash.style.position = 'fixed'; flash.style.inset = '0';
+    flash.style.backgroundColor = '#fff'; flash.style.zIndex = '999999';
+    flash.style.animation = 'glitch-flash 0.5s ease-out forwards';
+    document.body.appendChild(flash);
+
+    // Vibrate phone
+    if(navigator.vibrate) navigator.vibrate(50);
+
+    setTimeout(() => {
+      if(window.setReactActive) window.setReactActive(false);
+      document.body.style.overflow = '';
+      normalApp.style.opacity = '1';
+      setTimeout(() => flash.remove(), 500);
+    }, 300);
+  };
+</script>
+
+<!-- =======================================================
+     THE 2086 REACT APP
+     ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
-
 const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
-const NIGHT_COLORS = { void:"#0a0014", panel:"rgba(255,255,255,0.05)", panelBorder:"rgba(255,42,120,0.25)", cyan:"#ff2fa0", purple:"#7c3aed", red:"#ff2954" };
 
-function Icon({ children, size = 18, color }) {
-  return <span style={{ fontSize: size, lineHeight: 1, color, display: "inline-block" }}>{children}</span>;
+function Icon({ children, size = 18 }) {
+  return <span style={{ fontSize: size, lineHeight: 1, display: "inline-block" }}>{children}</span>;
 }
 
 function AbhaNeuralLink(){
-  const [nightMode, setNightMode] = useState(false);
-  const [syncMode, setSyncMode] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const [showVoid, setShowVoid] = useState(false);
   const [showEnroll, setShowEnroll] = useState(false);
-  const C = nightMode ? NIGHT_COLORS : COLORS;
+  const C = COLORS;
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 0 && hour < 5) setNightMode(true);
+    window.setReactActive = setIsActive; // Expose React state setter to standard JS
   }, []);
 
+  if(!isActive) return null;
+
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void }}>
-      {!syncMode && <BackgroundField C={C} />}
-      <TerminalHack C={C} />
-      <NightOwlBanner nightMode={nightMode} />
-      <BootSequenceHero C={C} syncMode={syncMode} onEnroll={() => setShowEnroll(true)} />
-      {!syncMode && <SkillTree C={C} />}
-      {!syncMode && <CyberStats C={C} />}
-      {nightMode && !syncMode && <MidnightNotes C={C} />}
-      <ControlDock C={C} nightMode={nightMode} setNightMode={setNightMode} syncMode={syncMode} setSyncMode={setSyncMode} setShowVoid={setShowVoid} />
-      <FloatingOrb C={C} syncMode={syncMode} onEnroll={() => setShowEnroll(true)} />
+    <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
+      
+      {/* RETURN BUTTON */}
+      <button onClick={window.returnTo2026} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:"0 0 20px rgba(34,230,255,0.2)" }}>
+        ‹ TIME TRAVEL TO 2026
+      </button>
+
+      <BackgroundField C={C} />
+      <BootSequenceHero C={C} onEnroll={() => setShowEnroll(true)} />
+      <SkillTree C={C} />
+      <CyberStats C={C} />
+      
+      <div className="font-mono-cyber fixed bottom-6 left-6 z-50 flex flex-col gap-2 text-[10px]">
+        <button onClick={()=>setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70" style={{ borderColor:C.panelBorder, background:"rgba(0,0,0,0.4)" }}>
+          <Icon size={12}>↺</Icon> SIMULATE 404
+        </button>
+      </div>
+
+      <FloatingOrb C={C} onEnroll={() => setShowEnroll(true)} />
       {showVoid && <ZeroGravityVoid C={C} onClose={() => setShowVoid(false)} />}
       {showEnroll && <EnrollmentProtocol C={C} onClose={() => setShowEnroll(false)} />}
       
-      <footer className="relative z-10 border-t px-6 py-10 text-center" style={{ borderColor:"rgba(255,255,255,0.08)" }}>
-        <p className="font-mono-cyber text-xs tracking-widest text-white/40">ABHA ACADEMY · NEURAL LINK BUILD · HOLAMBI KALAN, DELHI</p>
+      <footer className="relative z-10 border-t mt-20 px-6 py-10 text-center" style={{ borderColor:"rgba(255,255,255,0.08)" }}>
+        <p className="font-mono-cyber text-xs tracking-widest text-white/40">NEURAL LINK ACTIVE · CLASS 0-8 SECURE COMMS</p>
       </footer>
     </div>
   );
@@ -106,63 +428,49 @@ function AbhaNeuralLink(){
 function EnrollmentProtocol({ C, onClose }){
   const [step, setStep] = useState(0); 
   const [formData, setFormData] = useState({ name:"", cls:"", phone:"" });
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
 
   function handleSubmit(e){
     e.preventDefault();
     setStep(1);
-    setErrorMsg("");
 
     const data = new FormData();
-    data.append('parentName', formData.name); 
+    data.append('parentName', "Parent of " + formData.name); 
     data.append('childName', formData.name); 
     data.append('grade', formData.cls);
     data.append('phone', formData.phone);
 
-    fetch(ENROLL_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: data
+    fetch(window.ENROLL_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors', body: data
     }).then(() => {
       setTimeout(() => {
         setStep(2);
-      }, 1800);
-    }).catch((err) => {
-      setErrorMsg("Transmission failed. Retrying logic error...");
-      setStep(0);
+        if(window.celebrationBurst) window.celebrationBurst();
+      }, 1500);
     });
   }
 
   return (
-    <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md">
+    <div className="fixed inset-0 z-[600] flex items-center justify-center bg-black/95 p-4 backdrop-blur-md">
       <div className="w-full max-w-md overflow-hidden rounded-2xl border" style={{ borderColor:C.cyan, background:C.panel, boxShadow:`0 0 60px ${C.cyan}33` }}>
         {step === 0 ? (
           <form onSubmit={handleSubmit} className="p-8">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="font-mono-cyber text-sm tracking-widest" style={{ color:C.cyan }}>ENROLLMENT PROTOCOL</h2>
-              <button type="button" onClick={onClose} className="text-white/50 hover:text-white">✕</button>
+              <button type="button" onClick={onClose} className="text-white/50 hover:text-white p-2 text-lg">✕</button>
             </div>
-            {errorMsg && <p className="font-mono-cyber mb-4 text-xs" style={{ color:C.red }}>{errorMsg}</p>}
-            
             <div className="mb-4">
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">STUDENT IDENTIFIER (NAME)</label>
-              <input required type="text" value={formData.name} onChange={e=>setFormData({...formData, name:e.target.value})}
-                className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none focus:border-cyan-400" style={{ borderColor:C.panelBorder }} />
+              <input required type="text" value={formData.name} onChange={e=>setFormData({...formData, name:e.target.value})} className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none" style={{ borderColor:C.panelBorder }} />
             </div>
             <div className="mb-4">
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">CURRENT LEVEL (CLASS)</label>
-              <input required type="text" placeholder="e.g. Class 5" value={formData.cls} onChange={e=>setFormData({...formData, cls:e.target.value})}
-                className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none focus:border-cyan-400" style={{ borderColor:C.panelBorder }} />
+              <input required type="text" placeholder="e.g. Class 5" value={formData.cls} onChange={e=>setFormData({...formData, cls:e.target.value})} className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none" style={{ borderColor:C.panelBorder }} />
             </div>
             <div className="mb-8">
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">PARENT COMM LINK (PHONE)</label>
-              <input required type="tel" pattern="[0-9]{10}" maxLength="10" placeholder="10-digit mobile number" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})}
-                className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none focus:border-cyan-400" style={{ borderColor:C.panelBorder }} />
+              <input required type="tel" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})} className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none" style={{ borderColor:C.panelBorder }} />
             </div>
-
-            <button type="submit" className="font-mono-cyber pulse-ring w-full rounded py-4 text-xs font-bold text-black transition-transform hover:scale-[1.02]" style={{ background:C.cyan }}>
+            <button type="submit" className="font-mono-cyber pulse-ring w-full rounded py-4 text-xs font-bold text-black active:scale-95" style={{ background:C.cyan }}>
               INITIATE DATA SYNC ➔
             </button>
           </form>
@@ -170,18 +478,13 @@ function EnrollmentProtocol({ C, onClose }){
           <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
             <div className="mb-4 h-12 w-12 rounded-full border-4 border-t-transparent animate-spin" style={{ borderColor:`${C.cyan}44`, borderTopColor:C.cyan }}></div>
             <p className="font-mono-cyber glitch-layer text-sm" style={{ color:C.cyan }}>TRANSMITTING TO MAIN NODE...</p>
-            <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Establishing secure connection.</p>
           </div>
         ) : (
           <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
-             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background:`${C.cyan}33`, color:C.cyan, border:`1px solid ${C.cyan}` }}>
-                <Icon size={24}>✓</Icon>
-             </div>
+             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background:`${C.cyan}33`, color:C.cyan, border:`1px solid ${C.cyan}` }}>✓</div>
              <p className="font-mono-cyber text-sm" style={{ color:C.cyan }}>SYNC COMPLETE</p>
-             <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Data logged successfully. An operative will contact the Comm Link within 24 standard hours.</p>
-             <button type="button" onClick={onClose} className="font-mono-cyber mt-6 w-full rounded py-3 text-xs font-bold text-black transition-transform hover:scale-[1.02]" style={{ background:C.cyan }}>
-              CLOSE TERMINAL
-            </button>
+             <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Data logged securely. You will be contacted shortly.</p>
+             <button type="button" onClick={onClose} className="font-mono-cyber mt-6 w-full rounded py-3 text-xs font-bold text-black active:scale-95" style={{ background:C.cyan }}>CLOSE TERMINAL</button>
           </div>
         )}
       </div>
@@ -189,311 +492,25 @@ function EnrollmentProtocol({ C, onClose }){
   );
 }
 
-function BackgroundField({ C }){
-  const particles = Array.from({ length: 22 });
+function BootSequenceHero({ C, onEnroll }){
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage:"linear-gradient(rgba(34,230,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,230,255,0.06) 1px, transparent 1px)", backgroundSize:"42px 42px", maskImage:"radial-gradient(ellipse 70% 60% at 50% 20%, black 40%, transparent 100%)" }} />
-      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-3xl" style={{ background:`radial-gradient(circle, ${C.purple}33, transparent 70%)` }} />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full blur-3xl" style={{ background:`radial-gradient(circle, ${C.cyan}2a, transparent 70%)` }} />
-      {particles.map((_, i) => (
-        <span key={i} className="absolute rounded-full float-slow" style={{ left:`${(i*37)%100}%`, top:`${(i*53)%100}%`, width:2+(i%3), height:2+(i%3), background:i%3===0?C.cyan:i%3===1?C.purple:C.red, opacity:0.5, animationDelay:`${(i%7)*0.6}s`, animationDuration:`${5+(i%5)}s` }} />
-      ))}
-    </div>
-  );
-}
-
-const SECRET_CODE = ["a","b","h","a","2","0","8","6"];
-const PUZZLES = [
-  { q:"12 x 8 = ?", a:"96" },
-  { q:"Next in sequence: 2, 4, 8, 16, ?", a:"32" },
-  { q:"If today is Monday, what day is it in 10 days?", a:"thursday" },
-  { q:"Binary 101 in decimal = ?", a:"5" },
-  { q:"A train covers 60km in 1hr. Distance in 45 min?", a:"45" },
-];
-
-function TerminalHack({ C }){
-  const [open, setOpen] = useState(false);
-  const [glitching, setGlitching] = useState(false);
-  const bufferRef = useRef([]);
-  const [puzzle] = useState(() => PUZZLES[Math.floor(Math.random()*PUZZLES.length)]);
-  const [input, setInput] = useState("");
-  const [seconds, setSeconds] = useState(30);
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    function onKey(e){
-      const k = e.key.toLowerCase();
-      bufferRef.current = [...bufferRef.current, k].slice(-SECRET_CODE.length);
-      if (bufferRef.current.join("") === SECRET_CODE.join("")) {
-        setGlitching(true);
-        setTimeout(() => { setGlitching(false); setOpen(true); }, 700);
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
-    if (!open || result) return;
-    if (seconds <= 0) { setResult("lost"); return; }
-    const t = setTimeout(() => setSeconds(s => s-1), 1000);
-    return () => clearTimeout(t);
-  }, [open, seconds, result]);
-
-  function submit(){
-    setResult(input.trim().toLowerCase() === puzzle.a.toLowerCase() ? "won" : "lost");
-  }
-  function close(){
-    setOpen(false); setResult(null); setInput(""); setSeconds(30); bufferRef.current = [];
-  }
-
-  return (
-    <>
-      {glitching && <div className="glitch-flash fixed inset-0 z-[200] bg-white mix-blend-difference" />}
-      {open && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-6 backdrop-blur-sm">
-          <div className="font-mono-cyber w-full max-w-md rounded-xl border p-6 text-sm" style={{ borderColor:C.cyan, background:"#020010", boxShadow:`0 0 40px ${C.cyan}55` }}>
-            <div className="mb-3 flex items-center justify-between" style={{ color:C.cyan }}>
-              <span className="flex items-center gap-2"><Icon size={14}>⌨️</Icon> ROOT ACCESS — ABHA::TERMINAL</span>
-              <button onClick={close} aria-label="Close"><Icon size={16}>✕</Icon></button>
-            </div>
-            {result === null && (
-              <>
-                <p className="mb-2 text-white/70">&gt; secret sequence accepted.</p>
-                <p className="mb-2 text-white/70">&gt; solve to decrypt CYBER-SCHOLAR badge:</p>
-                <p className="mb-4 text-lg text-white">{puzzle.q}</p>
-                <input autoFocus value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()}
-                  className="mb-3 w-full rounded border bg-black/60 px-3 py-2 text-white outline-none" style={{ borderColor:C.panelBorder }} placeholder="answer_" />
-                <div className="flex items-center justify-between">
-                  <span style={{ color: seconds<=10?C.red:"white" }}>{seconds}s remaining</span>
-                  <button onClick={submit} className="rounded-full px-4 py-1.5 text-black" style={{ background:C.cyan }}>DECRYPT</button>
-                </div>
-              </>
-            )}
-            {result === "won" && (
-              <div className="text-center">
-                <p className="mb-2 text-lg" style={{ color:C.cyan }}>ACCESS GRANTED</p>
-                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
-                <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor:C.cyan, color:C.cyan }}>CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background:C.cyan }}>CLOSE</button>
-              </div>
-            )}
-            {result === "lost" && (
-              <div className="text-center">
-                <p className="mb-2 text-lg" style={{ color:C.red }}>CONNECTION LOST</p>
-                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background:C.red }}>CLOSE</button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-function ZeroGravityVoid({ C, onClose }){
-  const targets = [
-    { id:"p", letter:"P", tx:20, ty:50 }, { id:"a", letter:"A", tx:32, ty:50 },
-    { id:"g", letter:"G", tx:44, ty:50 }, { id:"e", letter:"E", tx:56, ty:50 },
-    { id:"4", letter:"4", tx:68, ty:50 }, { id:"0", letter:"0", tx:80, ty:50 },
-  ];
-  const [pieces, setPieces] = useState(targets.map(t => ({ ...t, x:10+Math.random()*80, y:10+Math.random()*30, placed:false })));
-  const [repaired, setRepaired] = useState(false);
-  const dragRef = useRef(null);
-
-  function onPointerDown(e, id){ 
-    e.target.setPointerCapture(e.pointerId);
-    dragRef.current = { id, pointerId: e.pointerId }; 
-  }
-  
-  function onPointerMove(e){
-    if (!dragRef.current) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setPieces(prev => prev.map(p => p.id === dragRef.current.id ? { ...p, x, y } : p));
-  }
-  
-  function onPointerUp(e){
-    if (!dragRef.current) return;
-    try { e.target.releasePointerCapture(dragRef.current.pointerId); } catch(err){}
-    const id = dragRef.current.id;
-    setPieces(prev => {
-      const next = prev.map(p => {
-        if (p.id !== id) return p;
-        const dist = Math.hypot(p.x - p.tx, p.y - p.ty);
-        return dist < 8 ? { ...p, x: p.tx, y: p.ty, placed: true } : p;
-      });
-      if (next.every(p => p.placed)) setRepaired(true);
-      return next;
-    });
-    dragRef.current = null;
-  }
-
-  return (
-    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black p-6">
-      <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color:C.red }}>404 — GRAVITY OFFLINE. Drag each glyph back into its slot to repair the page.</p>
-      <div className="relative h-72 w-full max-w-xl touch-none select-none rounded-xl border" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)", touchAction: "none" }}
-        onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}>
-        {targets.map(t => (
-          <div key={t.id} className="font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded border border-dashed text-white/20" style={{ left:`${t.tx}%`, top:`${t.ty}%`, borderColor:C.panelBorder }}>{t.letter}</div>
-        ))}
-        {pieces.map(p => (
-          <button key={p.id} onPointerDown={(e) => onPointerDown(e, p.id)}
-            className={`font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`}
-            style={{ left:`${p.x}%`, top:`${p.y}%`, borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white", transition:p.placed?"left 0.1s, top 0.1s":"none", touchAction: "none" }}>
-            {p.letter}
-          </button>
-        ))}
-      </div>
-      {repaired ? (
-        <div className="mt-6 max-w-md rounded-xl border p-5 text-center" style={{ borderColor:C.cyan, background:C.panel }}>
-          <p className="mb-2 font-mono-cyber text-sm" style={{ color:C.cyan }}>PAGE REPAIRED</p>
-          <p className="mb-4 text-sm text-white/80">Secret stash unlocked: quick revision notes for English, Maths &amp; Computer are waiting at ABHA Academy — ask your teacher for the "404 Repair" handout.</p>
-          <button onClick={onClose} className="rounded-full px-5 py-2 text-black" style={{ background:C.cyan }}>RETURN TO SITE</button>
-        </div>
-      ) : (
-        <button onClick={onClose} className="mt-6 font-mono-cyber text-xs text-white/50 underline">skip / close</button>
-      )}
-    </div>
-  );
-}
-
-function useAmbientTone(active){
-  const ctxRef = useRef(null);
-  useEffect(() => {
-    if (!active) { if (ctxRef.current){ ctxRef.current.ctx.close(); ctxRef.current=null; } return; }
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioCtx();
-      const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator();
-      osc1.frequency.value = 110; osc2.frequency.value = 114;
-      const gain = ctx.createGain(); gain.gain.value = 0.025;
-      osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
-      osc1.start(); osc2.start();
-      ctxRef.current = { ctx, osc1, osc2 };
-    } catch(err){}
-    return () => { if (ctxRef.current){ try{ ctxRef.current.ctx.close(); }catch(e){} ctxRef.current=null; } };
-  }, [active]);
-}
-
-function FocusHealthBar({ active, C }){
-  const [seconds, setSeconds] = useState(0);
-  const CAP = 25*60;
-  useEffect(() => {
-    if (!active) { setSeconds(0); return; }
-    const id = setInterval(() => { if (document.visibilityState==="visible") setSeconds(s=>Math.min(s+1,CAP)); }, 1000);
-    return () => clearInterval(id);
-  }, [active]);
-  if (!active) return null;
-  const pct = (seconds/CAP)*100;
-  const mm = String(Math.floor(seconds/60)).padStart(2,"0");
-  const ss = String(seconds%60).padStart(2,"0");
-  return (
-    <div className="font-mono-cyber fixed left-1/2 top-4 z-50 w-64 -translate-x-1/2 rounded-full border px-4 py-2 text-[10px]" style={{ borderColor:C.panelBorder, background:"rgba(0,0,0,0.6)" }}>
-      <div className="mb-1 flex justify-between text-white/60"><span>FOCUS HEALTH</span><span>{mm}:{ss}</span></div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full" style={{ width:`${pct}%`, background:C.cyan, transition:"width 1s linear" }} /></div>
-    </div>
-  );
-}
-
-function MidnightNotes({ C }){
-  const tips = [
-    "Tables trick: for 9x, hold up 10 fingers, fold the nth finger — fingers before = tens, after = units.",
-    "Spelling trick: 'because' = Big Elephants Can Always Understand Small Elephants.",
-    "Typing trick: rest fingers on ASDF / JKL; — home row — to type without looking down.",
-  ];
-  return (
-    <section className="reveal in relative z-10 mx-auto max-w-3xl px-6 py-16">
-      <div className="rounded-2xl border p-6" style={{ borderColor:C.panelBorder, background:C.panel }}>
-        <p className="font-mono-cyber mb-3 text-xs tracking-widest" style={{ color:C.red }}>MIDNIGHT SNACKS — VISIBLE ONLY LATE NIGHT</p>
-        <ul className="space-y-2 text-sm text-white/80">{tips.map((t,i)=><li key={i}>• {t}</li>)}</ul>
-      </div>
-    </section>
-  );
-}
-
-function NightOwlBanner({ nightMode }){
-  const [show, setShow] = useState(false);
-  useEffect(() => { if (nightMode){ setShow(true); const t=setTimeout(()=>setShow(false),3200); return ()=>clearTimeout(t); } }, [nightMode]);
-  if (!show) return null;
-  return (
-    <div className="glitch-flash fixed inset-0 z-[190] flex items-center justify-center bg-black/95">
-      <p className="font-mono-cyber text-center text-sm text-pink-300">Late night dedication detected.<br/>Accessing midnight protocols<span className="caret">_</span></p>
-    </div>
-  );
-}
-
-function ControlDock({ C, nightMode, setNightMode, syncMode, setSyncMode, setShowVoid }){
-  useAmbientTone(syncMode);
-  return (
-    <>
-      <FocusHealthBar active={syncMode} C={C} />
-      <div className="font-mono-cyber fixed bottom-6 left-6 z-50 flex flex-col gap-2 text-[10px]">
-        <button onClick={()=>setSyncMode(s=>!s)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
-          style={{ borderColor:syncMode?C.cyan:C.panelBorder, background:syncMode?`${C.cyan}22`:"rgba(0,0,0,0.4)", color:syncMode?C.cyan:"white" }}>
-          <Icon size={12}>🎚️</Icon> NEURAL SYNC {syncMode?"ON":"OFF"}
-        </button>
-        <button onClick={()=>setNightMode(n=>!n)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
-          style={{ borderColor:nightMode?C.red:C.panelBorder, background:nightMode?`${C.red}22`:"rgba(0,0,0,0.4)", color:nightMode?C.red:"white" }}>
-          <Icon size={12}>🌙</Icon> NIGHT OWL PREVIEW
-        </button>
-        <button onClick={()=>setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70" style={{ borderColor:C.panelBorder, background:"rgba(0,0,0,0.4)" }}>
-          <Icon size={12}>↺</Icon> SIMULATE 404 VOID
-        </button>
-      </div>
-    </>
-  );
-}
-
-function BootSequenceHero({ C, syncMode, onEnroll }){
-  const bootLines = [
-    "> initializing abha academy neural link...",
-    "> authenticating local node — holambi kalan, delhi",
-    "> loading curriculum modules: english / maths / computer",
-    "> zero-cost protocol confirmed — no fees, ever",
-    "> connection established.",
-  ];
-  const [visibleLines, setVisibleLines] = useState(0);
-  const [booted, setBooted] = useState(false);
-  useEffect(() => {
-    if (visibleLines < bootLines.length){ const t=setTimeout(()=>setVisibleLines(v=>v+1),380); return ()=>clearTimeout(t); }
-    else { const t=setTimeout(()=>setBooted(true),400); return ()=>clearTimeout(t); }
-  }, [visibleLines]);
-
-  return (
-    <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24">
-      <div className="font-mono-cyber absolute left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 text-xs sm:text-sm" style={{ color:C.cyan, opacity:booted?0:1, pointerEvents:booted?"none":"auto" }}>
-        {bootLines.slice(0,visibleLines).map((line,i)=>(<p key={i} className="mb-1.5 leading-relaxed">{line}{i===visibleLines-1 && <span className="ml-1 caret">▍</span>}</p>))}
-      </div>
-      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center transition-all duration-1000" style={{ opacity:booted?1:0, transform:booted?"translateY(0)":"translateY(24px)" }}>
+    <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24 pt-32">
+      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center">
         <div className="font-mono-cyber mb-6 flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] tracking-wide" style={{ borderColor:C.panelBorder, background:C.panel, color:C.cyan }}>
           <Icon size={12}>📶</Icon> NEURAL LINK ACTIVE — FREE EVENING ACCESS
         </div>
         <h1 className="relative select-none text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-          {!syncMode && (<>
-            <span className="glitch-layer absolute inset-0" style={{ color:C.red, animationDelay:"0.15s", opacity:0.6 }} aria-hidden="true">ABHA ACADEMY</span>
-            <span className="glitch-layer absolute inset-0" style={{ color:C.cyan, animationDelay:"0.3s", opacity:0.6 }} aria-hidden="true">ABHA ACADEMY</span>
-          </>)}
           <span className="relative bg-clip-text text-transparent" style={{ backgroundImage:`linear-gradient(120deg, #ffffff, ${C.cyan})` }}>ABHA ACADEMY</span>
         </h1>
-        <p className="font-mono-cyber mt-5 text-sm tracking-[0.3em]" style={{ color:`${C.purple}cc` }}>EVENING PROTOCOL · 18:00 — 22:00 · CLASS 0—8</p>
+        <p className="font-mono-cyber mt-5 text-sm tracking-[0.3em]" style={{ color:`${C.purple}cc` }}>EVENING PROTOCOL · 18:00 — 22:00</p>
         <div className="float-med relative mt-12 max-w-xl rounded-3xl border p-8 backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:C.panel }}>
           <div className="absolute -inset-px -z-10 rounded-3xl opacity-40 blur-lg" style={{ background:`linear-gradient(135deg, ${C.cyan}, ${C.purple})` }} />
           <p className="text-base leading-relaxed text-white/80">A free, evening learning node for children in Class 0 to 8 — English, Maths and Computer fundamentals, taught in person, at zero cost.</p>
-          
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="#skill-tree" className="font-mono-cyber inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10" style={{ borderColor:C.panelBorder }}>
-              INSPECT SKILL TREE
-            </a>
-            <button onClick={onEnroll} className="font-mono-cyber inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition-transform hover:scale-105" style={{ background:`linear-gradient(120deg, ${C.cyan}, ${C.purple})` }}>
-              INITIATE ENROLLMENT <Icon size={16}>›</Icon>
+            <button onClick={onEnroll} className="font-mono-cyber inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-black transition-transform active:scale-95" style={{ background:`linear-gradient(120deg, ${C.cyan}, ${C.purple})`, boxShadow:`0 0 25px ${C.purple}55` }}>
+              INITIATE ENROLLMENT 
             </button>
           </div>
-          
-          <p className="font-mono-cyber mt-5 text-[10px] text-white/40">psst — type ABHA2086 anywhere on this page.</p>
         </div>
       </div>
     </section>
@@ -502,174 +519,98 @@ function BootSequenceHero({ C, syncMode, onEnroll }){
 
 function SkillTree({ C }){
   const SKILLS = [
-    { id:"core", label:"FOUNDATION CORE", emoji:"🧠", x:50, y:50, color:C.purple, desc:"The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
-    { id:"english", label:"ENGLISH", emoji:"📖", x:18, y:20, color:C.cyan, desc:"Reading, handwriting and spoken confidence — built through stories, not just textbooks." },
-    { id:"maths", label:"MATHEMATICS", emoji:"🔢", x:82, y:20, color:C.red, desc:"Tables, arithmetic and logical thinking, practised until the basics are genuinely secure." },
-    { id:"computer", label:"COMPUTER BASICS", emoji:"💻", x:50, y:88, color:C.cyan, desc:"Typing, mouse and keyboard fluency, and the digital skills every child will need going forward." },
+    { id:"core", label:"FOUNDATION CORE", emoji:"🧠", x:50, y:50, color:C.purple },
+    { id:"english", label:"ENGLISH", emoji:"📖", x:18, y:20, color:C.cyan },
+    { id:"maths", label:"MATHEMATICS", emoji:"🔢", x:82, y:20, color:C.red },
+    { id:"computer", label:"COMPUTER BASICS", emoji:"💻", x:50, y:88, color:C.cyan },
   ];
   const EDGES = [["core","english"],["core","maths"],["core","computer"]];
-  const [active, setActive] = useState(null);
-  const [revealed, setRevealed] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(entries=>entries.forEach(e=>e.isIntersecting&&setRevealed(true)), { threshold:0.2 });
-    obs.observe(el); return ()=>obs.disconnect();
-  }, []);
   const findSkill = id => SKILLS.find(s=>s.id===id);
 
   return (
-    <section id="skill-tree" ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-28">
-      <div className={`reveal ${revealed?"in":""} mb-16 text-center`}>
+    <section className="relative z-10 mx-auto max-w-5xl px-6 py-16">
+      <div className="mb-16 text-center">
         <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.cyan}b3` }}>CURRICULUM MAP</p>
         <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Not subjects. A network of foundations.</h2>
       </div>
-      <div className={`reveal ${revealed?"in":""} relative mx-auto aspect-square w-full max-w-2xl`}>
+      <div className="relative mx-auto aspect-square w-full max-w-2xl">
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           {EDGES.map(([a,b],i)=>{
-            const from=findSkill(a), to=findSkill(b), isActive=active===a||active===b;
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.6:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s", filter: isActive ? `drop-shadow(0 0 4px ${C.cyan})` : "none" }} />;
+            const from=findSkill(a), to=findSkill(b);
+            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={"rgba(255,255,255,0.12)"} strokeWidth={0.3} />;
           })}
         </svg>
-        {SKILLS.map(skill=>{
-          const isActive = active===skill.id;
-          return (
-            <button key={skill.id} onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>setActive(isActive?null:skill.id)}
-              className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 outline-none" style={{ left:`${skill.x}%`, top:`${skill.y}%` }}>
-              <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
-                style={{ borderColor:skill.color, background:isActive?`${skill.color}22`:"rgba(255,255,255,0.03)", boxShadow:isActive?`0 0 30px ${skill.color}88`:`0 0 12px ${skill.color}33`, transform:isActive?"scale(1.12)":"scale(1)" }}>
-                <Icon size={skill.id==="core"?30:24}>{skill.emoji}</Icon>
+        {SKILLS.map(skill=>(
+            <div key={skill.id} className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2" style={{ left:`${skill.x}%`, top:`${skill.y}%` }}>
+              <span className={`flex items-center justify-center rounded-full border-2 backdrop-blur-md ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`} style={{ borderColor:skill.color, background:`${skill.color}22` }}>
+                <Icon size={24}>{skill.emoji}</Icon>
               </span>
-              <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs">{skill.label}</span>
-            </button>
-          );
-        })}
-      </div>
-      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300" style={{ borderColor:C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0)":"translateY(6px)" }}>
-        <p className="text-sm leading-relaxed text-white/85">{active?findSkill(active).desc:"Hover or tap a node to inspect its module."}</p>
+              <span className="font-mono-cyber text-[10px] tracking-wider text-white/70">{skill.label}</span>
+            </div>
+        ))}
       </div>
     </section>
-  );
-}
-
-function useCountUp(target, active, duration=1400){
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    let start=null, raf;
-    const step = ts => { if(!start) start=ts; const progress=Math.min((ts-start)/duration,1); setValue(Math.round(target*(1-Math.pow(1-progress,3)))); if(progress<1) raf=requestAnimationFrame(step); };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [active, target, duration]);
-  return value;
-}
-
-function ProgressRing({ percent, active, color, label, emoji, suffix="%" }){
-  const radius=42, circumference=2*Math.PI*radius;
-  const displayed = useCountUp(percent, active);
-  const offset = circumference - (displayed/100)*circumference;
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative h-32 w-32">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
-          <circle cx="50" cy="50" r={radius} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={active?offset:circumference} style={{ transition:"stroke-dashoffset 1.4s ease-out", filter:`drop-shadow(0 0 6px ${color})` }} />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Icon size={18} color={color}>{emoji}</Icon>
-          <span className="font-mono-cyber text-xl font-bold text-white">{displayed}{suffix}</span>
-        </div>
-      </div>
-      <p className="font-mono-cyber text-center text-xs tracking-wide text-white/60">{label}</p>
-    </div>
   );
 }
 
 function CyberStats({ C }){
-  const [revealed, setRevealed] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(entries=>entries.forEach(e=>e.isIntersecting&&setRevealed(true)), { threshold:0.3 });
-    obs.observe(el); return ()=>obs.disconnect();
-  }, []);
   return (
-    <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-28">
-      <div className={`reveal ${revealed?"in":""} mb-16 text-center`}>
+    <section className="relative z-10 mx-auto max-w-5xl px-6 py-16 mb-20">
+      <div className="mb-16 text-center">
         <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.purple}b3` }}>SYSTEM TELEMETRY</p>
-        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Read directly from the source.</h2>
       </div>
-      <div className={`reveal ${revealed?"in":""} grid grid-cols-2 gap-10 sm:grid-cols-4`}>
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="FREE — ZERO FEES" emoji="🏅" />
-        <ProgressRing percent={92} active={revealed} color={C.purple} label="ATTENDANCE RATE" emoji="👥" />
-        <ProgressRing percent={80} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" emoji="⏰" />
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" emoji="📡" />
+      <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 text-center">
+        <div><h3 className="text-4xl font-bold" style={{color:C.cyan}}>100%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">FREE FEES</p></div>
+        <div><h3 className="text-4xl font-bold" style={{color:C.purple}}>92%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">ATTENDANCE</p></div>
+        <div><h3 className="text-4xl font-bold" style={{color:C.red}}>80%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">EVENING UPTIME</p></div>
+        <div><h3 className="text-4xl font-bold" style={{color:C.cyan}}>100%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">OFFLINE</p></div>
       </div>
     </section>
   );
 }
 
-function FloatingOrb({ C, syncMode, onEnroll }){
+function BackgroundField({ C }){
+  const particles = Array.from({ length: 12 });
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage:"linear-gradient(rgba(34,230,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,230,255,0.06) 1px, transparent 1px)", backgroundSize:"42px 42px" }} />
+      {particles.map((_, i) => <span key={i} className="absolute rounded-full float-slow" style={{ left:`${(i*37)%100}%`, top:`${(i*53)%100}%`, width:2+(i%3), height:2+(i%3), background:C.cyan, opacity:0.3 }} />)}
+    </div>
+  );
+}
+
+function FloatingOrb({ C, onEnroll }){
   const [open, setOpen] = useState(false);
-  const [annoyed, setAnnoyed] = useState(false);
-  const [shake, setShake] = useState(false);
-  const [challenge, setChallenge] = useState(null);
-  const clickTimes = useRef([]);
-
-  function handleOrbClick(){
-    const now = Date.now();
-    clickTimes.current = [...clickTimes.current, now].filter(t=>now-t<6000);
-    setShake(true); setTimeout(()=>setShake(false),400);
-    if (clickTimes.current.length>=10 && !annoyed){
-      setAnnoyed(true); setChallenge(PUZZLES[Math.floor(Math.random()*PUZZLES.length)]); setOpen(false); return;
-    }
-    if (!annoyed) setOpen(o=>!o);
-  }
-
-  if (syncMode) return null;
-
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-      {open && !annoyed && (
-        <div className="reveal in font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:"rgba(3,0,20,0.85)" }}>
-          <button onClick={()=>{ setOpen(false); onEnroll(); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-white/80 transition-colors hover:bg-white/5"><Icon size={12}>›</Icon> Initiate Enrollment</button>
-          <a href="#skill-tree" className="flex items-center gap-2 rounded-lg px-3 py-2 text-white/80 transition-colors hover:bg-white/5" onClick={()=>setOpen(false)}><Icon size={12}>›</Icon> Inspect Skill Tree</a>
-          <a href="tel:+916394254410" className="flex items-center gap-2 rounded-lg px-3 py-2 text-white/80 transition-colors hover:bg-white/5" onClick={()=>setOpen(false)}><Icon size={12}>›</Icon> Audio Comms (Call)</a>
+      {open && (
+        <div className="font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:"rgba(3,0,20,0.85)" }}>
+          <button onClick={()=>{ setOpen(false); onEnroll(); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5"><Icon size={12}>›</Icon> Initiate Enrollment</button>
         </div>
       )}
-      {annoyed && challenge && (
-        <div className="reveal in font-mono-cyber w-64 rounded-2xl border p-4 text-xs" style={{ borderColor:C.red, background:"rgba(20,0,5,0.9)" }}>
-          <p className="mb-2" style={{ color:C.red }}>Stop playing with the interface. Your exams are coming. Solve this:</p>
-          <p className="mb-3 text-sm text-white">{challenge.q}</p>
-          <AnnoyedAnswer C={C} challenge={challenge} onDone={()=>{ setAnnoyed(false); setChallenge(null); clickTimes.current=[]; }} />
-        </div>
-      )}
-      <button onClick={handleOrbClick} aria-label="Neural link assistant" className={`float-slow pulse-ring relative flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md transition-transform hover:scale-110 ${shake?"shake":""}`}
-        style={{ borderColor:annoyed?C.red:C.cyan, background:annoyed?`radial-gradient(circle at 30% 30%, ${C.red}66, ${C.red}22)`:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)` }}>
-        <Icon size={22} color="#fff">{open && !annoyed ? "✕" : "✨"}</Icon>
+      <button onClick={() => setOpen(!open)} className="pulse-ring flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md active:scale-95" style={{ borderColor:C.cyan, background:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)` }}>
+        <Icon size={22} color="#fff">{open ? "✕" : "✨"}</Icon>
       </button>
     </div>
   );
 }
 
-function AnnoyedAnswer({ C, challenge, onDone }){
-  const [val, setVal] = useState("");
-  const [msg, setMsg] = useState(null);
-  function submit(){
-    const correct = val.trim().toLowerCase() === challenge.a.toLowerCase();
-    setMsg(correct ? "Correct. I'll allow it." : `Wrong. It was ${challenge.a}. Go revise.`);
-    setTimeout(onDone, 1600);
-  }
-  if (msg) return <p style={{ color:C.cyan }}>{msg}</p>;
+function ZeroGravityVoid({ C, onClose }){
   return (
-    <div className="flex gap-2">
-      <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()} className="w-full rounded border bg-black/60 px-2 py-1 text-white outline-none" style={{ borderColor:C.panelBorder }} />
-      <button onClick={submit} className="rounded px-3 text-black" style={{ background:C.red }}>GO</button>
+    <div className="fixed inset-0 z-[800] flex flex-col items-center justify-center bg-black/95 p-6 backdrop-blur-sm">
+      <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color:C.red }}>404 — GRAVITY OFFLINE.</p>
+      <div className="relative h-72 w-full max-w-xl rounded-xl border flex items-center justify-center overflow-hidden" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)" }}>
+         <span className="font-mono-cyber float-fast absolute top-10 left-10 text-4xl font-bold text-white">4</span>
+         <span className="font-mono-cyber float-slow absolute bottom-20 left-1/2 text-4xl font-bold text-white">0</span>
+         <span className="font-mono-cyber float-med absolute top-20 right-20 text-4xl font-bold text-white">4</span>
+      </div>
+      <button onClick={onClose} className="mt-8 font-mono-cyber rounded border px-6 py-2 text-xs text-white hover:bg-white/10" style={{borderColor:C.panelBorder}}>Skip / Close</button>
     </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<AbhaNeuralLink />);
+ReactDOM.createRoot(document.getElementById('neural-root')).render(<AbhaNeuralLink />);
 </script>
+
 </body>
 </html>
