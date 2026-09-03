@@ -54,7 +54,8 @@
 <body>
 <div id="root"></div>
 
-<script type="text/javascript" data-presets="react">
+<!-- Ye wali line wapas text/babel kardi hai -->
+<script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
 
 const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
@@ -212,8 +213,14 @@ function ZeroGravityVoid({ C, onClose }){
   function onPointerMove(e){
     if (!dragRef.current) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX-rect.left)/rect.width)*100;
-    const y = ((e.clientY-rect.top)/rect.height)*100;
+    let clientX, clientY;
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX; clientY = e.clientY;
+    }
+    const x = ((clientX-rect.left)/rect.width)*100;
+    const y = ((clientY-rect.top)/rect.height)*100;
     setPieces(prev => prev.map(p => p.id===dragRef.current.id ? { ...p, x, y } : p));
   }
   function onPointerUp(){
@@ -235,12 +242,13 @@ function ZeroGravityVoid({ C, onClose }){
     <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black p-6">
       <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color:C.red }}>404 — GRAVITY OFFLINE. Drag each glyph back into its slot to repair the page.</p>
       <div className="relative h-72 w-full max-w-xl touch-none select-none rounded-xl border" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)" }}
-        onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}>
+        onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}
+        onTouchMove={onPointerMove} onTouchEnd={onPointerUp}>
         {targets.map(t => (
           <div key={t.id} className="font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded border border-dashed text-white/20" style={{ left:`${t.tx}%`, top:`${t.ty}%`, borderColor:C.panelBorder }}>{t.letter}</div>
         ))}
         {pieces.map(p => (
-          <button key={p.id} onPointerDown={()=>onPointerDown(p.id)}
+          <button key={p.id} onPointerDown={()=>onPointerDown(p.id)} onTouchStart={()=>onPointerDown(p.id)}
             className={`font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`}
             style={{ left:`${p.x}%`, top:`${p.y}%`, borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white", transition:p.placed?"left 0.2s, top 0.2s":"none" }}>
             {p.letter}
