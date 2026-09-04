@@ -24,7 +24,7 @@
 
 <style>
   /* =========================================
-     NORMAL SITE CSS (2026 MODE) - 100% ORIGINAL
+     NORMAL SITE CSS (2026 MODE)
      ========================================= */
   :root{
     --dusk-950:#0d1024; --dusk-900:#12162e; --dusk-800:#1b2140; --dusk-700:#262d52;
@@ -242,7 +242,7 @@
   .quiz-restart{ display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px; border:none;cursor:pointer;font-size:0.95rem; }
 
   /* =========================================
-     PORTAL EFFECT & NEURAL OVERRIDES
+     PORTAL EFFECT & FULL NEURAL OVERRIDES
      ========================================= */
   .time-portal{
     position:fixed; width:20px; height:20px;
@@ -255,10 +255,39 @@
   .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
   @keyframes float-y{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   .float-slow{animation:float-y 6s ease-in-out infinite;}
+  .float-med{animation:float-y 4.2s ease-in-out infinite;}
   .float-fast{animation:float-y 3s ease-in-out infinite;}
+  
+  @keyframes glitch-1{
+    0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);}
+    93%{clip-path:inset(10% 0 60% 0);transform:translate(-2px,0);}
+    95%{clip-path:inset(60% 0 5% 0);transform:translate(2px,0);}
+    97%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,0);}
+  }
+  .glitch-layer{animation:glitch-1 3.4s infinite linear;}
+  
   @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(34,230,255,0.45);}100%{box-shadow:0 0 0 22px rgba(34,230,255,0);}}
   .pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4,0,0.6,1) infinite;}
+  
+  @keyframes dash-flow{to{stroke-dashoffset:-200;}}
+  .flow-line{stroke-dasharray:6 10;animation:dash-flow 3s linear infinite;}
+  
+  @keyframes shake{
+    0%,100%{transform:translate(0,0) rotate(0deg);}
+    20%{transform:translate(-4px,2px) rotate(-3deg);}
+    40%{transform:translate(4px,-2px) rotate(3deg);}
+    60%{transform:translate(-3px,-2px) rotate(-2deg);}
+    80%{transform:translate(3px,2px) rotate(2deg);}
+  }
+  .shake{animation:shake 0.4s ease-in-out;}
+  
   @keyframes glitch-flash{0%{opacity:1;}100%{opacity:0;}}
+  .glitch-flash{animation:glitch-flash 1.4s ease-out forwards;}
+  
+  @keyframes blink{50%{opacity:0;}}
+  .caret{animation:blink 1s step-end infinite;}
+  
+  /* Modern mode specific scroll reveal */
   .cyber-reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease, transform 0.8s ease;}
   .cyber-reveal.in{opacity:1;transform:translateY(0);}
 </style>
@@ -665,7 +694,7 @@
   // --- TIME PORTAL TRANSITION (To 2086) ---
   window.triggerTimeTravel = function(e) {
     e.preventDefault();
-    if(typeof window.setReactActive !== 'function') return; // Fallback ignore if hit unexpectedly
+    if(typeof window.setReactActive !== 'function') return; 
     
     const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : null; const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
     const portal = document.createElement('div'); portal.className = 'time-portal'; portal.style.left = x + 'px'; portal.style.top = y + 'px'; portal.style.marginTop = '-10px'; portal.style.marginLeft = '-10px'; document.body.appendChild(portal);
@@ -692,11 +721,21 @@
 
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (With Zero-Gravity Fix)
+     THE 2086 NEURAL REACT APP (Fully Restored & Fixed)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
 const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
+const NIGHT_COLORS = { void:"#0a0014", panel:"rgba(255,255,255,0.05)", panelBorder:"rgba(255,42,120,0.25)", cyan:"#ff2fa0", purple:"#7c3aed", red:"#ff2954" };
+
+const SECRET_CODE = ["a", "b", "h", "a", "2", "0", "8", "6"];
+const PUZZLES = [
+  { q: "12 x 8 = ?", a: "96" },
+  { q: "Next in sequence: 2, 4, 8, 16, ?", a: "32" },
+  { q: "If today is Monday, what day is it in 10 days?", a: "thursday" },
+  { q: "Binary 101 in decimal = ?", a: "5" },
+  { q: "A train covers 60km in 1hr. Distance in 45 min?", a: "45" },
+];
 
 function Icon({ children, size = 18 }) {
   return <span style={{ fontSize: size, lineHeight: 1, display: "inline-block" }}>{children}</span>;
@@ -704,9 +743,11 @@ function Icon({ children, size = 18 }) {
 
 function AbhaNeuralLink(){
   const [isActive, setIsActive] = useState(false);
+  const [nightMode, setNightMode] = useState(false);
+  const [syncMode, setSyncMode] = useState(false);
   const [showVoid, setShowVoid] = useState(false);
   const [showEnroll, setShowEnroll] = useState(false);
-  const C = COLORS;
+  const C = nightMode ? NIGHT_COLORS : COLORS;
 
   useEffect(() => { 
     window.setReactActive = setIsActive; 
@@ -717,28 +758,31 @@ function AbhaNeuralLink(){
        travelBtn.removeAttribute('disabled');
        travelBtn.title = "Access Neural Link";
     }
+
+    const hour = new Date().getHours();
+    if (hour >= 0 && hour < 5) setNightMode(true);
   }, []);
   
   if(!isActive) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
-      <button onClick={window.returnTo2026} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:"0 0 20px rgba(34,230,255,0.2)" }}>
+    <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
+      <button onClick={window.returnTo2026} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:`0 0 20px ${C.cyan}33` }}>
         ‹ TIME TRAVEL TO 2026
       </button>
 
-      <BackgroundField C={C} />
-      <BootSequenceHero C={C} onEnroll={() => setShowEnroll(true)} />
-      <SkillTree C={C} />
-      <CyberStats C={C} />
-      
-      <div className="font-mono-cyber fixed bottom-6 left-6 z-50 flex flex-col gap-2 text-[10px]">
-        <button onClick={()=>setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70" style={{ borderColor:C.panelBorder, background:"rgba(0,0,0,0.4)" }}>
-          <Icon size={12}>↺</Icon> SIMULATE 404
-        </button>
-      </div>
+      {!syncMode && <BackgroundField C={C} />}
+      <TerminalHack C={C} />
+      <NightOwlBanner nightMode={nightMode} />
 
-      <FloatingOrb C={C} onEnroll={() => setShowEnroll(true)} />
+      <BootSequenceHero C={C} syncMode={syncMode} onEnroll={() => setShowEnroll(true)} />
+      {!syncMode && <SkillTree C={C} />}
+      {!syncMode && <CyberStats C={C} />}
+      {nightMode && !syncMode && <MidnightNotes C={C} />}
+      
+      <ControlDock C={C} nightMode={nightMode} setNightMode={setNightMode} syncMode={syncMode} setSyncMode={setSyncMode} setShowVoid={setShowVoid} />
+      <FloatingOrb C={C} syncMode={syncMode} onEnroll={() => setShowEnroll(true)} />
+      
       {showVoid && <ZeroGravityVoid C={C} onClose={() => setShowVoid(false)} />}
       {showEnroll && <EnrollmentProtocol C={C} onClose={() => setShowEnroll(false)} />}
       
@@ -746,6 +790,104 @@ function AbhaNeuralLink(){
         <p className="font-mono-cyber text-xs tracking-widest text-white/40">NEURAL LINK ACTIVE · CLASS 0-8 SECURE COMMS</p>
       </footer>
     </div>
+  );
+}
+
+function BackgroundField({ C }){
+  const particles = Array.from({ length: 22 });
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage:"linear-gradient(rgba(34,230,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,230,255,0.06) 1px, transparent 1px)", backgroundSize:"42px 42px", maskImage:"radial-gradient(ellipse 70% 60% at 50% 20%, black 40%, transparent 100%)" }} />
+      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-3xl" style={{ background:`radial-gradient(circle, ${C.purple}33, transparent 70%)` }} />
+      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full blur-3xl" style={{ background:`radial-gradient(circle, ${C.cyan}2a, transparent 70%)` }} />
+      {particles.map((_, i) => (
+        <span key={i} className="absolute rounded-full float-slow" style={{ left:`${(i * 37) % 100}%`, top:`${(i * 53) % 100}%`, width:2+(i%3), height:2+(i%3), background:i%3===0?C.cyan:i%3===1?C.purple:C.red, opacity:0.5, animationDelay:`${(i%7)*0.6}s`, animationDuration:`${5+(i%5)}s` }} />
+      ))}
+    </div>
+  );
+}
+
+function TerminalHack({ C }) {
+  const [open, setOpen] = useState(false);
+  const [glitching, setGlitching] = useState(false);
+  const bufferRef = useRef([]);
+  const [puzzle] = useState(() => PUZZLES[Math.floor(Math.random() * PUZZLES.length)]);
+  const [input, setInput] = useState("");
+  const [seconds, setSeconds] = useState(30);
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    function onKey(e) {
+      const k = e.key.toLowerCase();
+      bufferRef.current = [...bufferRef.current, k].slice(-SECRET_CODE.length);
+      if (bufferRef.current.join("") === SECRET_CODE.join("")) {
+        setGlitching(true);
+        setTimeout(() => { setGlitching(false); setOpen(true); }, 700);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (!open || result) return;
+    if (seconds <= 0) { setResult("lost"); return; }
+    const t = setTimeout(() => setSeconds((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [open, seconds, result]);
+
+  function submit() {
+    if (input.trim().toLowerCase() === puzzle.a.toLowerCase()) { setResult("won"); } else { setResult("lost"); }
+  }
+
+  function close() {
+    setOpen(false); setResult(null); setInput(""); setSeconds(30); bufferRef.current = [];
+  }
+
+  return (
+    <>
+      {glitching && <div className="glitch-flash fixed inset-0 z-[200] bg-white mix-blend-difference" />}
+      {open && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-6 backdrop-blur-sm">
+          <div className="font-mono-cyber w-full max-w-md rounded-xl border p-6 text-sm" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 40px ${C.cyan}55` }}>
+            <div className="mb-3 flex items-center justify-between text-cyan-300">
+              <span className="flex items-center gap-2"><Icon size={14}>⌨️</Icon> ROOT ACCESS — ABHA::TERMINAL</span>
+              <button onClick={close} aria-label="Close terminal"><Icon size={16}>✕</Icon></button>
+            </div>
+
+            {result === null && (
+              <>
+                <p className="mb-2 text-white/70">&gt; secret sequence accepted.</p>
+                <p className="mb-2 text-white/70">&gt; solve to decrypt CYBER-SCHOLAR badge:</p>
+                <p className="mb-4 text-lg text-white">{puzzle.q}</p>
+                <input autoFocus value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} className="mb-3 w-full rounded border bg-black/60 px-3 py-2 text-white outline-none" style={{ borderColor: C.panelBorder }} placeholder="answer_" />
+                <div className="flex items-center justify-between">
+                  <span style={{ color: seconds <= 10 ? C.red : "white" }}>{seconds}s remaining</span>
+                  <button onClick={submit} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.cyan }}>DECRYPT</button>
+                </div>
+              </>
+            )}
+
+            {result === "won" && (
+              <div className="text-center">
+                <p className="mb-2 text-lg" style={{ color: C.cyan }}>ACCESS GRANTED</p>
+                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
+                <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor: C.cyan, color: C.cyan }}>CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86</p>
+                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.cyan }}>CLOSE</button>
+              </div>
+            )}
+
+            {result === "lost" && (
+              <div className="text-center">
+                <p className="mb-2 text-lg" style={{ color: C.red }}>CONNECTION LOST</p>
+                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
+                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.red }}>CLOSE</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -807,25 +949,63 @@ function EnrollmentProtocol({ C, onClose }){
   );
 }
 
-function BootSequenceHero({ C, onEnroll }){
+function BootSequenceHero({ C, syncMode, onEnroll }){
+  const bootLines = [
+    "> initializing abha academy neural link...",
+    "> authenticating local node — holambi kalan, delhi",
+    "> loading curriculum modules: english / maths / computer",
+    "> zero-cost protocol confirmed — no fees, ever",
+    "> connection established.",
+  ];
+  const [visibleLines, setVisibleLines] = useState(0);
+  const [booted, setBooted] = useState(false);
+
+  useEffect(() => {
+    if (visibleLines < bootLines.length) {
+      const t = setTimeout(() => setVisibleLines((v) => v + 1), 380);
+      return () => clearTimeout(t);
+    } else {
+      const t = setTimeout(() => setBooted(true), 400);
+      return () => clearTimeout(t);
+    }
+  }, [visibleLines]);
+
   return (
     <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24 pt-32">
-      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center">
+      <div className="font-mono-cyber absolute left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 text-xs sm:text-sm" style={{ color: C.cyan, opacity: booted ? 0 : 1, pointerEvents: booted ? "none" : "auto" }}>
+        {bootLines.slice(0, visibleLines).map((line, i) => (
+          <p key={i} className="mb-1.5 leading-relaxed">
+            {line}{i === visibleLines - 1 && <span className="ml-1 caret">▍</span>}
+          </p>
+        ))}
+      </div>
+
+      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center transition-all duration-1000" style={{ opacity: booted ? 1 : 0, transform: booted ? "translateY(0)" : "translateY(24px)" }}>
         <div className="font-mono-cyber mb-6 flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] tracking-wide" style={{ borderColor:C.panelBorder, background:C.panel, color:C.cyan }}>
           <Icon size={12}>📶</Icon> NEURAL LINK ACTIVE — FREE EVENING ACCESS
         </div>
+        
         <h1 className="relative select-none text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
+          {!syncMode && (
+            <>
+              <span className="glitch-layer absolute inset-0" style={{ color: C.red, animationDelay: "0.15s", opacity: 0.6 }} aria-hidden="true">ABHA ACADEMY</span>
+              <span className="glitch-layer absolute inset-0" style={{ color: C.cyan, animationDelay: "0.3s", opacity: 0.6 }} aria-hidden="true">ABHA ACADEMY</span>
+            </>
+          )}
           <span className="relative bg-clip-text text-transparent" style={{ backgroundImage:`linear-gradient(120deg, #ffffff, ${C.cyan})` }}>ABHA ACADEMY</span>
         </h1>
+        
         <p className="font-mono-cyber mt-5 text-sm tracking-[0.3em]" style={{ color:`${C.purple}cc` }}>EVENING PROTOCOL · 18:00 — 22:00</p>
+        
         <div className="float-med relative mt-12 max-w-xl rounded-3xl border p-8 backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:C.panel }}>
           <div className="absolute -inset-px -z-10 rounded-3xl opacity-40 blur-lg" style={{ background:`linear-gradient(135deg, ${C.cyan}, ${C.purple})` }} />
           <p className="text-base leading-relaxed text-white/80">A free, evening learning node for children in Class 0 to 8 — English, Maths and Computer fundamentals, taught in person, at zero cost.</p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button onClick={onEnroll} className="font-mono-cyber inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-black transition-transform active:scale-95" style={{ background:`linear-gradient(120deg, ${C.cyan}, ${C.purple})`, boxShadow:`0 0 25px ${C.purple}55` }}>
+            <button onClick={onEnroll} className="font-mono-cyber inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-black transition-transform hover:scale-105 active:scale-95" style={{ background:`linear-gradient(120deg, ${C.cyan}, ${C.purple})`, boxShadow:`0 0 25px ${C.purple}55` }}>
               INITIATE ENROLLMENT 
             </button>
           </div>
+          <p className="font-mono-cyber mt-6 text-[10px] text-white/40">psst — type ABHA2086 anywhere on this page.</p>
         </div>
       </div>
     </section>
@@ -834,78 +1014,305 @@ function BootSequenceHero({ C, onEnroll }){
 
 function SkillTree({ C }){
   const SKILLS = [
-    { id:"core", label:"FOUNDATION CORE", emoji:"🧠", x:50, y:50, color:C.purple },
-    { id:"english", label:"ENGLISH", emoji:"📖", x:18, y:20, color:C.cyan },
-    { id:"maths", label:"MATHEMATICS", emoji:"🔢", x:82, y:20, color:C.red },
-    { id:"computer", label:"COMPUTER BASICS", emoji:"💻", x:50, y:88, color:C.cyan },
+    { id:"core", label:"FOUNDATION CORE", emoji:"🧠", x:50, y:50, color:C.purple, desc:"The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
+    { id:"english", label:"ENGLISH", emoji:"📖", x:18, y:20, color:C.cyan, desc:"Reading, handwriting and spoken confidence — built through stories, not just textbooks." },
+    { id:"maths", label:"MATHEMATICS", emoji:"🔢", x:82, y:20, color:C.red, desc:"Tables, arithmetic and logical thinking, practised until the basics are genuinely secure." },
+    { id:"computer", label:"COMPUTER BASICS", emoji:"💻", x:50, y:88, color:C.cyan, desc:"Typing, mouse and keyboard fluency, and the digital skills every child will need going forward." },
   ];
   const EDGES = [["core","english"],["core","maths"],["core","computer"]];
+  const [active, setActive] = useState(null);
+  const [revealed, setRevealed] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.2 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   const findSkill = id => SKILLS.find(s=>s.id===id);
 
   return (
-    <section className="relative z-10 mx-auto max-w-5xl px-6 py-16">
-      <div className="mb-16 text-center">
+    <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16">
+      <div className={`cyber-reveal ${revealed ? "in" : ""} mb-16 text-center`}>
         <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.cyan}b3` }}>CURRICULUM MAP</p>
         <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Not subjects. A network of foundations.</h2>
       </div>
-      <div className="relative mx-auto aspect-square w-full max-w-2xl">
+      
+      <div className={`cyber-reveal ${revealed ? "in" : ""} relative mx-auto aspect-square w-full max-w-2xl`}>
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           {EDGES.map(([a,b],i)=>{
-            const from=findSkill(a), to=findSkill(b);
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={"rgba(255,255,255,0.12)"} strokeWidth={0.3} />;
+            const from=findSkill(a), to=findSkill(b), isActive=active===a||active===b;
+            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.6:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
           })}
         </svg>
-        {SKILLS.map(skill=>(
-            <div key={skill.id} className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2" style={{ left:`${skill.x}%`, top:`${skill.y}%` }}>
-              <span className={`flex items-center justify-center rounded-full border-2 backdrop-blur-md ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`} style={{ borderColor:skill.color, background:`${skill.color}22` }}>
-                <Icon size={24}>{skill.emoji}</Icon>
+        {SKILLS.map(skill=>{
+          const isActive = active===skill.id;
+          return (
+            <button key={skill.id} onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>setActive(isActive?null:skill.id)}
+              className="float-fast absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 outline-none" style={{ left:`${skill.x}%`, top:`${skill.y}%`, animationDelay:`${skill.x%3}s` }}>
+              <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
+                style={{ borderColor:skill.color, background:isActive?`${skill.color}22`:"rgba(255,255,255,0.03)", boxShadow:isActive?`0 0 30px ${skill.color}88`:`0 0 12px ${skill.color}33`, transform:isActive?"scale(1.12)":"scale(1)" }}>
+                <Icon size={skill.id==="core"?30:24}>{skill.emoji}</Icon>
               </span>
-              <span className="font-mono-cyber text-[10px] tracking-wider text-white/70">{skill.label}</span>
-            </div>
-        ))}
+              <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs">{skill.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      
+      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300" style={{ borderColor:C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0)":"translateY(6px)" }}>
+        <p className="text-sm leading-relaxed text-white/85">{active?findSkill(active).desc:"Hover or tap a node to inspect its module."}</p>
       </div>
     </section>
   );
 }
 
-function CyberStats({ C }){
-  return (
-    <section className="relative z-10 mx-auto max-w-5xl px-6 py-16 mb-20">
-      <div className="mb-16 text-center">
-        <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.purple}b3` }}>SYSTEM TELEMETRY</p>
-      </div>
-      <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 text-center">
-        <div><h3 className="text-4xl font-bold" style={{color:C.cyan}}>100%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">FREE FEES</p></div>
-        <div><h3 className="text-4xl font-bold" style={{color:C.purple}}>92%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">ATTENDANCE</p></div>
-        <div><h3 className="text-4xl font-bold" style={{color:C.red}}>80%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">EVENING UPTIME</p></div>
-        <div><h3 className="text-4xl font-bold" style={{color:C.cyan}}>100%</h3><p className="font-mono-cyber text-xs mt-2 text-white/60">OFFLINE</p></div>
-      </div>
-    </section>
-  );
+function useCountUp(target, active, duration = 1400) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    let start = null, raf;
+    const step = (ts) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      setValue(Math.round(target * (1 - Math.pow(1 - progress, 3))));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [active, target, duration]);
+  return value;
 }
 
-function BackgroundField({ C }){
-  const particles = Array.from({ length: 12 });
+function ProgressRing({ percent, active, color, label, emoji, suffix = "%" }) {
+  const radius = 42, circumference = 2 * Math.PI * radius;
+  const displayed = useCountUp(percent, active);
+  const offset = circumference - (displayed / 100) * circumference;
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage:"linear-gradient(rgba(34,230,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,230,255,0.06) 1px, transparent 1px)", backgroundSize:"42px 42px" }} />
-      {particles.map((_, i) => <span key={i} className="absolute rounded-full float-slow" style={{ left:`${(i*37)%100}%`, top:`${(i*53)%100}%`, width:2+(i%3), height:2+(i%3), background:C.cyan, opacity:0.3 }} />)}
+    <div className="flex flex-col items-center gap-4">
+      <div className="relative h-32 w-32">
+        <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
+          <circle cx="50" cy="50" r={radius} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
+            strokeDasharray={circumference} strokeDashoffset={active ? offset : circumference}
+            style={{ transition: "stroke-dashoffset 1.4s ease-out", filter: `drop-shadow(0 0 6px ${color})` }} />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <Icon size={18} color={color}>{emoji}</Icon>
+          <span className="font-mono-cyber mt-1 text-xl font-bold text-white">{displayed}{suffix}</span>
+        </div>
+      </div>
+      <p className="font-mono-cyber text-center text-xs tracking-wide text-white/60">{label}</p>
     </div>
   );
 }
 
-function FloatingOrb({ C, onEnroll }){
+function CyberStats({ C }){
+  const [revealed, setRevealed] = useState(false);
+  const ref = useRef(null);
+  
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16 mb-20">
+      <div className={`cyber-reveal ${revealed ? "in" : ""} mb-16 text-center`}>
+        <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.purple}b3` }}>SYSTEM TELEMETRY</p>
+        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Read directly from the source.</h2>
+      </div>
+      <div className={`cyber-reveal ${revealed ? "in" : ""} grid grid-cols-2 gap-10 sm:grid-cols-4`}>
+        <ProgressRing percent={100} active={revealed} color={C.cyan} label="FREE — ZERO FEES" emoji="🏅" />
+        <ProgressRing percent={92} active={revealed} color={C.purple} label="ATTENDANCE RATE" emoji="👥" />
+        <ProgressRing percent={80} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" emoji="⏰" />
+        <ProgressRing percent={100} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" emoji="📡" />
+      </div>
+    </section>
+  );
+}
+
+function MidnightNotes({ C }) {
+  const tips = [
+    "Tables trick: for 9x, hold up 10 fingers, fold the nth finger — fingers before = tens, after = units.",
+    "Spelling trick: 'because' = Big Elephants Can Always Understand Small Elephants.",
+    "Typing trick: rest fingers on ASDF / JKL; — home row — to type without looking down.",
+  ];
+  return (
+    <section className="cyber-reveal in relative z-10 mx-auto max-w-3xl px-6 py-16">
+      <div className="rounded-2xl border p-6" style={{ borderColor: C.panelBorder, background: C.panel }}>
+        <p className="font-mono-cyber mb-3 text-xs tracking-widest" style={{ color: C.red }}>MIDNIGHT SNACKS — VISIBLE ONLY LATE NIGHT</p>
+        <ul className="space-y-2 text-sm text-white/80">
+          {tips.map((t, i) => <li key={i}>• {t}</li>)}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function NightOwlBanner({ nightMode }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    if (nightMode) {
+      setShow(true);
+      const t = setTimeout(() => setShow(false), 3200);
+      return () => clearTimeout(t);
+    }
+  }, [nightMode]);
+  
+  if (!show) return null;
+  return (
+    <div className="glitch-flash fixed inset-0 z-[190] flex items-center justify-center bg-black/95">
+      <p className="font-mono-cyber text-center text-sm text-pink-300">
+        Late night dedication detected.<br />Accessing midnight protocols<span className="caret">_</span>
+      </p>
+    </div>
+  );
+}
+
+function useAmbientTone(active) {
+  const ctxRef = useRef(null);
+  useEffect(() => {
+    if (!active) {
+      if (ctxRef.current) { ctxRef.current.ctx.close(); ctxRef.current = null; }
+      return;
+    }
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator();
+      osc1.frequency.value = 110; osc2.frequency.value = 114;
+      const gain = ctx.createGain(); gain.gain.value = 0.025;
+      osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+      osc1.start(); osc2.start();
+      ctxRef.current = { ctx, osc1, osc2 };
+    } catch (err) { }
+    return () => {
+      if (ctxRef.current) { try { ctxRef.current.ctx.close(); } catch (e) {} ctxRef.current = null; }
+    };
+  }, [active]);
+}
+
+function FocusHealthBar({ active, C }) {
+  const [seconds, setSeconds] = useState(0);
+  const CAP = 25 * 60;
+  
+  useEffect(() => {
+    if (!active) { setSeconds(0); return; }
+    const id = setInterval(() => {
+      if (document.visibilityState === "visible") setSeconds((s) => Math.min(s + 1, CAP));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [active]);
+  
+  if (!active) return null;
+  
+  const pct = (seconds / CAP) * 100;
+  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const ss = String(seconds % 60).padStart(2, "0");
+  
+  return (
+    <div className="font-mono-cyber fixed left-1/2 top-4 z-50 w-64 -translate-x-1/2 rounded-full border px-4 py-2 text-[10px]" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.6)" }}>
+      <div className="mb-1 flex justify-between text-white/60"><span>FOCUS HEALTH</span><span>{mm}:{ss}</span></div>
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: C.cyan, transition: "width 1s linear" }} />
+      </div>
+    </div>
+  );
+}
+
+function ControlDock({ C, nightMode, setNightMode, syncMode, setSyncMode, setShowVoid }) {
+  useAmbientTone(syncMode);
+  return (
+    <>
+      <FocusHealthBar active={syncMode} C={C} />
+      <div className="font-mono-cyber fixed bottom-6 left-6 z-50 flex flex-col gap-2 text-[10px]">
+        <button onClick={() => setSyncMode((s) => !s)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
+          style={{ borderColor: syncMode ? C.cyan : C.panelBorder, background: syncMode ? `${C.cyan}22` : "rgba(0,0,0,0.4)", color: syncMode ? C.cyan : "white" }}>
+          <Icon size={12}>🎚️</Icon> NEURAL SYNC {syncMode ? "ON" : "OFF"}
+        </button>
+        <button onClick={() => setNightMode((n) => !n)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
+          style={{ borderColor: nightMode ? C.red : C.panelBorder, background: nightMode ? `${C.red}22` : "rgba(0,0,0,0.4)", color: nightMode ? C.red : "white" }}>
+          <Icon size={12}>🌙</Icon> NIGHT OWL PREVIEW
+        </button>
+        <button onClick={() => setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.4)" }}>
+          <Icon size={12}>↺</Icon> SIMULATE 404 VOID
+        </button>
+      </div>
+    </>
+  );
+}
+
+function FloatingOrb({ C, syncMode, onEnroll }){
   const [open, setOpen] = useState(false);
+  const [annoyed, setAnnoyed] = useState(false);
+  const [shake, setShake] = useState(false);
+  const [challenge, setChallenge] = useState(null);
+  const clickTimes = useRef([]);
+
+  function handleOrbClick(){
+    const now = Date.now();
+    clickTimes.current = [...clickTimes.current, now].filter(t=>now-t<6000);
+    setShake(true); setTimeout(()=>setShake(false),400);
+    
+    if (clickTimes.current.length>=10 && !annoyed){
+      setAnnoyed(true); setChallenge(PUZZLES[Math.floor(Math.random()*PUZZLES.length)]); setOpen(false); return;
+    }
+    if (!annoyed) setOpen(o=>!o);
+  }
+
+  if (syncMode) return null;
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-      {open && (
-        <div className="font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:"rgba(3,0,20,0.85)" }}>
-          <button onClick={()=>{ setOpen(false); onEnroll(); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5"><Icon size={12}>›</Icon> Initiate Enrollment</button>
+      {open && !annoyed && (
+        <div className="cyber-reveal in font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:"rgba(3,0,20,0.85)" }}>
+          <button onClick={()=>{ setOpen(false); onEnroll(); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5">
+            <Icon size={12}>›</Icon> Initiate Enrollment
+          </button>
+          <a href="https://wa.me/916394254410" target="_blank" rel="noopener noreferrer" className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5" onClick={()=>setOpen(false)}>
+            <Icon size={12}>›</Icon> WhatsApp Comm
+          </a>
         </div>
       )}
-      <button onClick={() => setOpen(!open)} className="pulse-ring flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md active:scale-95" style={{ borderColor:C.cyan, background:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)` }}>
-        <Icon size={22} color="#fff">{open ? "✕" : "✨"}</Icon>
+      
+      {annoyed && challenge && (
+        <div className="cyber-reveal in font-mono-cyber w-64 rounded-2xl border p-4 text-xs" style={{ borderColor:C.red, background:"rgba(20,0,5,0.9)" }}>
+          <p className="mb-2" style={{ color:C.red }}>Stop playing with the interface. Your exams are coming. Solve this:</p>
+          <p className="mb-3 text-sm text-white">{challenge.q}</p>
+          <AnnoyedAnswer C={C} challenge={challenge} onDone={()=>{ setAnnoyed(false); setChallenge(null); clickTimes.current=[]; }} />
+        </div>
+      )}
+      
+      <button onClick={handleOrbClick} aria-label="Neural link assistant" className={`float-slow pulse-ring relative flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md hover:scale-110 active:scale-95 transition-transform ${shake?"shake":""}`} style={{ borderColor:annoyed?C.red:C.cyan, background:annoyed?`radial-gradient(circle at 30% 30%, ${C.red}66, ${C.red}22)`:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)` }}>
+        <Icon size={22} color="#fff">{open && !annoyed ? "✕" : "✨"}</Icon>
       </button>
+    </div>
+  );
+}
+
+function AnnoyedAnswer({ C, challenge, onDone }){
+  const [val, setVal] = useState("");
+  const [msg, setMsg] = useState(null);
+  
+  function submit(){
+    const correct = val.trim().toLowerCase() === challenge.a.toLowerCase();
+    setMsg(correct ? "Correct. I'll allow it." : `Wrong. It was ${challenge.a}. Go revise.`);
+    setTimeout(onDone, 1600);
+  }
+  
+  if (msg) return <p style={{ color:C.cyan }}>{msg}</p>;
+  
+  return (
+    <div className="flex gap-2">
+      <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()} className="w-full rounded border bg-black/60 px-2 py-1 text-white outline-none" style={{ borderColor:C.panelBorder }} />
+      <button onClick={submit} className="rounded px-3 text-black" style={{ background:C.red }}>GO</button>
     </div>
   );
 }
@@ -913,14 +1320,18 @@ function FloatingOrb({ C, onEnroll }){
 function ZeroGravityVoid({ C, onClose }){
   const targets = [{ id:"p", letter:"P", tx:20, ty:50 }, { id:"a", letter:"A", tx:32, ty:50 }, { id:"g", letter:"G", tx:44, ty:50 }, { id:"e", letter:"E", tx:56, ty:50 }, { id:"4", letter:"4", tx:68, ty:50 }, { id:"0", letter:"0", tx:80, ty:50 }];
   const [pieces, setPieces] = useState(targets.map(t => ({ ...t, x:10+Math.random()*80, y:10+Math.random()*30, placed:false })));
-  const [repaired, setRepaired] = useState(false); const dragRef = useRef(null);
+  const [repaired, setRepaired] = useState(false); 
+  const dragRef = useRef(null);
   
   function onPointerDown(e, id){ e.target.setPointerCapture(e.pointerId); dragRef.current = { id, pointerId: e.pointerId }; }
+  
   function onPointerMove(e){
-    if (!dragRef.current) return; const rect = e.currentTarget.getBoundingClientRect();
+    if (!dragRef.current) return; 
+    const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100, y = ((e.clientY - rect.top) / rect.height) * 100;
     setPieces(prev => prev.map(p => p.id === dragRef.current.id ? { ...p, x, y } : p));
   }
+  
   function onPointerUp(e){
     if (!dragRef.current) return;
     try { e.target.releasePointerCapture(dragRef.current.pointerId); } catch(err){}
@@ -944,8 +1355,13 @@ function ZeroGravityVoid({ C, onClose }){
         ))}
       </div>
       {repaired ? (
-        <div className="mt-6 text-center"><p className="font-mono-cyber text-sm mb-4" style={{ color:C.cyan }}>PAGE REPAIRED</p><button onClick={onClose} className="rounded-full px-5 py-2 text-black" style={{ background:C.cyan }}>RETURN TO SITE</button></div>
-      ) : ( <button onClick={onClose} className="mt-8 font-mono-cyber rounded border px-6 py-2 text-xs text-white hover:bg-white/10" style={{borderColor:C.panelBorder}}>Skip / Close</button> )}
+        <div className="mt-6 text-center">
+          <p className="font-mono-cyber text-sm mb-4" style={{ color:C.cyan }}>PAGE REPAIRED</p>
+          <button onClick={onClose} className="font-mono-cyber rounded-full px-5 py-2 text-black" style={{ background:C.cyan }}>RETURN TO SITE</button>
+        </div>
+      ) : ( 
+        <button onClick={onClose} className="mt-8 font-mono-cyber rounded border px-6 py-2 text-xs text-white hover:bg-white/10" style={{borderColor:C.panelBorder}}>Skip / Close</button> 
+      )}
     </div>
   );
 }
