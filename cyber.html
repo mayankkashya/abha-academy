@@ -143,7 +143,8 @@
     font-size:1.4rem; cursor:pointer; outline:none; transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
     box-shadow:0 0 15px rgba(245,166,35,0.2); position:relative; z-index:10;
   }
-  .time-switch-btn:hover, .time-switch-btn:active{ transform:rotate(-180deg) scale(1.15); box-shadow:0 0 25px rgba(245,166,35,0.6); background:rgba(245,166,35,0.2); }
+  .time-switch-btn:not(:disabled):hover, .time-switch-btn:not(:disabled):active{ transform:rotate(-180deg) scale(1.15); box-shadow:0 0 25px rgba(245,166,35,0.6); background:rgba(245,166,35,0.2); }
+  .time-switch-btn:disabled{ opacity:0.5; cursor:wait; filter:grayscale(0.8); box-shadow:none; }
   
   .strip-item h4{font-family:'Work Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--cream-100);margin-bottom:0.15rem;}
   .strip-item p{font-size:0.86rem;color:var(--cream-muted);}
@@ -353,7 +354,8 @@
     <div class="strip">
       <div class="wrap strip-inner">
         <div class="strip-item">
-          <button type="button" class="time-switch-btn" onclick="triggerTimeTravel(event)" aria-label="Access Neural Link">
+          <!-- Disabled until React Mounts -->
+          <button type="button" id="timeTravelBtn" class="time-switch-btn" disabled onclick="triggerTimeTravel(event)" aria-label="Access Neural Link" title="Establishing Neural Link...">
             <i class="fas fa-clock"></i>
           </button>
           <div><h4>6 PM – 10 PM, every evening</h4><p>Click the clock for a surprise.</p></div>
@@ -663,12 +665,14 @@
   // --- TIME PORTAL TRANSITION (To 2086) ---
   window.triggerTimeTravel = function(e) {
     e.preventDefault();
+    if(typeof window.setReactActive !== 'function') return; // Fallback ignore if hit unexpectedly
+    
     const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : null; const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
     const portal = document.createElement('div'); portal.className = 'time-portal'; portal.style.left = x + 'px'; portal.style.top = y + 'px'; portal.style.marginTop = '-10px'; portal.style.marginLeft = '-10px'; document.body.appendChild(portal);
     if(navigator.vibrate) navigator.vibrate(100);
     setTimeout(() => { portal.style.transform = 'scale(400)'; }, 20);
     setTimeout(() => {
-      if(window.setReactActive) window.setReactActive(true);
+      window.setReactActive(true);
       document.body.style.overflow = 'hidden'; document.getElementById('normal-app').style.display = 'none';
       portal.style.opacity = '0'; setTimeout(() => portal.remove(), 500);
     }, 900);
@@ -704,7 +708,17 @@ function AbhaNeuralLink(){
   const [showEnroll, setShowEnroll] = useState(false);
   const C = COLORS;
 
-  useEffect(() => { window.setReactActive = setIsActive; }, []);
+  useEffect(() => { 
+    window.setReactActive = setIsActive; 
+    
+    // Enable the portal button once React has fully mounted
+    const travelBtn = document.getElementById('timeTravelBtn');
+    if(travelBtn) {
+       travelBtn.removeAttribute('disabled');
+       travelBtn.title = "Access Neural Link";
+    }
+  }, []);
+  
   if(!isActive) return null;
 
   return (
