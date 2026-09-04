@@ -242,25 +242,30 @@
   .quiz-restart{ display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px; border:none;cursor:pointer;font-size:0.95rem; }
 
   /* =========================================
-     PORTAL EFFECTS (DISTINCT ANIMATIONS)
+     PORTAL EFFECTS (SMOOTH TRANSITIONS)
      ========================================= */
   
   /* Modern/Cyber Scanline Portal */
   .cyber-portal {
-    position: fixed; width: 20px; height: 20px;
+    position: fixed; width: 40px; height: 40px;
     background: #030014; border-radius: 50%; z-index: 99998;
-    pointer-events: none; transform: scale(0);
-    box-shadow: 0 0 100px 40px #22e6ff; /* Pure Cyan Glow */
-    transition: transform 0.9s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.4s ease;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    /* Lighter shadow for buttery smooth GPU scaling */
+    box-shadow: 0 0 40px 10px #22e6ff; 
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
+    transform-origin: center center;
   }
 
   /* Old/Classic Flame Portal */
   .warm-portal {
-    position: fixed; width: 20px; height: 20px;
+    position: fixed; width: 40px; height: 40px;
     background: var(--dusk-950); border-radius: 50%; z-index: 999999;
-    pointer-events: none; transform: scale(0);
-    box-shadow: 0 0 100px 40px var(--flame-500); /* Warm Golden/Orange Glow */
-    transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.5s ease;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    box-shadow: 0 0 40px 10px var(--flame-500); 
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
+    transform-origin: center center;
   }
   
   .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
@@ -716,25 +721,36 @@
     e.preventDefault();
     if(typeof window.setReactActive !== 'function') return; 
     
-    const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : null; const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
+    const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : null; 
+    const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); 
+    const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
     
+    // Create pure blue expanding portal
     const portal = document.createElement('div'); 
-    portal.className = 'cyber-portal'; // Uses Pure Cyan CSS
+    portal.className = 'cyber-portal'; 
     portal.style.left = x + 'px'; 
     portal.style.top = y + 'px'; 
-    portal.style.marginTop = '-10px'; 
-    portal.style.marginLeft = '-10px'; 
     document.body.appendChild(portal);
     
+    document.body.style.overflow = 'hidden';
+    
     if(navigator.vibrate) navigator.vibrate(100);
-    setTimeout(() => { portal.style.transform = 'scale(400)'; }, 20);
+    
+    // Force layout reflow before triggering smooth scale
+    void portal.offsetWidth;
+    portal.style.transform = 'translate(-50%, -50%) scale(150)';
+    
     setTimeout(() => {
       window.setReactActive(true);
-      document.body.style.overflow = 'hidden'; 
-      document.getElementById('normal-app').style.display = 'none';
-      portal.style.opacity = '0'; 
-      setTimeout(() => portal.remove(), 500);
-    }, 900);
+      const normalApp = document.getElementById('normal-app');
+      normalApp.style.opacity = '0';
+      
+      setTimeout(() => {
+        normalApp.style.display = 'none';
+        portal.style.opacity = '0'; 
+        setTimeout(() => portal.remove(), 500);
+      }, 100);
+    }, 800);
   };
 
   // --- 2. BACK TO 2026 (WARM FLAME TRANSITION) ---
@@ -743,21 +759,22 @@
     normalApp.style.display = 'block'; 
     normalApp.style.opacity = '0';
     
-    // Use click position or center screen
+    // Use click origin if available
     let x = window.innerWidth / 2;
     let y = window.innerHeight / 2;
     if (e && e.clientX) { x = e.clientX; y = e.clientY; }
 
     const portal = document.createElement('div'); 
-    portal.className = 'warm-portal'; // Uses Warm Orange CSS
+    portal.className = 'warm-portal'; 
     portal.style.left = x + 'px'; 
     portal.style.top = y + 'px'; 
-    portal.style.marginTop = '-10px'; 
-    portal.style.marginLeft = '-10px'; 
     document.body.appendChild(portal);
     
     if(navigator.vibrate) navigator.vibrate(50);
-    setTimeout(() => { portal.style.transform = 'scale(400)'; }, 20);
+    
+    // Force layout reflow
+    void portal.offsetWidth;
+    portal.style.transform = 'translate(-50%, -50%) scale(150)';
     
     setTimeout(() => {
       if(window.setReactActive) window.setReactActive(false);
@@ -771,10 +788,10 @@
 
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Fully Restored & Fixed)
+     THE 2086 NEURAL REACT APP (Fully Restored & Easter Egg Added)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
-const { useState, useEffect, useRef } = React;
+const { useState, useEffect, useRef, useCallback } = React;
 const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
 const NIGHT_COLORS = { void:"#0a0014", panel:"rgba(255,255,255,0.05)", panelBorder:"rgba(255,42,120,0.25)", cyan:"#ff2fa0", purple:"#7c3aed", red:"#ff2954" };
 
@@ -1078,7 +1095,7 @@ function CyberVault({ open, onClose, C }) {
          <p className="mb-4 text-white/80">You have successfully routed power to the Foundation Core.</p>
          <div className="bg-black/50 border rounded p-4 mb-6" style={{borderColor: C.panelBorder}}>
            <p className="text-white/60 mb-3 tracking-widest font-mono-cyber text-[10px]">CLASSIFIED STUDY HACKS [YEAR 2086]:</p>
-           <ul className="pl-4 space-y-3 text-white/90 font-mono-cyber text-xs">
+           <ul className="pl-4 space-y-3 text-white/90 font-mono-cyber text-xs list-disc">
               <li><span style={{color: C.cyan}}>MATHEMATICS:</span> Do not memorize. Understand the pattern. The pattern is everything.</li>
               <li><span style={{color: C.cyan}}>ENGLISH:</span> Vocabulary expands neural bandwidth. Read out loud to sync motor-vocal nodes.</li>
               <li><span style={{color: C.cyan}}>COMPUTER:</span> The keyboard is an extension of your hands. Rest on ASDF/JKL; and do not look down.</li>
@@ -1092,16 +1109,53 @@ function CyberVault({ open, onClose, C }) {
 
 function SkillTree({ C }){
   const SKILLS = [
-    { id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, desc:"The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
-    { id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, desc:"Reading, handwriting and spoken confidence — built through stories, not just textbooks." },
-    { id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.red, desc:"Tables, arithmetic and logical thinking, practised until the basics are genuinely secure." },
-    { id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, desc:"Typing, mouse and keyboard fluency, and the digital skills every child will need going forward." },
+    { 
+      id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, 
+      facts: [
+        "The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts.",
+        "Neural pathways are strengthened through repetition and pattern recognition.",
+        "Cognitive load balancing ensures students absorb concepts at their natural frequency.",
+        "The core synchronises logic and language into a unified problem-solving engine."
+      ]
+    },
+    { 
+      id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, 
+      facts: [
+        "Reading, handwriting and spoken confidence — built through stories, not just textbooks.",
+        "Sub-vocal language processing decrypted through daily syntax parsing.",
+        "Vocabulary acts as the primary interface for real-world data extraction.",
+        "Fluent communication protocols eliminate latency in human-to-human sync."
+      ] 
+    },
+    { 
+      id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.red, 
+      facts: [
+        "Tables, arithmetic and logical thinking, practised until the basics are genuinely secure.",
+        "Algorithmic pattern recognition accelerates mental computation speeds.",
+        "Real-world physics engine calculations rely entirely on this foundational math core.",
+        "Logical sequencing acts as a natural firewall against irrational data streams."
+      ] 
+    },
+    { 
+      id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, 
+      facts: [
+        "Typing, mouse and keyboard fluency, and the digital skills every child will need going forward.",
+        "Direct cybernetic interfacing via QWERTY matrix manipulation.",
+        "Terminal logic sequencing required to navigate the incoming Web 4.0 infrastructure.",
+        "Building digital immunity through fundamental OS navigation and data structure awareness."
+      ] 
+    },
   ];
+  
   const EDGES = [["core","english"],["core","maths"],["core","computer"]];
   const [active, setActive] = useState(null);
+  const [activeFact, setActiveFact] = useState("");
   const [revealed, setRevealed] = useState(false);
+  
+  // NEW EASTER EGG STATE
   const [powered, setPowered] = useState([]);
   const [vaultOpen, setVaultOpen] = useState(false);
+
   const ref = useRef(null);
 
   useEffect(() => {
@@ -1114,7 +1168,15 @@ function SkillTree({ C }){
 
   const findSkill = id => SKILLS.find(s=>s.id===id);
   
+  // Easter Egg & Randomized Fact Logic
   const handleNodeClick = (id) => {
+    // Pick random fact
+    const skill = findSkill(id);
+    const newFact = skill.facts[Math.floor(Math.random() * skill.facts.length)];
+    setActiveFact(newFact);
+    setActive(id);
+
+    // Power Routing Logic
     if (id !== "core") {
        if (powered.includes(id)) {
           setPowered(powered.filter(n => n !== id));
@@ -1126,8 +1188,15 @@ function SkillTree({ C }){
           setVaultOpen(true);
        }
     }
-    setActive(isActive => isActive === id ? null : id);
   };
+
+  const handleNodeHover = (id) => {
+     if(active !== id) {
+       setActive(id);
+       const skill = findSkill(id);
+       setActiveFact(skill.facts[Math.floor(Math.random() * skill.facts.length)]);
+     }
+  }
 
   return (
     <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16">
@@ -1145,8 +1214,10 @@ function SkillTree({ C }){
             const from=findSkill(a), to=findSkill(b);
             const isActiveHover = active===a||active===b;
             const isPowered = powered.includes(a) || powered.includes(b);
+            
             const lineColor = isPowered ? C.cyan : (isActiveHover ? C.cyan : "rgba(255,255,255,0.12)");
             const lineWidth = isPowered ? 1.2 : (isActiveHover ? 0.8 : 0.3);
+            
             return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lineColor} strokeWidth={lineWidth} className={isPowered || isActiveHover ? "flow-line" : ""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
           })}
         </svg>
@@ -1175,7 +1246,7 @@ function SkillTree({ C }){
           
           return (
             <div key={skill.id} className="absolute" style={{ left:`${skill.x}%`, top:`${skill.y}%`, transform: 'translate(-50%, -50%)', zIndex: isActiveHover || isCoreOverload ? 20 : 10 }}>
-               <button onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>handleNodeClick(skill.id)}
+               <button onMouseEnter={()=>handleNodeHover(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>handleNodeClick(skill.id)}
                  className={`float-fast flex flex-col items-center gap-2 outline-none ${animClass}`} style={{ animationDelay:`${skill.x%3}s`, background: 'transparent', border: 'none', cursor: 'pointer' }}>
                  <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
                    style={{ borderColor:ringColor, background:(isActiveHover || isPowered || isCoreOverload)?`${ringColor}33`:"rgba(255,255,255,0.03)", boxShadow:shadow, transform:transformScale }}>
@@ -1190,9 +1261,9 @@ function SkillTree({ C }){
         })}
       </div>
       
-      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300" style={{ borderColor: active ? findSkill(active).color : C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0) scale(1.05)":"translateY(6px) scale(1)", boxShadow: active ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
-        <p className="text-sm leading-relaxed text-white/85">
-          {powered.length === 3 && active === "core" ? "SYSTEM OVERLOAD. CLICK CORE TO ACCESS VAULT." : (active ? findSkill(active).desc : "Hover or click a node to inspect its module.")}
+      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300 min-h-[120px] flex items-center justify-center" style={{ borderColor: active ? findSkill(active).color : C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0) scale(1.05)":"translateY(6px) scale(1)", boxShadow: active ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
+        <p className="text-sm leading-relaxed text-white/85 transition-opacity">
+          {powered.length === 3 && active === "core" ? "SYSTEM OVERLOAD. CLICK CORE TO ACCESS VAULT." : (active ? activeFact : "Hover or click a node to scan its data stream.")}
         </p>
       </div>
     </section>
@@ -1222,7 +1293,7 @@ function ProgressRing({ percent, active, color, label, icon, suffix = "%" }) {
   const offset = circumference - (displayed / 100) * circumference;
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="relative h-32 w-32">
+      <div className="relative h-32 w-32 overflow-visible">
         <svg className="h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
           <circle cx="50" cy="50" r={radius} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
