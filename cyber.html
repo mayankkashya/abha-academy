@@ -51,8 +51,6 @@
   .nav-links{list-style:none;display:flex;gap:1.6rem;}
   .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;display:inline-block;padding:0.5rem 0.2rem;min-height:44px;line-height:1.6;}
   .nav-links a:hover,.nav-links a:focus-visible{color:var(--flame-300);}
-  .nav-links a.nav-pop{animation:nav-bounce 0.42s ease;}
-  @keyframes nav-bounce{ 0%{transform:scale(1);} 35%{transform:scale(1.28) translateY(-3px);color:var(--flame-300);} 60%{transform:scale(0.94);} 100%{transform:scale(1);} }
   
   #google_translate_element{ position:absolute !important; width:1px !important;height:1px !important; overflow:hidden !important;opacity:0 !important; pointer-events:none !important; top:-9999px !important;left:-9999px !important; }
   .goog-te-gadget img{ display:none !important; }
@@ -64,13 +62,10 @@
   .lang-switch{position:relative;}
   .lang-btn{ display:flex;align-items:center;gap:0.5rem; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.2); color:var(--cream-100); font-family:'Work Sans',sans-serif; font-size:0.88rem;font-weight:600; padding:0.55rem 0.9rem;border-radius:999px; cursor:pointer;transition:border-color 0.2s; }
   .lang-btn:hover,.lang-btn:focus-visible{border-color:var(--flame-300);}
-  .lang-btn i.fa-chevron-down{font-size:0.7rem;color:var(--flame-300);transition:transform 0.2s;}
-  .lang-switch.open .lang-btn i.fa-chevron-down{transform:rotate(180deg);}
   .lang-menu{ position:absolute;top:calc(100% + 8px);right:0; min-width:170px; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.14); border-radius:12px; padding:0.4rem; list-style:none; box-shadow:0 14px 34px rgba(0,0,0,0.45); opacity:0;visibility:hidden;transform:translateY(-6px); transition:opacity 0.18s, transform 0.18s, visibility 0.18s; z-index:1100; max-height:280px;overflow-y:auto; }
   .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);}
   .lang-menu li{ padding:0.55rem 0.8rem;border-radius:8px; font-size:0.9rem;color:var(--cream-300); cursor:pointer;transition:background 0.15s, color 0.15s; }
   .lang-menu li:hover{background:rgba(245,166,35,0.12);color:var(--flame-300);}
-  .lang-menu li.active{color:var(--flame-300);font-weight:600;}
 
   @media (max-width:760px){ .nav-links{display:none;} .lang-menu{right:auto;left:0;} }
 
@@ -89,9 +84,6 @@
   .btn-primary{ display:inline-flex;align-items:center;gap:0.6rem; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; padding:0.95rem 1.8rem;border-radius:999px;text-decoration:none;border:none;cursor:pointer; box-shadow:0 8px 24px rgba(245,166,35,0.35); transition:transform 0.25s ease, box-shadow 0.25s ease; }
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,166,35,0.5);}
   .btn-ghost{ display:inline-flex;align-items:center;gap:0.55rem; color:var(--cream-100);text-decoration:none;font-weight:600;font-size:1rem; padding:0.95rem 0.4rem;border-bottom:1px solid rgba(248,241,227,0.3); }
-  .btn-ghost:hover{border-color:var(--flame-300);color:var(--flame-300);}
-
-  .hero-note{margin-top:1.6rem;font-size:0.9rem;color:var(--cream-muted);}
 
   .live-status{ margin-top:1.1rem;display:inline-flex;align-items:center;gap:0.6rem; font-size:0.88rem;font-weight:600;color:var(--cream-300); background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.14); padding:0.55rem 1rem;border-radius:999px; }
   .live-status.is-live{border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.08);color:var(--cream-100);}
@@ -122,15 +114,6 @@
 
   .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1);}
   .reveal.visible{opacity:1;transform:translateY(0);}
-  .reveal-stagger.visible{transition-delay:var(--stagger-delay,0s);}
-
-  .spark{ position:absolute;pointer-events:none; font-size:1.2rem; animation:spark-rise 1.4s ease-out forwards; z-index:50; user-select:none; }
-  @keyframes spark-rise{ 0%{opacity:0;transform:translate(0,0) scale(0.4) rotate(0deg);} 15%{opacity:1;} 100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-140px)) scale(1.1) rotate(var(--rot,90deg));} }
-  .flame-toast{ position:fixed;left:50%;bottom:2.4rem;transform:translateX(-50%) translateY(20px); background:var(--dusk-800); border:1px solid rgba(245,166,35,0.4); color:var(--cream-100); padding:0.9rem 1.6rem;border-radius:999px; font-size:0.95rem;font-weight:600; box-shadow:0 14px 34px rgba(0,0,0,0.5); opacity:0;transition:opacity 0.35s ease, transform 0.35s ease; z-index:2000;pointer-events:none; display:flex;align-items:center;gap:0.5rem; }
-  .flame-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  @media (prefers-reduced-motion:reduce){ .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;} .reveal{opacity:1;transform:none;transition:none;} }
-  :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
 
   .strip{ border-top:1px solid rgba(248,241,227,0.08); border-bottom:1px solid rgba(248,241,227,0.08); background:rgba(255,255,255,0.02); }
   .strip-inner{ max-width:1180px;margin:0 auto;padding:1.6rem 6%; display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between; }
@@ -176,7 +159,6 @@
   .teacher-card{ border:1px solid rgba(248,241,227,0.1); border-radius:var(--radius-lg); padding:2.4rem; background:linear-gradient(160deg, rgba(226,103,59,0.08), rgba(255,255,255,0.02)); }
   .teacher-card .quote-mark{font-family:'Fraunces',serif;font-size:3rem;color:var(--flame-300);line-height:0.6;margin-bottom:1rem;display:block;}
   .teacher-card p{font-size:1.05rem;color:var(--cream-300);}
-  .teacher-card .sign{margin-top:1.4rem;font-weight:600;color:var(--cream-100);font-family:'Fraunces',serif;font-size:1.1rem;}
   .teacher-facts{display:flex;flex-direction:column;gap:1.3rem;}
   .fact{display:flex;gap:1rem;align-items:flex-start;}
   .fact i{color:var(--flame-300);font-size:1.2rem;margin-top:0.15rem;width:22px;}
@@ -196,108 +178,35 @@
   .form-row{margin-bottom:1.25rem;}
   .form-row label{ display:block;font-size:0.82rem;font-weight:600;text-transform:uppercase; letter-spacing:0.05em;color:var(--cream-muted);margin-bottom:0.5rem; }
   .form-row input,.form-row select{ width:100%;padding:0.85rem 1rem; background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.16); border-radius:10px;color:var(--cream-100);font-size:1rem;font-family:'Work Sans',sans-serif; outline:none;transition:border-color 0.25s, box-shadow 0.25s; }
-  .form-row select option{background:var(--dusk-900);}
   .form-row input:focus,.form-row select:focus{ border-color:var(--flame-500); box-shadow:0 0 0 3px rgba(245,166,35,0.18); }
-  .form-row input::placeholder{color:rgba(248,241,227,0.35);}
   .submit-btn{ width:100%;padding:1rem;border:none;border-radius:10px;cursor:pointer; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; transition:transform 0.2s, box-shadow 0.2s; box-shadow:0 6px 18px rgba(245,166,35,0.3); }
   .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(245,166,35,0.45);}
-  .form-foot{margin-top:0.9rem;font-size:0.82rem;color:var(--cream-muted);text-align:center;}
   .form-status{margin-top:1rem;font-size:0.9rem;text-align:center;display:none;}
-  .form-status.show{display:block;}
-
-  .contact-strip{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;margin-top:3rem;}
-  .contact-pill{ display:flex;align-items:center;gap:0.7rem; border:1px solid rgba(248,241,227,0.12); background:rgba(255,255,255,0.02); padding:0.9rem 1.5rem;border-radius:999px; text-decoration:none;color:var(--cream-100);font-size:0.95rem; transition:border-color 0.25s; }
-  .contact-pill:hover{border-color:var(--flame-300);}
-  .contact-pill i{color:var(--flame-300);}
 
   .wa-float{ position:fixed;bottom:1.8rem;right:1.8rem;z-index:900; width:58px;height:58px;border-radius:50%; background:var(--ok-green);color:#fff; display:flex;align-items:center;justify-content:center; font-size:1.6rem;text-decoration:none; box-shadow:0 8px 22px rgba(37,211,102,0.45); transition:transform 0.25s; }
   .wa-float:hover{transform:scale(1.08);}
 
-  footer{ border-top:1px solid rgba(248,241,227,0.08); padding:2.6rem 0; text-align:center;color:var(--cream-muted);font-size:0.88rem; }
-  footer strong{color:var(--cream-300);}
-
-  .quiz-overlay{ position:fixed;inset:0;z-index:3000; background:rgba(9,11,24,0.86); backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px); display:flex;align-items:center;justify-content:center; padding:1.4rem; opacity:0;visibility:hidden; transition:opacity 0.3s ease, visibility 0.3s ease; }
-  .quiz-overlay.show{opacity:1;visibility:visible;}
-  .quiz-card{ width:100%;max-width:440px; background:linear-gradient(165deg, var(--dusk-800), var(--dusk-900)); border:1px solid rgba(245,166,35,0.3); border-radius:var(--radius-lg); padding:1.8rem 1.7rem; box-shadow:0 30px 70px rgba(0,0,0,0.55); transform:translateY(18px) scale(0.97); transition:transform 0.3s ease; max-height:88vh;overflow-y:auto; }
-  .quiz-overlay.show .quiz-card{transform:translateY(0) scale(1);}
-  .quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
-  .quiz-head h3{font-size:1.25rem;color:var(--cream-100);display:flex;align-items:center;gap:0.5rem;}
-  .quiz-close{ background:none;border:none;color:var(--cream-muted);font-size:1.3rem; cursor:pointer;padding:0.2rem 0.5rem;line-height:1;transition:color 0.2s; }
-  .quiz-close:hover{color:var(--flame-300);}
-  .quiz-diyas{display:flex;gap:0.5rem;margin-bottom:1.3rem;}
-  .quiz-diya{font-size:1.3rem;opacity:0.25;transition:opacity 0.3s, transform 0.3s;filter:grayscale(1);}
-  .quiz-diya.lit{opacity:1;filter:grayscale(0);transform:scale(1.15);}
-  .quiz-badge{ display:inline-block;font-size:0.72rem;font-weight:700;text-transform:uppercase; letter-spacing:0.06em;color:var(--dusk-950); background:var(--flame-300);padding:0.25rem 0.6rem;border-radius:999px;margin-bottom:0.8rem; }
-  .quiz-question{font-size:1.08rem;color:var(--cream-100);margin-bottom:1.2rem;line-height:1.5;}
-  .quiz-options{display:flex;flex-direction:column;gap:0.7rem;}
-  .quiz-option{ text-align:left;padding:0.8rem 1rem;border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.14); color:var(--cream-300);font-size:0.98rem;font-family:'Work Sans',sans-serif; cursor:pointer;transition:border-color 0.2s, background 0.2s, transform 0.15s; }
-  .quiz-option:hover{border-color:rgba(245,166,35,0.4);}
-  .quiz-option:active{transform:scale(0.98);}
-  .quiz-option.correct{background:rgba(37,211,102,0.16);border-color:var(--ok-green);color:var(--cream-100);}
-  .quiz-option.wrong{background:rgba(226,103,59,0.16);border-color:var(--ember-500);color:var(--cream-100);}
-  .quiz-option[disabled]{cursor:default;pointer-events:none;}
-  .quiz-result{text-align:center;padding:1rem 0;}
-  .quiz-result h3{font-size:1.4rem;color:var(--flame-300);margin-bottom:0.6rem;}
-  .quiz-result p{color:var(--cream-300);margin-bottom:1.4rem;}
-  .quiz-restart{ display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px; border:none;cursor:pointer;font-size:0.95rem; }
-
   /* =========================================
      HARDWARE-ACCELERATED WIPE TRANSITIONS
-     (Fixes Safari/Chrome Square Glitch)
      ========================================= */
-  
-  .cyber-wipe {
-    position: fixed; inset: 0; z-index: 2147483640;
-    background: #030014; pointer-events: none;
-    clip-path: circle(0px at var(--x) var(--y));
-    transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
-  }
+  .cyber-wipe { position: fixed; inset: 0; z-index: 2147483640; background: #030014; pointer-events: none; clip-path: circle(0px at var(--x) var(--y)); transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease; }
   .cyber-wipe.expand { clip-path: circle(150vmax at var(--x) var(--y)); }
-
-  .cyber-ring {
-    position: fixed; width: 80px; height: 80px;
-    border: 4px solid #22e6ff; border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    box-shadow: 0 0 20px 5px #22e6ff, inset 0 0 20px 5px #22e6ff;
-    z-index: 2147483641; pointer-events: none;
-    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
-  }
+  .cyber-ring { position: fixed; width: 80px; height: 80px; border: 4px solid #22e6ff; border-radius: 50%; transform: translate(-50%, -50%) scale(0); box-shadow: 0 0 20px 5px #22e6ff, inset 0 0 20px 5px #22e6ff; z-index: 2147483641; pointer-events: none; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease; }
   .cyber-ring.expand { transform: translate(-50%, -50%) scale(50); opacity: 0; }
 
-  .warm-wipe {
-    position: fixed; inset: 0; z-index: 2147483640;
-    background: #0d1024; pointer-events: none;
-    clip-path: circle(0px at var(--x) var(--y));
-    transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
-  }
+  .warm-wipe { position: fixed; inset: 0; z-index: 2147483640; background: #0d1024; pointer-events: none; clip-path: circle(0px at var(--x) var(--y)); transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease; }
   .warm-wipe.expand { clip-path: circle(150vmax at var(--x) var(--y)); }
-
-  .warm-ring {
-    position: fixed; width: 80px; height: 80px;
-    border: 4px solid #f5a623; border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    box-shadow: 0 0 20px 5px #f5a623, inset 0 0 20px 5px #f5a623;
-    z-index: 2147483641; pointer-events: none;
-    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
-  }
+  .warm-ring { position: fixed; width: 80px; height: 80px; border: 4px solid #f5a623; border-radius: 50%; transform: translate(-50%, -50%) scale(0); box-shadow: 0 0 20px 5px #f5a623, inset 0 0 20px 5px #f5a623; z-index: 2147483641; pointer-events: none; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease; }
   .warm-ring.expand { transform: translate(-50%, -50%) scale(50); opacity: 0; }
   
   .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
   
-  @keyframes float-y {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
+  @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
   .float-slow { animation: float-y 6s ease-in-out infinite; }
   .float-med { animation: float-y 4.2s ease-in-out infinite; }
   .float-fast { animation: float-y 3s ease-in-out infinite; }
   
-  @keyframes glitch-1{
-    0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);}
-    93%{clip-path:inset(10% 0 60% 0);transform:translate(-2px,0);}
-    95%{clip-path:inset(60% 0 5% 0);transform:translate(2px,0);}
-    97%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,0);}
-  }
+  @keyframes glitch-1{ 0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);} 93%{clip-path:inset(10% 0 60% 0);transform:translate(-2px,0);} 95%{clip-path:inset(60% 0 5% 0);transform:translate(2px,0);} 97%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,0);} }
   .glitch-layer{animation:glitch-1 3.4s infinite linear;}
   
   @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(34,230,255,0.45);}100%{box-shadow:0 0 0 22px rgba(34,230,255,0);}}
@@ -306,16 +215,10 @@
   @keyframes pulse-danger{0%{box-shadow:0 0 0 0 rgba(255,41,84,0.6);}100%{box-shadow:0 0 0 35px rgba(255,41,84,0);}}
   .pulse-danger{animation:pulse-danger 1.5s cubic-bezier(0.4,0,0.6,1) infinite;}
   
-  @keyframes dash-flow{to{stroke-dashoffset:-200;}}
   .flow-line{stroke-dasharray:6 10;animation:dash-flow 3s linear infinite;}
+  @keyframes dash-flow{to{stroke-dashoffset:-200;}}
   
-  @keyframes shake{
-    0%,100%{transform:translate(0,0) rotate(0deg);}
-    20%{transform:translate(-4px,2px) rotate(-3deg);}
-    40%{transform:translate(4px,-2px) rotate(3deg);}
-    60%{transform:translate(-3px,-2px) rotate(-2deg);}
-    80%{transform:translate(3px,2px) rotate(2deg);}
-  }
+  @keyframes shake{ 0%,100%{transform:translate(0,0) rotate(0deg);} 20%{transform:translate(-4px,2px) rotate(-3deg);} 40%{transform:translate(4px,-2px) rotate(3deg);} 60%{transform:translate(-3px,-2px) rotate(-2deg);} 80%{transform:translate(3px,2px) rotate(2deg);} }
   .shake{animation:shake 0.4s ease-in-out;}
   
   @keyframes blink{50%{opacity:0;}}
@@ -324,11 +227,7 @@
   .cyber-reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease, transform 0.8s ease;}
   .cyber-reveal.in{opacity:1;transform:translateY(0);}
 
-  .focus-vignette {
-    position: fixed; inset: 0; pointer-events: none; z-index: 100;
-    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.95) 100%);
-    animation: fadeInFocus 1.5s ease-out;
-  }
+  .focus-vignette { position: fixed; inset: 0; pointer-events: none; z-index: 100; background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.95) 100%); animation: fadeInFocus 1.5s ease-out; }
   @keyframes fadeInFocus { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
@@ -339,9 +238,7 @@
      ======================================================= -->
 <div id="normal-app" style="transition: opacity 0.4s ease;">
   <div class="scroll-progress" id="scrollProgress"></div>
-  <div class="flame-toast" id="flameToast"></div>
   <div class="ambient-particles" id="ambientParticles"></div>
-
   <div class="sky-glow"></div>
   <div class="stars"></div>
 
@@ -355,25 +252,6 @@
           <li><a href="#teacher">About</a></li>
           <li><a href="#enroll">Enroll</a></li>
         </ul>
-        <div class="lang-switch" id="langSwitch">
-          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
-            <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
-          </button>
-          <ul class="lang-menu" id="langMenu" role="listbox">
-            <li role="option" data-lang="en" class="active">English</li>
-            <li role="option" data-lang="hi">हिंदी (Hindi)</li>
-            <li role="option" data-lang="bn">বাংলা (Bengali)</li>
-            <li role="option" data-lang="te">తెలుగు (Telugu)</li>
-            <li role="option" data-lang="mr">मराठी (Marathi)</li>
-            <li role="option" data-lang="ta">தமிழ் (Tamil)</li>
-            <li role="option" data-lang="ur">اردو (Urdu)</li>
-            <li role="option" data-lang="gu">ગુજરાતી (Gujarati)</li>
-            <li role="option" data-lang="kn">ಕನ್ನಡ (Kannada)</li>
-            <li role="option" data-lang="ml">മലയാളം (Malayalam)</li>
-            <li role="option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</li>
-          </ul>
-        </div>
-        <div id="google_translate_element"></div>
       </div>
     </div>
   </header>
@@ -389,8 +267,6 @@
             <a href="#enroll" class="btn-primary"><i class="fas fa-graduation-cap"></i> Enroll your child</a>
             <a href="#schedule" class="btn-ghost">See today's timing →</a>
           </div>
-          <p class="hero-note">No fees. No hidden charges. Just show up.</p>
-          <div class="live-status" id="liveStatus"><span class="live-dot" id="liveDot"></span><span id="liveText">Checking today's schedule…</span></div>
         </div>
 
         <div class="diya-stage">
@@ -400,12 +276,10 @@
               <linearGradient id="lampShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD37A"/><stop offset="1" stop-color="#E2673B"/></linearGradient>
               <linearGradient id="flameOuterGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#3B5B8C"/><stop offset="22%" stop-color="#E2673B"/><stop offset="55%" stop-color="#F5A623"/><stop offset="100%" stop-color="#FFE9B8"/></linearGradient>
               <linearGradient id="flameMidGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#E2673B"/><stop offset="45%" stop-color="#FFC15E"/><stop offset="100%" stop-color="#FFF3D6"/></linearGradient>
-              <filter id="fireTurbulence" x="-80%" y="-80%" width="260%" height="260%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.14" numOctaves="2" seed="6" result="noise"><animate attributeName="baseFrequency" dur="2.6s" values="0.035 0.14;0.05 0.17;0.03 0.12;0.035 0.14" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
-              <filter id="fireTurbulenceSoft" x="-80%" y="-80%" width="260%" height="260%"><feTurbulence type="fractalNoise" baseFrequency="0.05 0.18" numOctaves="2" seed="2" result="noise2"><animate attributeName="baseFrequency" dur="1.8s" values="0.05 0.18;0.07 0.22;0.04 0.15;0.05 0.18" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="noise2" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
             </defs>
             <g id="flameSway" class="ignite-init" style="transform-box: fill-box; transform-origin: 50% 100%;">
-              <path class="flame-outer" filter="url(#fireTurbulence)" d="M120,58 C136,76 148,94 144,112 C141,126 130,134 120,134 C110,134 99,126 96,112 C92,94 104,76 120,58 Z" fill="url(#flameOuterGrad)"/>
-              <path class="flame-mid" filter="url(#fireTurbulenceSoft)" d="M120,76 C129,88 135,99 132,110 C130,119 125,124 120,124 C115,124 110,119 108,110 C105,99 111,88 120,76 Z" fill="url(#flameMidGrad)" opacity="0.92"/>
+              <path class="flame-outer" d="M120,58 C136,76 148,94 144,112 C141,126 130,134 120,134 C110,134 99,126 96,112 C92,94 104,76 120,58 Z" fill="url(#flameOuterGrad)"/>
+              <path class="flame-mid" d="M120,76 C129,88 135,99 132,110 C130,119 125,124 120,124 C115,124 110,119 108,110 C105,99 111,88 120,76 Z" fill="url(#flameMidGrad)" opacity="0.92"/>
               <path class="flame-tip" d="M120,90 C125,97 128,103 126,109 C125,114 122,117 120,117 C118,117 115,114 114,109 C112,103 115,97 120,90 Z" fill="#FFF6E0" opacity="0.95"/>
             </g>
             <circle id="flameHitArea" cx="120" cy="95" r="55" fill="transparent" style="cursor:pointer;"/>
@@ -432,10 +306,6 @@
           <i class="fas fa-hand-holding-heart"></i>
           <div><h4>Zero fees</h4><p>No admission cost, no monthly charge, ever.</p></div>
         </div>
-        <div class="strip-item">
-          <i class="fas fa-language"></i>
-          <div><h4>Explained in your language</h4><p>Switch the site to Hindi and 9 more languages above.</p></div>
-        </div>
       </div>
     </div>
 
@@ -444,7 +314,6 @@
         <div class="section-head">
           <span class="eyebrow">What we teach</span>
           <h2>Three subjects, built up patiently</h2>
-          <p>Every batch starts from where the child actually is — not where the syllabus assumes they are.</p>
         </div>
         <div class="subject-grid">
           <div class="subject-card">
@@ -466,71 +335,20 @@
       </div>
     </section>
 
-    <section id="schedule">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow">Timing</span>
-          <h2>Evening batches, by grade</h2>
-          <p>Classes are grouped by age so every child gets material at the right level.</p>
-        </div>
-        <div class="schedule-wrap">
-          <div class="schedule-scroll">
-            <table>
-              <thead>
-                <tr><th>Grade</th><th>Days</th><th>Time</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Class 0 – 3 (Juniors)</td><td>Mon · Wed · Fri</td><td>6:00 – 7:15 PM</td></tr>
-                <tr><td>Class 4 – 6 (Middle)</td><td>Tue · Thu · Sat</td><td>7:30 – 8:45 PM</td></tr>
-                <tr><td>Class 7 – 8 (Seniors)</td><td>Mon · Wed · Fri</td><td>8:45 – 10:00 PM</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="teacher">
-      <div class="wrap teacher">
-        <div class="teacher-card">
-          <span class="quote-mark">&ldquo;</span>
-          <p>I work a regular day job till 5:30. These evening hours are set aside on purpose — because I believe no child should miss out on a strong foundation just because their family can't afford tuition.</p>
-          <p class="sign">— Founder, ABHA Academy</p>
-        </div>
-        <div class="teacher-facts">
-          <div class="fact">
-            <i class="fas fa-briefcase"></i>
-            <div><h4>A teacher who shows up daily</h4><p>Classes are taught in person, every evening, without exception.</p></div>
-          </div>
-          <div class="fact">
-            <i class="fas fa-users"></i>
-            <div><h4>Small, focused batches</h4><p>Grouped by grade so lessons stay relevant to each child.</p></div>
-          </div>
-          <div class="fact">
-            <i class="fas fa-hands-helping"></i>
-            <div><h4>Built for the neighbourhood</h4><p>A local, free initiative — not a franchise or a paid course.</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section id="enroll">
       <div class="wrap">
         <div class="section-head">
           <span class="eyebrow">Join us</span>
           <h2>Enroll your child</h2>
-          <p>Fill in a few details below, or call/WhatsApp directly — whichever is easier for you.</p>
         </div>
 
         <div class="enroll-panel">
           <div class="enroll-side">
             <h3>Why families choose ABHA</h3>
-            <p>A steady, honest option for foundational learning — close to home, and free of cost.</p>
             <ul>
               <li><i class="fas fa-check-circle"></i> No fees at any point</li>
               <li><i class="fas fa-check-circle"></i> Evening batches that fit school hours</li>
               <li><i class="fas fa-check-circle"></i> Grouped by grade, taught in person</li>
-              <li><i class="fas fa-check-circle"></i> Site available in your language</li>
             </ul>
           </div>
           <form class="enroll-form" id="enrollForm">
@@ -556,16 +374,8 @@
               <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number">
             </div>
             <button type="submit" class="submit-btn">Submit registration</button>
-            <p class="form-foot">We'll reply on WhatsApp within a day. No payment is ever required.</p>
             <p class="form-status" id="formStatus"></p>
           </form>
-        </div>
-
-        <div class="contact-strip">
-          <a href="tel:+916394254410" class="contact-pill"><i class="fas fa-phone-alt"></i> +91 63942 54410</a>
-          <a href="mailto:kumarjack084@gmail.com" class="contact-pill"><i class="fas fa-envelope"></i> kumarjack084@gmail.com</a>
-          <a href="https://wa.me/916394254410" target="_blank" rel="noopener" class="contact-pill"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
-          <a href="https://www.google.com/maps/search/?api=1&query=B870+Phase+1+Metro+Vihar+Holambi+Kalan+Delhi" target="_blank" rel="noopener" class="contact-pill"><i class="fas fa-map-marker-alt"></i> B870, Phase 1, Metro Vihar, Delhi</a>
         </div>
       </div>
     </section>
@@ -575,14 +385,8 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
-  <!-- Hidden Quiz Game -->
-  <div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-label="ABHA Quiz Challenge">
-    <div class="quiz-card" id="quizCard"></div>
-  </div>
-
   <footer>
     <p><strong>ABHA Academy</strong> &middot; Free evening classes for Class 0–8</p>
-    <p style="margin-top:0.4rem;">B870, Phase 1, Metro Vihar, Holambi Kalan, Delhi</p>
     <p style="margin-top:0.4rem;">&copy; 2026 ABHA Academy. Every evening, a little more light.</p>
   </footer>
 </div>
@@ -596,40 +400,8 @@
 <!-- =======================================================
      SCRIPTS FOR 2026 LOGIC & HARDWARE-ACCELERATED TRANSITIONS
      ======================================================= -->
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
-  // -- Translate --
-  function googleTranslateElementInit(){
-    new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en', autoDisplay:false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE },'google_translate_element');
-  }
-  (function watchdog(){
-    const kill = () => {
-      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame').forEach(el=>{ el.style.display='none'; el.style.visibility='hidden'; el.style.height='0'; });
-      document.body.style.top='0px'; document.body.style.position='static';
-    };
-    kill(); new MutationObserver(kill).observe(document.documentElement,{attributes:true,childList:true,subtree:true}); setInterval(kill, 400);
-  })();
-
-  const LANG_NAMES = { en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)', mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)', kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)' };
-  function getCookie(name){ const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)')); return match ? decodeURIComponent(match[2]) : null; }
-  function setGoogTransCookie(lang){
-    const domains = [location.hostname, '.' + location.hostname, ''];
-    if(lang === 'en'){ domains.forEach(d=>{ document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' + (d ? (' domain=' + d + ';') : ''); }); }
-    else { const val = '/en/' + lang; document.cookie = 'googtrans=' + val + '; path=/'; document.cookie = 'googtrans=' + val + '; path=/; domain=' + location.hostname; }
-  }
-  function applyLanguage(lang){ setGoogTransCookie(lang); location.reload(); }
-
-  // -- Normal Logic Init --
   document.addEventListener('DOMContentLoaded', function(){
-    const langSwitch = document.getElementById('langSwitch'), langBtn = document.getElementById('langBtn'), langMenu = document.getElementById('langMenu'), langLabel = document.getElementById('langLabel');
-    const savedCookie = getCookie('googtrans'); const savedLang = savedCookie && savedCookie.split('/')[2] ? savedCookie.split('/')[2] : 'en';
-    if (LANG_NAMES[savedLang]) { langLabel.textContent = LANG_NAMES[savedLang]; langMenu.querySelectorAll('li').forEach(li=>{ li.classList.toggle('active', li.getAttribute('data-lang') === savedLang); }); }
-    langBtn.addEventListener('click', function(e){ e.stopPropagation(); const isOpen = langSwitch.classList.toggle('open'); langBtn.setAttribute('aria-expanded', isOpen); });
-    document.addEventListener('click', function(){ langSwitch.classList.remove('open'); langBtn.setAttribute('aria-expanded','false'); });
-    langMenu.querySelectorAll('li').forEach(function(item){
-      item.addEventListener('click', function(e){ e.stopPropagation(); const lang = item.getAttribute('data-lang'); langMenu.querySelectorAll('li').forEach(li=>li.classList.remove('active')); item.classList.add('active'); langLabel.textContent = LANG_NAMES[lang] || 'English'; langSwitch.classList.remove('open'); applyLanguage(lang); });
-    });
-
     const revealEls = document.querySelectorAll('.section-head, .subject-card, .schedule-wrap, .teacher-card, .fact, .enroll-panel, .contact-strip');
     revealEls.forEach(function(el, i){ el.classList.add('reveal', 'reveal-stagger'); el.style.setProperty('--stagger-delay', (i % 4) * 0.09 + 's'); });
     const revealObserver = new IntersectionObserver(function(entries){ entries.forEach(function(entry){ if (entry.isIntersecting){ entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
@@ -639,106 +411,53 @@
     function updateProgress(){ const scrollTop = window.scrollY; const docHeight = document.documentElement.scrollHeight - window.innerHeight; const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0; progressBar.style.width = pct + '%'; }
     window.addEventListener('scroll', updateProgress, { passive: true }); updateProgress();
 
-    const flame = document.getElementById('flameHitArea'), diyaStage = document.querySelector('.diya-stage'), toast = document.getElementById('flameToast');
-    let flameTaps = 0, flameTapTimer = null;
-    let audioCtx = null;
-    function playCrackle(){
-      try{ audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); const duration = 0.35; const bufferSize = audioCtx.sampleRate * duration; const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate); const data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++){ const decay = Math.pow(1 - i / bufferSize, 2.2); const pop = Math.random() < 0.02 ? (Math.random() - 0.5) * 1.4 : 0; data[i] = ((Math.random() * 2 - 1) * 0.35 + pop) * decay; } const noise = audioCtx.createBufferSource(); noise.buffer = buffer; const bandpass = audioCtx.createBiquadFilter(); bandpass.type = 'bandpass'; bandpass.frequency.value = 1800; bandpass.Q.value = 0.7; const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); noise.connect(bandpass); bandpass.connect(gain); gain.connect(audioCtx.destination); noise.start(); } catch(err){ }
-    }
-    function spawnSparks(){
-      const emojis = ['✨','🔥','🪔','⭐'];
-      for (let i = 0; i < 14; i++){ const s = document.createElement('span'); s.className = 'spark'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const dx = (Math.random() - 0.5) * 220; const dy = -(100 + Math.random() * 120); const rot = (Math.random() - 0.5) * 180; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = (46 + (Math.random()-0.5) * 20) + '%'; s.style.top = '35%'; s.style.animationDelay = (Math.random()*0.2) + 's'; diyaStage.appendChild(s); setTimeout(function(){ s.remove(); }, 1700); }
-    }
-    function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2600); }
-    if (flame && diyaStage){ flame.addEventListener('click', function(){ flameTaps++; clearTimeout(flameTapTimer); flameTapTimer = setTimeout(function(){ flameTaps = 0; }, 2200); if (flameTaps >= 5){ flameTaps = 0; spawnSparks(); playCrackle(); showToast("🪔 Ek diya jal gaya — gyaan ki roshni badhti rahegi!"); } }); }
-
-    const flameSwayEl = document.getElementById('flameSway');
-    if (flameSwayEl){ setTimeout(function(){ flameSwayEl.classList.remove('ignite-init'); flameSwayEl.classList.add('igniting'); if (diyaStage) spawnSparks(); setTimeout(function(){ flameSwayEl.classList.remove('igniting'); }, 600); }, 350); }
-
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
-      const starsEl = document.querySelector('.stars'), glowEl = document.querySelector('.sky-glow'); let parallaxTicking = false;
-      document.addEventListener('mousemove', function(e){ if (parallaxTicking) return; parallaxTicking = true; requestAnimationFrame(function(){ const px = (e.clientX / window.innerWidth - 0.5); const py = (e.clientY / window.innerHeight - 0.5); if (starsEl) starsEl.style.transform = 'translate(' + (px*14) + 'px,' + (py*14) + 'px)'; if (glowEl) glowEl.style.transform = 'translate(' + (px*-8) + 'px,' + (py*-8) + 'px)'; parallaxTicking = false; }); });
-      
-      document.querySelectorAll('.subject-card').forEach(function(card){ card.style.transition = 'transform 0.15s ease-out, border-color 0.3s'; card.addEventListener('mousemove', function(e){ const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top; const cx = rect.width/2, cy = rect.height/2; const rotateY = ((x-cx)/cx) * 7; const rotateX = -((y-cy)/cy) * 7; card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-6px)'; }); card.addEventListener('mouseleave', function(){ card.style.transform = ''; }); });
-    }
-
-    if (flameSwayEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      let lastScrollY = window.scrollY, skew = 0, skewVel = 0, stretch = 1, stretchVel = 0;
-      window.addEventListener('scroll', function(){ const currentY = window.scrollY; const delta = currentY - lastScrollY; lastScrollY = currentY; skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35)); stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006)); }, { passive: true });
-      function physicsLoop(){ skewVel += (0 - skew) * 0.16; skewVel *= 0.78; skew += skewVel; skew = Math.max(-10, Math.min(10, skew)); stretchVel += (1 - stretch) * 0.18; stretchVel *= 0.8; stretch += stretchVel; flameSwayEl.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')'; requestAnimationFrame(physicsLoop); } requestAnimationFrame(physicsLoop);
-    }
-
-    window.celebrationBurst = function(){
-      const emojis = ['🪔','✨','🔥','⭐','🎉']; const count = 26;
-      for (let i = 0; i < count; i++){ const s = document.createElement('span'); s.className = 'spark'; s.style.position = 'fixed'; s.style.zIndex='999999'; s.style.fontSize = (1 + Math.random()*0.8) + 'rem'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const startX = Math.random() * window.innerWidth; const dx = (Math.random() - 0.5) * 160; const dy = -(window.innerHeight * 0.35 + Math.random() * window.innerHeight * 0.35); const rot = (Math.random() - 0.5) * 260; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = startX + 'px'; s.style.top = (window.innerHeight * 0.85) + 'px'; s.style.animationDuration = (1.6 + Math.random()*0.8) + 's'; s.style.animationDelay = (Math.random()*0.4) + 's'; document.body.appendChild(s); setTimeout(function(){ s.remove(); }, 2600); }
+    // Burst logic for the React app overload feature
+    window.cyberBurst = function(x, y) {
+      const colors = ['#ff2954', '#22e6ff', '#a855f7', '#ffffff'];
+      for (let i = 0; i < 40; i++) {
+        const s = document.createElement('div');
+        s.style.position = 'fixed';
+        s.style.zIndex = '9999999';
+        const size = Math.random() * 6 + 2;
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        s.style.left = x + 'px';
+        s.style.top = y + 'px';
+        s.style.boxShadow = `0 0 10px ${s.style.backgroundColor}`;
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 50 + Math.random() * 250;
+        const dx = Math.cos(angle) * velocity;
+        const dy = Math.sin(angle) * velocity;
+        s.style.transition = 'transform 0.8s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 0.8s ease-out';
+        document.body.appendChild(s);
+        void s.offsetWidth;
+        s.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 720}deg)`;
+        s.style.opacity = '0';
+        setTimeout(() => s.remove(), 800);
+      }
     };
-
-    // Quiz Logic
-    (function(){
-      const questionBank = [{ subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 }, { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 }, { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 }];
-      const overlay = document.getElementById('quizOverlay'), card = document.getElementById('quizCard'); let questions=[], qIndex=0, score=0;
-      function openQuiz(){ questions=questionBank.sort(()=>Math.random()-0.5).slice(0,3); qIndex=0; score=0; overlay.classList.add('show'); renderQuestion(); }
-      function closeQuiz(){ overlay.classList.remove('show'); }
-      function renderQuestion(){
-        if(qIndex>=questions.length) return renderResult();
-        const item=questions[qIndex]; let opts=''; item.options.forEach((opt,i)=>opts+=`<button class="quiz-option" data-index="${i}">${opt}</button>`);
-        card.innerHTML = `<div class="quiz-head"><h3>🪔 ABHA Quiz</h3><button class="quiz-close" id="quizCloseBtn">&times;</button></div><span class="quiz-badge">${item.subject}</span><div class="quiz-question">${item.q}</div><div class="quiz-options">${opts}</div>`;
-        document.getElementById('quizCloseBtn').addEventListener('click', closeQuiz);
-        card.querySelectorAll('.quiz-option').forEach(btn=>{ btn.addEventListener('click', ()=>{ const chosen=parseInt(btn.getAttribute('data-index')); const allBtns=card.querySelectorAll('.quiz-option'); allBtns.forEach(b=>b.disabled=true); if(chosen===item.correct){btn.classList.add('correct'); score++; if(typeof playCrackle==='function') playCrackle();}else{btn.classList.add('wrong'); allBtns[item.correct].classList.add('correct');} setTimeout(()=>{qIndex++; renderQuestion();}, 900); }); });
-      }
-      function renderResult(){
-        card.innerHTML=`<div class="quiz-head"><h3>Result</h3><button class="quiz-close" id="quizCloseBtn2">&times;</button></div><div class="quiz-result"><h3>${score} / ${questions.length}</h3><p>Badhiya!</p><button class="quiz-restart" id="quizRestartBtn">Play Again</button></div>`;
-        document.getElementById('quizCloseBtn2').addEventListener('click', closeQuiz); document.getElementById('quizRestartBtn').addEventListener('click', openQuiz);
-        if(score===questions.length && window.celebrationBurst) window.celebrationBurst();
-      }
-      overlay.addEventListener('click', e=>{ if(e.target===overlay) closeQuiz(); });
-      const secretSequence = ['english', 'maths', 'computer']; let tapProgress=[], tapResetTimer=null;
-      document.querySelectorAll('.subject-card .icon[data-subject]').forEach(icon=>{ icon.addEventListener('click', ()=>{ const subject=icon.getAttribute('data-subject'); tapProgress.push(subject); clearTimeout(tapResetTimer); tapResetTimer=setTimeout(()=>{tapProgress=[];}, 3000); if(tapProgress.length>secretSequence.length) tapProgress=tapProgress.slice(-secretSequence.length); if(tapProgress.length===secretSequence.length && tapProgress.every((v,i)=>v===secretSequence[i])){ tapProgress=[]; openQuiz(); } }); });
-    })();
-
-    // Live Status
-    (function(){
-      const liveEl = document.getElementById('liveStatus'), dotEl = document.getElementById('liveDot'), textEl = document.getElementById('liveText'); if (!liveEl) return;
-      const batches = [{ name: 'Juniors', days: [1,3,5], start: '18:00', end: '19:15' }, { name: 'Middle', days: [2,4,6], start: '19:30', end: '20:45' }, { name: 'Seniors', days: [1,3,5], start: '20:45', end: '22:00' }];
-      function toMinutes(t){ const parts=t.split(':'); return parseInt(parts[0],10)*60 + parseInt(parts[1],10); }
-      function updateStatus(){
-        const now = new Date(); const day = now.getDay(); const nowMin = now.getHours()*60 + now.getMinutes();
-        for (let i=0; i<batches.length; i++){ const b=batches[i]; if(b.days.indexOf(day)!==-1 && nowMin>=toMinutes(b.start) && nowMin<toMinutes(b.end)){ liveEl.classList.add('is-live'); dotEl.classList.add('pulse'); textEl.textContent='LIVE NOW — '+b.name; return; } }
-        liveEl.classList.remove('is-live'); dotEl.classList.remove('pulse'); textEl.textContent='Check schedule for upcoming batch';
-      }
-      updateStatus(); setInterval(updateStatus, 30000);
-    })();
   });
 
-  // --- Normal Form Submit ---
   const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
   window.ENROLL_SCRIPT_URL = ENROLL_SCRIPT_URL;
-  document.getElementById('enrollForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const status = document.getElementById('formStatus'); const submitBtn = e.target.querySelector('.submit-btn'); submitBtn.textContent = "Submitting...";
-    const formData = new FormData(); formData.append('parentName', document.getElementById('parentName').value); formData.append('childName', document.getElementById('childName').value); formData.append('grade', document.getElementById('grade').value); formData.append('phone', document.getElementById('phone').value);
-    fetch(ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData }).then(() => { status.textContent = "Registration received successfully!"; status.style.color = '#25d366'; status.style.display = 'block'; e.target.reset(); submitBtn.textContent = "Submit registration"; if(window.celebrationBurst) window.celebrationBurst(); });
-  });
 
   // --- 1. TO CYBER MODE (PURE CYAN CLIP-PATH - HARDWARE ACCELERATED) ---
   window.triggerTimeTravel = function(e) {
     e.preventDefault();
     if(typeof window.setReactActive !== 'function') return; 
     
-    // Get absolute click coordinates
     const rect = e.currentTarget.getBoundingClientRect(); 
     const touch = e.touches ? e.touches[0] : null; 
     const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); 
     const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
     
-    // Wipe Overlay (Clip Path completely eliminates blocky shadows)
     const wipe = document.createElement('div');
     wipe.className = 'cyber-wipe';
     wipe.style.setProperty('--x', x + 'px');
     wipe.style.setProperty('--y', y + 'px');
     document.body.appendChild(wipe);
 
-    // Glowing Edge Ring
     const ring = document.createElement('div');
     ring.className = 'cyber-ring';
     ring.style.left = x + 'px';
@@ -748,7 +467,6 @@
     document.body.style.overflow = 'hidden';
     if(navigator.vibrate) navigator.vibrate(100);
     
-    // Force Reflow
     void wipe.offsetWidth;
     wipe.classList.add('expand');
     ring.classList.add('expand');
@@ -806,7 +524,7 @@
 
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Fully Restored + Typewriter Facts)
+     THE 2086 NEURAL REACT APP (Burst/Reassemble Added, Math Cyan)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef, useCallback } = React;
@@ -825,10 +543,8 @@ function FAIcon({ name, size = 18, color }) {
   return <i className={name} style={{ fontSize: size, lineHeight: 1, display: "inline-block", color: color || 'inherit' }}></i>;
 }
 
-// 1. TYPEWRITER EFFECT COMPONENT
 function Typewriter({ text }) {
   const [displayed, setDisplayed] = useState("");
-  
   useEffect(() => {
     setDisplayed("");
     let i = 0;
@@ -836,11 +552,9 @@ function Typewriter({ text }) {
       setDisplayed(text.substring(0, i+1));
       i++;
       if(i >= text.length) clearInterval(interval);
-    }, 15); // Super fast typing
-    
+    }, 15);
     return () => clearInterval(interval);
   }, [text]);
-
   return <span>{displayed}<span className="caret">_</span></span>;
 }
 
@@ -853,13 +567,11 @@ function AbhaNeuralLink(){
 
   useEffect(() => { 
     window.setReactActive = setIsActive; 
-    
     const travelBtn = document.getElementById('timeTravelBtn');
     if(travelBtn) {
        travelBtn.removeAttribute('disabled');
        travelBtn.title = "Access Neural Link";
     }
-
     const hour = new Date().getHours();
     if (hour >= 0 && hour < 5) setNightMode(true);
   }, []);
@@ -879,7 +591,6 @@ function AbhaNeuralLink(){
         </div>
       )}
 
-      {/* Hide elements cleanly during deep focus sync */}
       {!syncMode && (
         <>
           <BackgroundField C={C} />
@@ -983,7 +694,7 @@ function TerminalHack({ C }) {
             {result === "won" && (
               <div className="text-center">
                 <p className="mb-2 text-lg" style={{ color: C.cyan }}>ACCESS GRANTED</p>
-                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
+                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge.</p>
                 <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor: C.cyan, color: C.cyan }}>CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86</p>
                 <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE</button>
               </div>
@@ -992,7 +703,7 @@ function TerminalHack({ C }) {
             {result === "lost" && (
               <div className="text-center">
                 <p className="mb-2 text-lg" style={{ color: C.red }}>CONNECTION LOST</p>
-                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
+                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>.</p>
                 <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.red, border: 'none', cursor: 'pointer' }}>CLOSE</button>
               </div>
             )}
@@ -1066,7 +777,7 @@ function CyberVault({ open, onClose, C }) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-6 backdrop-blur-md">
-      <div className="w-full max-w-lg rounded-xl border p-6 text-sm" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 50px ${C.cyan}44` }}>
+      <div className="w-full max-w-lg rounded-xl border p-6 text-sm transform transition-transform" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 50px ${C.cyan}44`, animation: 'scaleIn 0.3s ease-out' }}>
          <h3 className="font-mono-cyber text-2xl mb-4 glitch-layer" style={{ color: C.cyan }}><FAIcon name="fas fa-lock-open" size={20}/> DATA VAULT UNLOCKED</h3>
          <p className="mb-4 text-white/80">You have successfully routed power to the Foundation Core.</p>
          <div className="bg-black/50 border rounded p-4 mb-6" style={{borderColor: C.panelBorder}}>
@@ -1077,8 +788,9 @@ function CyberVault({ open, onClose, C }) {
               <li><span style={{color: C.cyan}}>COMPUTER:</span> The keyboard is an extension of your hands. Rest on ASDF/JKL; and do not look down.</li>
            </ul>
          </div>
-         <button onClick={onClose} className="w-full font-mono-cyber rounded-full py-3 text-black font-bold active:scale-95 transition-transform hover:scale-105" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>WIPE CACHE & CLOSE</button>
+         <button onClick={onClose} className="w-full font-mono-cyber rounded-full py-3 text-black font-bold active:scale-95 transition-transform hover:scale-105" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>REASSEMBLE CORE & CLOSE</button>
       </div>
+      <style>{`@keyframes scaleIn { from{ transform: scale(0.9); opacity: 0; } to{ transform: scale(1); opacity: 1; } }`}</style>
     </div>
   );
 }
@@ -1087,6 +799,7 @@ function SkillTree({ C }){
   const SKILLS = [
     { 
       id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, 
+      dx: "0px", dy: "0px", rot: "0deg", s: 4, // Shatter offset for Core
       facts: [
         "The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts.",
         "Neural pathways are strengthened through repetition and pattern recognition.",
@@ -1097,6 +810,7 @@ function SkillTree({ C }){
     },
     { 
       id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, 
+      dx: "-200px", dy: "-200px", rot: "-180deg", s: 0, // Shatter offset for English
       facts: [
         "Reading, handwriting and spoken confidence — built through stories, not just textbooks.",
         "Sub-vocal language processing decrypted through daily syntax parsing.",
@@ -1106,7 +820,8 @@ function SkillTree({ C }){
       ] 
     },
     { 
-      id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.red, 
+      id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.cyan, // FIXED: MATH IS NOW CYAN
+      dx: "200px", dy: "-200px", rot: "180deg", s: 0, // Shatter offset for Maths
       facts: [
         "Tables, arithmetic and logical thinking, practised until the basics are genuinely secure.",
         "Algorithmic pattern recognition accelerates mental computation speeds.",
@@ -1117,6 +832,7 @@ function SkillTree({ C }){
     },
     { 
       id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, 
+      dx: "0px", dy: "300px", rot: "90deg", s: 0, // Shatter offset for Computer
       facts: [
         "Typing, mouse and keyboard fluency, and the digital skills every child will need going forward.",
         "Direct cybernetic interfacing via QWERTY matrix manipulation.",
@@ -1134,6 +850,7 @@ function SkillTree({ C }){
   
   const [powered, setPowered] = useState([]);
   const [vaultOpen, setVaultOpen] = useState(false);
+  const [shattered, setShattered] = useState(false); // NEW STATE FOR SHATTER ANIMATION
 
   const ref = useRef(null);
 
@@ -1147,7 +864,16 @@ function SkillTree({ C }){
 
   const findSkill = id => SKILLS.find(s=>s.id===id);
   
-  const handleNodeClick = (id) => {
+  const handleNodeClick = (id, e) => {
+    // Check if triggering Shatter
+    if (id === "core" && powered.length === 3) {
+       const rect = e.currentTarget.getBoundingClientRect();
+       if(window.cyberBurst) window.cyberBurst(rect.left + rect.width/2, rect.top + rect.height/2);
+       setShattered(true);
+       setTimeout(() => setVaultOpen(true), 600);
+       return;
+    }
+
     const skill = findSkill(id);
     const newFact = skill.facts[Math.floor(Math.random() * skill.facts.length)];
     setActiveFact(newFact);
@@ -1159,29 +885,35 @@ function SkillTree({ C }){
        } else {
           setPowered([...powered, id]);
        }
-    } else {
-       if (powered.length === 3) {
-          setVaultOpen(true);
-       }
     }
   };
 
   const handleNodeHover = (id) => {
-     if(active !== id) {
+     if(active !== id && !shattered) {
        setActive(id);
        const skill = findSkill(id);
        setActiveFact(skill.facts[Math.floor(Math.random() * skill.facts.length)]);
      }
   }
 
+  const closeVault = () => {
+    setVaultOpen(false);
+    // Magnetic snap back reassemble effect
+    setTimeout(() => {
+        setShattered(false);
+        setPowered([]);
+        setActive(null);
+    }, 100);
+  }
+
   return (
     <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16">
-      <CyberVault open={vaultOpen} onClose={() => {setVaultOpen(false); setPowered([]);}} C={C} />
+      <CyberVault open={vaultOpen} onClose={closeVault} C={C} />
       
       <div className={`cyber-reveal ${revealed ? "in" : ""} mb-16 text-center`}>
         <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.cyan}b3` }}>CURRICULUM MAP</p>
         <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Not subjects. A network of foundations.</h2>
-        <p className="font-mono-cyber text-xs mt-2 text-white/50">Click nodes to route power to the Foundation Core.</p>
+        <p className="font-mono-cyber text-xs mt-2 text-white/50">Click outer nodes to route power to the Foundation Core.</p>
       </div>
       
       <div className={`cyber-reveal ${revealed ? "in" : ""} relative mx-auto aspect-square w-full max-w-2xl`}>
@@ -1194,7 +926,7 @@ function SkillTree({ C }){
             const lineColor = isPowered ? C.cyan : (isActiveHover ? C.cyan : "rgba(255,255,255,0.12)");
             const lineWidth = isPowered ? 1.2 : (isActiveHover ? 0.8 : 0.3);
             
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lineColor} strokeWidth={lineWidth} className={isPowered || isActiveHover ? "flow-line" : ""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
+            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lineColor} strokeWidth={lineWidth} className={isPowered || isActiveHover ? "flow-line" : ""} style={{ opacity: shattered ? 0 : 1, transition:"opacity 0.3s, stroke 0.3s, stroke-width 0.3s" }} />;
           })}
         </svg>
         {SKILLS.map(skill=>{
@@ -1207,7 +939,7 @@ function SkillTree({ C }){
           let transformScale = "scale(1)";
           let animClass = "";
           
-          if (isCoreOverload) {
+          if (isCoreOverload && !shattered) {
              ringColor = C.red;
              shadow = `0 0 40px ${C.red}aa`;
              transformScale = "scale(1.25)";
@@ -1220,15 +952,26 @@ function SkillTree({ C }){
              }
           }
           
+          // Shatter styles overriding normal state
+          const shatterStyle = shattered ? {
+              transform: `translate(calc(-50% + ${skill.dx}), calc(-50% + ${skill.dy})) rotate(${skill.rot}) scale(${skill.s})`,
+              opacity: 0,
+              filter: 'blur(10px)'
+          } : {
+              transform: 'translate(-50%, -50%) rotate(0deg) scale(1)',
+              opacity: 1,
+              filter: 'blur(0px)'
+          };
+
           return (
-            <div key={skill.id} className="absolute" style={{ left:`${skill.x}%`, top:`${skill.y}%`, transform: 'translate(-50%, -50%)', zIndex: isActiveHover || isCoreOverload ? 20 : 10 }}>
-               <button onMouseEnter={()=>handleNodeHover(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>handleNodeClick(skill.id)}
+            <div key={skill.id} className="absolute transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]" style={{ left:`${skill.x}%`, top:`${skill.y}%`, zIndex: isActiveHover || isCoreOverload ? 20 : 10, ...shatterStyle }}>
+               <button onMouseEnter={()=>handleNodeHover(skill.id)} onMouseLeave={()=>setActive(null)} onClick={(e)=>handleNodeClick(skill.id, e)}
                  className={`float-fast flex flex-col items-center gap-2 outline-none ${animClass}`} style={{ animationDelay:`${skill.x%3}s`, background: 'transparent', border: 'none', cursor: 'pointer' }}>
                  <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
                    style={{ borderColor:ringColor, background:(isActiveHover || isPowered || isCoreOverload)?`${ringColor}33`:"rgba(255,255,255,0.03)", boxShadow:shadow, transform:transformScale }}>
-                   <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={isCoreOverload ? '#fff' : ringColor} />
+                   <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={isCoreOverload && !shattered ? '#fff' : ringColor} />
                  </span>
-                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm transition-all" style={{color: isCoreOverload ? C.red : 'rgba(255,255,255,0.7)', fontWeight: isCoreOverload ? 'bold' : 'normal'}}>
+                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm transition-all" style={{color: isCoreOverload ? C.red : 'rgba(255,255,255,0.7)', fontWeight: isCoreOverload ? 'bold' : 'normal', opacity: shattered ? 0 : 1}}>
                    {isCoreOverload ? "CORE OVERLOAD" : skill.label}
                  </span>
                </button>
@@ -1237,10 +980,11 @@ function SkillTree({ C }){
         })}
       </div>
       
-      {/* 2. DYNAMIC TYPEWRITER EFFECT */}
-      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300 min-h-[120px] flex items-center justify-center" style={{ borderColor: active ? findSkill(active).color : C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0) scale(1.05)":"translateY(6px) scale(1)", boxShadow: active ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
+      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300 min-h-[120px] flex items-center justify-center" style={{ borderColor: active && !shattered ? findSkill(active).color : C.panelBorder, background:C.panel, opacity: (active || shattered) ? 1 : 0.35, transform:(active || shattered) ? "translateY(0) scale(1.05)" : "translateY(6px) scale(1)", boxShadow: active && !shattered ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
         <p className="text-sm leading-relaxed text-white/85 transition-opacity">
-          {powered.length === 3 && active === "core" ? (
+          {shattered ? (
+             <span style={{color: C.cyan}}><Typewriter text="CORE SHATTERED. ACCESSING CLASSIFIED VAULT..." /></span>
+          ) : (powered.length === 3 && active === "core") ? (
              <span style={{color: C.red}}>SYSTEM OVERLOAD. CLICK CORE TO ACCESS VAULT.</span>
           ) : (
              active ? <Typewriter text={activeFact} /> : "Hover or click a node to scan its data stream."
