@@ -33,7 +33,7 @@
     --ok-green:#25d366; --radius-lg:22px; --radius-md:14px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:auto;} /* JS handles smooth scroll now */
   body{ background:var(--dusk-950); color:var(--cream-100); font-family:'Work Sans',sans-serif; line-height:1.65; overflow-x:hidden; -webkit-tap-highlight-color: transparent;}
   h1,h2,h3,.display{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-0.01em; }
   a{color:inherit;} img,svg{display:block;max-width:100%;}
@@ -62,6 +62,8 @@
   .lang-switch{position:relative;}
   .lang-btn{ display:flex;align-items:center;gap:0.5rem; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.2); color:var(--cream-100); font-family:'Work Sans',sans-serif; font-size:0.88rem;font-weight:600; padding:0.55rem 0.9rem;border-radius:999px; cursor:pointer;transition:border-color 0.2s; }
   .lang-btn:hover,.lang-btn:focus-visible{border-color:var(--flame-300);}
+  .lang-btn i.fa-chevron-down{font-size:0.7rem;color:var(--flame-300);transition:transform 0.2s;}
+  .lang-switch.open .lang-btn i.fa-chevron-down{transform:rotate(180deg);}
   .lang-menu{ position:absolute;top:calc(100% + 8px);right:0; min-width:170px; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.14); border-radius:12px; padding:0.4rem; list-style:none; box-shadow:0 14px 34px rgba(0,0,0,0.45); opacity:0;visibility:hidden;transform:translateY(-6px); transition:opacity 0.18s, transform 0.18s, visibility 0.18s; z-index:1100; max-height:280px;overflow-y:auto; }
   .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);}
   .lang-menu li{ padding:0.55rem 0.8rem;border-radius:8px; font-size:0.9rem;color:var(--cream-300); cursor:pointer;transition:background 0.15s, color 0.15s; }
@@ -84,6 +86,9 @@
   .btn-primary{ display:inline-flex;align-items:center;gap:0.6rem; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; padding:0.95rem 1.8rem;border-radius:999px;text-decoration:none;border:none;cursor:pointer; box-shadow:0 8px 24px rgba(245,166,35,0.35); transition:transform 0.25s ease, box-shadow 0.25s ease; }
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,166,35,0.5);}
   .btn-ghost{ display:inline-flex;align-items:center;gap:0.55rem; color:var(--cream-100);text-decoration:none;font-weight:600;font-size:1rem; padding:0.95rem 0.4rem;border-bottom:1px solid rgba(248,241,227,0.3); }
+  .btn-ghost:hover{border-color:var(--flame-300);color:var(--flame-300);}
+
+  .hero-note{margin-top:1.6rem;font-size:0.9rem;color:var(--cream-muted);}
 
   .live-status{ margin-top:1.1rem;display:inline-flex;align-items:center;gap:0.6rem; font-size:0.88rem;font-weight:600;color:var(--cream-300); background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.14); padding:0.55rem 1rem;border-radius:999px; }
   .live-status.is-live{border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.08);color:var(--cream-100);}
@@ -114,6 +119,18 @@
 
   .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1);}
   .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-stagger.visible{transition-delay:var(--stagger-delay,0s);}
+
+  .spark{ position:absolute;pointer-events:none; font-size:1.2rem; animation:spark-rise 1.4s ease-out forwards; z-index:50; user-select:none; }
+  @keyframes spark-rise{ 0%{opacity:0;transform:translate(0,0) scale(0.4) rotate(0deg);} 15%{opacity:1;} 100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-140px)) scale(1.1) rotate(var(--rot,90deg));} }
+  .flame-toast{ position:fixed;left:50%;bottom:2.4rem;transform:translateX(-50%) translateY(20px); background:var(--dusk-800); border:1px solid rgba(245,166,35,0.4); color:var(--cream-100); padding:0.9rem 1.6rem;border-radius:999px; font-size:0.95rem;font-weight:600; box-shadow:0 14px 34px rgba(0,0,0,0.5); opacity:0;transition:opacity 0.35s ease, transform 0.35s ease; z-index:2000;pointer-events:none; display:flex;align-items:center;gap:0.5rem; }
+  .flame-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (prefers-reduced-motion:reduce){ .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;} .reveal{opacity:1;transform:none;transition:none;} }
+  
+  /* FIXED: Focus Outline Bug on Links */
+  a:focus, button:focus { outline: none; }
+  :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
 
   .strip{ border-top:1px solid rgba(248,241,227,0.08); border-bottom:1px solid rgba(248,241,227,0.08); background:rgba(255,255,255,0.02); }
   .strip-inner{ max-width:1180px;margin:0 auto;padding:1.6rem 6%; display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between; }
@@ -159,6 +176,7 @@
   .teacher-card{ border:1px solid rgba(248,241,227,0.1); border-radius:var(--radius-lg); padding:2.4rem; background:linear-gradient(160deg, rgba(226,103,59,0.08), rgba(255,255,255,0.02)); }
   .teacher-card .quote-mark{font-family:'Fraunces',serif;font-size:3rem;color:var(--flame-300);line-height:0.6;margin-bottom:1rem;display:block;}
   .teacher-card p{font-size:1.05rem;color:var(--cream-300);}
+  .teacher-card .sign{margin-top:1.4rem;font-weight:600;color:var(--cream-100);font-family:'Fraunces',serif;font-size:1.1rem;}
   .teacher-facts{display:flex;flex-direction:column;gap:1.3rem;}
   .fact{display:flex;gap:1rem;align-items:flex-start;}
   .fact i{color:var(--flame-300);font-size:1.2rem;margin-top:0.15rem;width:22px;}
@@ -183,8 +201,41 @@
   .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(245,166,35,0.45);}
   .form-status{margin-top:1rem;font-size:0.9rem;text-align:center;display:none;}
 
+  .contact-strip{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;margin-top:3rem;}
+  .contact-pill{ display:flex;align-items:center;gap:0.7rem; border:1px solid rgba(248,241,227,0.12); background:rgba(255,255,255,0.02); padding:0.9rem 1.5rem;border-radius:999px; text-decoration:none;color:var(--cream-100);font-size:0.95rem; transition:border-color 0.25s; }
+  .contact-pill:hover{border-color:var(--flame-300);}
+  .contact-pill i{color:var(--flame-300);}
+
   .wa-float{ position:fixed;bottom:1.8rem;right:1.8rem;z-index:900; width:58px;height:58px;border-radius:50%; background:var(--ok-green);color:#fff; display:flex;align-items:center;justify-content:center; font-size:1.6rem;text-decoration:none; box-shadow:0 8px 22px rgba(37,211,102,0.45); transition:transform 0.25s; }
   .wa-float:hover{transform:scale(1.08);}
+
+  footer{ border-top:1px solid rgba(248,241,227,0.08); padding:2.6rem 0; text-align:center;color:var(--cream-muted);font-size:0.88rem; }
+  footer strong{color:var(--cream-300);}
+
+  .quiz-overlay{ position:fixed;inset:0;z-index:3000; background:rgba(9,11,24,0.86); backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px); display:flex;align-items:center;justify-content:center; padding:1.4rem; opacity:0;visibility:hidden; transition:opacity 0.3s ease, visibility 0.3s ease; }
+  .quiz-overlay.show{opacity:1;visibility:visible;}
+  .quiz-card{ width:100%;max-width:440px; background:linear-gradient(165deg, var(--dusk-800), var(--dusk-900)); border:1px solid rgba(245,166,35,0.3); border-radius:var(--radius-lg); padding:1.8rem 1.7rem; box-shadow:0 30px 70px rgba(0,0,0,0.55); transform:translateY(18px) scale(0.97); transition:transform 0.3s ease; max-height:88vh;overflow-y:auto; }
+  .quiz-overlay.show .quiz-card{transform:translateY(0) scale(1);}
+  .quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+  .quiz-head h3{font-size:1.25rem;color:var(--cream-100);display:flex;align-items:center;gap:0.5rem;}
+  .quiz-close{ background:none;border:none;color:var(--cream-muted);font-size:1.3rem; cursor:pointer;padding:0.2rem 0.5rem;line-height:1;transition:color 0.2s; }
+  .quiz-close:hover{color:var(--flame-300);}
+  .quiz-diyas{display:flex;gap:0.5rem;margin-bottom:1.3rem;}
+  .quiz-diya{font-size:1.3rem;opacity:0.25;transition:opacity 0.3s, transform 0.3s;filter:grayscale(1);}
+  .quiz-diya.lit{opacity:1;filter:grayscale(0);transform:scale(1.15);}
+  .quiz-badge{ display:inline-block;font-size:0.72rem;font-weight:700;text-transform:uppercase; letter-spacing:0.06em;color:var(--dusk-950); background:var(--flame-300);padding:0.25rem 0.6rem;border-radius:999px;margin-bottom:0.8rem; }
+  .quiz-question{font-size:1.08rem;color:var(--cream-100);margin-bottom:1.2rem;line-height:1.5;}
+  .quiz-options{display:flex;flex-direction:column;gap:0.7rem;}
+  .quiz-option{ text-align:left;padding:0.8rem 1rem;border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.14); color:var(--cream-300);font-size:0.98rem;font-family:'Work Sans',sans-serif; cursor:pointer;transition:border-color 0.2s, background 0.2s, transform 0.15s; }
+  .quiz-option:hover{border-color:rgba(245,166,35,0.4);}
+  .quiz-option:active{transform:scale(0.98);}
+  .quiz-option.correct{background:rgba(37,211,102,0.16);border-color:var(--ok-green);color:var(--cream-100);}
+  .quiz-option.wrong{background:rgba(226,103,59,0.16);border-color:var(--ember-500);color:var(--cream-100);}
+  .quiz-option[disabled]{cursor:default;pointer-events:none;}
+  .quiz-result{text-align:center;padding:1rem 0;}
+  .quiz-result h3{font-size:1.4rem;color:var(--flame-300);margin-bottom:0.6rem;}
+  .quiz-result p{color:var(--cream-300);margin-bottom:1.4rem;}
+  .quiz-restart{ display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px; border:none;cursor:pointer;font-size:0.95rem; }
 
   /* =========================================
      HARDWARE-ACCELERATED WIPE TRANSITIONS
@@ -234,11 +285,21 @@
 <body>
 
 <!-- =======================================================
+     APP CONFIGURATION (PASTE API URLS HERE)
+     ======================================================= -->
+<script>
+  window.ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
+  window.STATS_API_URL = ""; // E.g., "https://script.google.com/macros/s/.../exec"
+</script>
+
+<!-- =======================================================
      NORMAL 2026 HTML CONTENT
      ======================================================= -->
 <div id="normal-app" style="transition: opacity 0.4s ease;">
   <div class="scroll-progress" id="scrollProgress"></div>
   <div class="ambient-particles" id="ambientParticles"></div>
+  <div class="flame-toast" id="flameToast"></div>
+
   <div class="sky-glow"></div>
   <div class="stars"></div>
 
@@ -252,6 +313,16 @@
           <li><a href="#teacher">About</a></li>
           <li><a href="#enroll">Enroll</a></li>
         </ul>
+        <div class="lang-switch" id="langSwitch">
+          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox">
+            <li role="option" data-lang="en" class="active">English</li>
+            <li role="option" data-lang="hi">हिंदी (Hindi)</li>
+            <li role="option" data-lang="bn">বাংলা (Bengali)</li>
+          </ul>
+        </div>
       </div>
     </div>
   </header>
@@ -314,6 +385,7 @@
         <div class="section-head">
           <span class="eyebrow">What we teach</span>
           <h2>Three subjects, built up patiently</h2>
+          <p>Every batch starts from where the child actually is — not where the syllabus assumes they are.</p>
         </div>
         <div class="subject-grid">
           <div class="subject-card">
@@ -335,20 +407,71 @@
       </div>
     </section>
 
+    <section id="schedule">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Timing</span>
+          <h2>Evening batches, by grade</h2>
+          <p>Classes are grouped by age so every child gets material at the right level.</p>
+        </div>
+        <div class="schedule-wrap">
+          <div class="schedule-scroll">
+            <table>
+              <thead>
+                <tr><th>Grade</th><th>Days</th><th>Time</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Class 0 – 3 (Juniors)</td><td>Mon · Wed · Fri</td><td>6:00 – 7:15 PM</td></tr>
+                <tr><td>Class 4 – 6 (Middle)</td><td>Tue · Thu · Sat</td><td>7:30 – 8:45 PM</td></tr>
+                <tr><td>Class 7 – 8 (Seniors)</td><td>Mon · Wed · Fri</td><td>8:45 – 10:00 PM</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="teacher">
+      <div class="wrap teacher">
+        <div class="teacher-card">
+          <span class="quote-mark">&ldquo;</span>
+          <p>I work a regular day job till 5:30. These evening hours are set aside on purpose — because I believe no child should miss out on a strong foundation just because their family can't afford tuition.</p>
+          <p class="sign">— Founder, ABHA Academy</p>
+        </div>
+        <div class="teacher-facts">
+          <div class="fact">
+            <i class="fas fa-briefcase"></i>
+            <div><h4>A teacher who shows up daily</h4><p>Classes are taught in person, every evening, without exception.</p></div>
+          </div>
+          <div class="fact">
+            <i class="fas fa-users"></i>
+            <div><h4>Small, focused batches</h4><p>Grouped by grade so lessons stay relevant to each child.</p></div>
+          </div>
+          <div class="fact">
+            <i class="fas fa-hands-helping"></i>
+            <div><h4>Built for the neighbourhood</h4><p>A local, free initiative — not a franchise or a paid course.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="enroll">
       <div class="wrap">
         <div class="section-head">
           <span class="eyebrow">Join us</span>
           <h2>Enroll your child</h2>
+          <p>Fill in a few details below, or call/WhatsApp directly — whichever is easier for you.</p>
         </div>
 
         <div class="enroll-panel">
           <div class="enroll-side">
             <h3>Why families choose ABHA</h3>
+            <p>A steady, honest option for foundational learning — close to home, and free of cost.</p>
             <ul>
               <li><i class="fas fa-check-circle"></i> No fees at any point</li>
               <li><i class="fas fa-check-circle"></i> Evening batches that fit school hours</li>
               <li><i class="fas fa-check-circle"></i> Grouped by grade, taught in person</li>
+              <li><i class="fas fa-check-circle"></i> Site available in your language</li>
             </ul>
           </div>
           <form class="enroll-form" id="enrollForm">
@@ -385,8 +508,14 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- Hidden Quiz Game -->
+  <div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-label="ABHA Quiz Challenge">
+    <div class="quiz-card" id="quizCard"></div>
+  </div>
+
   <footer>
     <p><strong>ABHA Academy</strong> &middot; Free evening classes for Class 0–8</p>
+    <p style="margin-top:0.4rem;">B870, Phase 1, Metro Vihar, Holambi Kalan, Delhi</p>
     <p style="margin-top:0.4rem;">&copy; 2026 ABHA Academy. Every evening, a little more light.</p>
   </footer>
 </div>
@@ -400,8 +529,40 @@
 <!-- =======================================================
      SCRIPTS FOR 2026 LOGIC & HARDWARE-ACCELERATED TRANSITIONS
      ======================================================= -->
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
+  // -- Translate --
+  function googleTranslateElementInit(){
+    new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en', autoDisplay:false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE },'google_translate_element');
+  }
+  (function watchdog(){
+    const kill = () => {
+      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame').forEach(el=>{ el.style.display='none'; el.style.visibility='hidden'; el.style.height='0'; });
+      document.body.style.top='0px'; document.body.style.position='static';
+    };
+    kill(); new MutationObserver(kill).observe(document.documentElement,{attributes:true,childList:true,subtree:true}); setInterval(kill, 400);
+  })();
+
+  const LANG_NAMES = { en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)', mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)', kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)' };
+  function getCookie(name){ const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)')); return match ? decodeURIComponent(match[2]) : null; }
+  function setGoogTransCookie(lang){
+    const domains = [location.hostname, '.' + location.hostname, ''];
+    if(lang === 'en'){ domains.forEach(d=>{ document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' + (d ? (' domain=' + d + ';') : ''); }); }
+    else { const val = '/en/' + lang; document.cookie = 'googtrans=' + val + '; path=/'; document.cookie = 'googtrans=' + val + '; path=/; domain=' + location.hostname; }
+  }
+  function applyLanguage(lang){ setGoogTransCookie(lang); location.reload(); }
+
+  // -- Normal Logic Init --
   document.addEventListener('DOMContentLoaded', function(){
+    const langSwitch = document.getElementById('langSwitch'), langBtn = document.getElementById('langBtn'), langMenu = document.getElementById('langMenu'), langLabel = document.getElementById('langLabel');
+    const savedCookie = getCookie('googtrans'); const savedLang = savedCookie && savedCookie.split('/')[2] ? savedCookie.split('/')[2] : 'en';
+    if (LANG_NAMES[savedLang]) { langLabel.textContent = LANG_NAMES[savedLang]; langMenu.querySelectorAll('li').forEach(li=>{ li.classList.toggle('active', li.getAttribute('data-lang') === savedLang); }); }
+    langBtn.addEventListener('click', function(e){ e.stopPropagation(); const isOpen = langSwitch.classList.toggle('open'); langBtn.setAttribute('aria-expanded', isOpen); });
+    document.addEventListener('click', function(){ langSwitch.classList.remove('open'); langBtn.setAttribute('aria-expanded','false'); });
+    langMenu.querySelectorAll('li').forEach(function(item){
+      item.addEventListener('click', function(e){ e.stopPropagation(); const lang = item.getAttribute('data-lang'); langMenu.querySelectorAll('li').forEach(li=>li.classList.remove('active')); item.classList.add('active'); langLabel.textContent = LANG_NAMES[lang] || 'English'; langSwitch.classList.remove('open'); applyLanguage(lang); });
+    });
+
     const revealEls = document.querySelectorAll('.section-head, .subject-card, .schedule-wrap, .teacher-card, .fact, .enroll-panel, .contact-strip');
     revealEls.forEach(function(el, i){ el.classList.add('reveal', 'reveal-stagger'); el.style.setProperty('--stagger-delay', (i % 4) * 0.09 + 's'); });
     const revealObserver = new IntersectionObserver(function(entries){ entries.forEach(function(entry){ if (entry.isIntersecting){ entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
@@ -411,7 +572,61 @@
     function updateProgress(){ const scrollTop = window.scrollY; const docHeight = document.documentElement.scrollHeight - window.innerHeight; const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0; progressBar.style.width = pct + '%'; }
     window.addEventListener('scroll', updateProgress, { passive: true }); updateProgress();
 
-    // Burst logic for the React app overload feature
+    // FIXED: JS Smooth Scrolling to fix "Both Not Working" bug on navigation links
+    document.querySelectorAll('.nav-links a, .btn-ghost, .btn-primary[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            const headerOffset = 70; // Offset for sticky header
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
+            this.blur(); // Removes focus outline box
+          }
+        }
+      });
+    });
+
+    const flame = document.getElementById('flameHitArea'), diyaStage = document.querySelector('.diya-stage'), toast = document.getElementById('flameToast');
+    let flameTaps = 0, flameTapTimer = null;
+    let audioCtx = null;
+    function playCrackle(){
+      try{ audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); const duration = 0.35; const bufferSize = audioCtx.sampleRate * duration; const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate); const data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++){ const decay = Math.pow(1 - i / bufferSize, 2.2); const pop = Math.random() < 0.02 ? (Math.random() - 0.5) * 1.4 : 0; data[i] = ((Math.random() * 2 - 1) * 0.35 + pop) * decay; } const noise = audioCtx.createBufferSource(); noise.buffer = buffer; const bandpass = audioCtx.createBiquadFilter(); bandpass.type = 'bandpass'; bandpass.frequency.value = 1800; bandpass.Q.value = 0.7; const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); noise.connect(bandpass); bandpass.connect(gain); gain.connect(audioCtx.destination); noise.start(); } catch(err){ }
+    }
+    function spawnSparks(){
+      const emojis = ['✨','🔥','🪔','⭐'];
+      for (let i = 0; i < 14; i++){ const s = document.createElement('span'); s.className = 'spark'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const dx = (Math.random() - 0.5) * 220; const dy = -(100 + Math.random() * 120); const rot = (Math.random() - 0.5) * 180; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = (46 + (Math.random()-0.5) * 20) + '%'; s.style.top = '35%'; s.style.animationDelay = (Math.random()*0.2) + 's'; diyaStage.appendChild(s); setTimeout(function(){ s.remove(); }, 1700); }
+    }
+    function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2600); }
+    if (flame && diyaStage){ flame.addEventListener('click', function(){ flameTaps++; clearTimeout(flameTapTimer); flameTapTimer = setTimeout(function(){ flameTaps = 0; }, 2200); if (flameTaps >= 5){ flameTaps = 0; spawnSparks(); playCrackle(); showToast("🪔 Ek diya jal gaya — gyaan ki roshni badhti rahegi!"); } }); }
+
+    const flameSwayEl = document.getElementById('flameSway');
+    if (flameSwayEl){ setTimeout(function(){ flameSwayEl.classList.remove('ignite-init'); flameSwayEl.classList.add('igniting'); if (diyaStage) spawnSparks(); setTimeout(function(){ flameSwayEl.classList.remove('igniting'); }, 600); }, 350); }
+
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      const starsEl = document.querySelector('.stars'), glowEl = document.querySelector('.sky-glow'); let parallaxTicking = false;
+      document.addEventListener('mousemove', function(e){ if (parallaxTicking) return; parallaxTicking = true; requestAnimationFrame(function(){ const px = (e.clientX / window.innerWidth - 0.5); const py = (e.clientY / window.innerHeight - 0.5); if (starsEl) starsEl.style.transform = 'translate(' + (px*14) + 'px,' + (py*14) + 'px)'; if (glowEl) glowEl.style.transform = 'translate(' + (px*-8) + 'px,' + (py*-8) + 'px)'; parallaxTicking = false; }); });
+      
+      document.querySelectorAll('.subject-card').forEach(function(card){ card.style.transition = 'transform 0.15s ease-out, border-color 0.3s'; card.addEventListener('mousemove', function(e){ const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top; const cx = rect.width/2, cy = rect.height/2; const rotateY = ((x-cx)/cx) * 7; const rotateX = -((y-cy)/cy) * 7; card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-6px)'; }); card.addEventListener('mouseleave', function(){ card.style.transform = ''; }); });
+    }
+
+    if (flameSwayEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      let lastScrollY = window.scrollY, skew = 0, skewVel = 0, stretch = 1, stretchVel = 0;
+      window.addEventListener('scroll', function(){ const currentY = window.scrollY; const delta = currentY - lastScrollY; lastScrollY = currentY; skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35)); stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006)); }, { passive: true });
+      function physicsLoop(){ skewVel += (0 - skew) * 0.16; skewVel *= 0.78; skew += skewVel; skew = Math.max(-10, Math.min(10, skew)); stretchVel += (1 - stretch) * 0.18; stretchVel *= 0.8; stretch += stretchVel; flameSwayEl.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')'; requestAnimationFrame(physicsLoop); } requestAnimationFrame(physicsLoop);
+    }
+
+    window.celebrationBurst = function(){
+      const emojis = ['🪔','✨','🔥','⭐','🎉']; const count = 26;
+      for (let i = 0; i < count; i++){ const s = document.createElement('span'); s.className = 'spark'; s.style.position = 'fixed'; s.style.zIndex='999999'; s.style.fontSize = (1 + Math.random()*0.8) + 'rem'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const startX = Math.random() * window.innerWidth; const dx = (Math.random() - 0.5) * 160; const dy = -(window.innerHeight * 0.35 + Math.random() * window.innerHeight * 0.35); const rot = (Math.random() - 0.5) * 260; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = startX + 'px'; s.style.top = (window.innerHeight * 0.85) + 'px'; s.style.animationDuration = (1.6 + Math.random()*0.8) + 's'; s.style.animationDelay = (Math.random()*0.4) + 's'; document.body.appendChild(s); setTimeout(function(){ s.remove(); }, 2600); }
+    };
+
     window.cyberBurst = function(x, y) {
       const colors = ['#ff2954', '#22e6ff', '#a855f7', '#ffffff'];
       for (let i = 0; i < 40; i++) {
@@ -437,12 +652,39 @@
         setTimeout(() => s.remove(), 800);
       }
     };
+
+    // Quiz Logic
+    (function(){
+      const questionBank = [{ subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 }, { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 }, { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 }];
+      const overlay = document.getElementById('quizOverlay'), card = document.getElementById('quizCard'); let questions=[], qIndex=0, score=0;
+      function openQuiz(){ questions=questionBank.sort(()=>Math.random()-0.5).slice(0,3); qIndex=0; score=0; overlay.classList.add('show'); renderQuestion(); }
+      function closeQuiz(){ overlay.classList.remove('show'); }
+      function renderQuestion(){
+        if(qIndex>=questions.length) return renderResult();
+        const item=questions[qIndex]; let opts=''; item.options.forEach((opt,i)=>opts+=`<button class="quiz-option" data-index="${i}">${opt}</button>`);
+        card.innerHTML = `<div class="quiz-head"><h3>🪔 ABHA Quiz</h3><button class="quiz-close" id="quizCloseBtn">&times;</button></div><span class="quiz-badge">${item.subject}</span><div class="quiz-question">${item.q}</div><div class="quiz-options">${opts}</div>`;
+        document.getElementById('quizCloseBtn').addEventListener('click', closeQuiz);
+        card.querySelectorAll('.quiz-option').forEach(btn=>{ btn.addEventListener('click', ()=>{ const chosen=parseInt(btn.getAttribute('data-index')); const allBtns=card.querySelectorAll('.quiz-option'); allBtns.forEach(b=>b.disabled=true); if(chosen===item.correct){btn.classList.add('correct'); score++; if(typeof playCrackle==='function') playCrackle();}else{btn.classList.add('wrong'); allBtns[item.correct].classList.add('correct');} setTimeout(()=>{qIndex++; renderQuestion();}, 900); }); });
+      }
+      function renderResult(){
+        card.innerHTML=`<div class="quiz-head"><h3>Result</h3><button class="quiz-close" id="quizCloseBtn2">&times;</button></div><div class="quiz-result"><h3>${score} / ${questions.length}</h3><p>Badhiya!</p><button class="quiz-restart" id="quizRestartBtn">Play Again</button></div>`;
+        document.getElementById('quizCloseBtn2').addEventListener('click', closeQuiz); document.getElementById('quizRestartBtn').addEventListener('click', openQuiz);
+        if(score===questions.length && window.celebrationBurst) window.celebrationBurst();
+      }
+      overlay.addEventListener('click', e=>{ if(e.target===overlay) closeQuiz(); });
+      const secretSequence = ['english', 'maths', 'computer']; let tapProgress=[], tapResetTimer=null;
+      document.querySelectorAll('.subject-card .icon[data-subject]').forEach(icon=>{ icon.addEventListener('click', ()=>{ const subject=icon.getAttribute('data-subject'); tapProgress.push(subject); clearTimeout(tapResetTimer); tapResetTimer=setTimeout(()=>{tapProgress=[];}, 3000); if(tapProgress.length>secretSequence.length) tapProgress=tapProgress.slice(-secretSequence.length); if(tapProgress.length===secretSequence.length && tapProgress.every((v,i)=>v===secretSequence[i])){ tapProgress=[]; openQuiz(); } }); });
+    })();
   });
 
-  const ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
-  window.ENROLL_SCRIPT_URL = ENROLL_SCRIPT_URL;
+  document.getElementById('enrollForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const status = document.getElementById('formStatus'); const submitBtn = e.target.querySelector('.submit-btn'); submitBtn.textContent = "Submitting...";
+    const formData = new FormData(); formData.append('parentName', document.getElementById('parentName').value); formData.append('childName', document.getElementById('childName').value); formData.append('grade', document.getElementById('grade').value); formData.append('phone', document.getElementById('phone').value);
+    fetch(window.ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData }).then(() => { status.textContent = "Registration received successfully!"; status.style.color = '#25d366'; status.style.display = 'block'; e.target.reset(); submitBtn.textContent = "Submit registration"; if(window.celebrationBurst) window.celebrationBurst(); });
+  });
 
-  // --- 1. TO CYBER MODE (PURE CYAN CLIP-PATH - HARDWARE ACCELERATED) ---
+  // --- 1. TO CYBER MODE (PURE CYAN CLIP-PATH) ---
   window.triggerTimeTravel = function(e) {
     e.preventDefault();
     if(typeof window.setReactActive !== 'function') return; 
@@ -475,7 +717,6 @@
       window.setReactActive(true);
       const normalApp = document.getElementById('normal-app');
       normalApp.style.opacity = '0';
-      
       setTimeout(() => {
         normalApp.style.display = 'none';
         wipe.style.opacity = '0'; 
@@ -484,7 +725,7 @@
     }, 700);
   };
 
-  // --- 2. BACK TO 2026 (WARM FLAME CLIP-PATH - HARDWARE ACCELERATED) ---
+  // --- 2. BACK TO 2026 (WARM FLAME CLIP-PATH) ---
   window.returnTo2026 = function(e) {
     const normalApp = document.getElementById('normal-app'); 
     normalApp.style.display = 'block'; 
@@ -522,9 +763,8 @@
   };
 </script>
 
-
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Burst/Reassemble Added, Math Cyan)
+     THE 2086 NEURAL REACT APP (Burst/Reassemble + Live API + Math Cyan)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef, useCallback } = React;
@@ -694,7 +934,7 @@ function TerminalHack({ C }) {
             {result === "won" && (
               <div className="text-center">
                 <p className="mb-2 text-lg" style={{ color: C.cyan }}>ACCESS GRANTED</p>
-                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge.</p>
+                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
                 <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor: C.cyan, color: C.cyan }}>CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86</p>
                 <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE</button>
               </div>
@@ -703,7 +943,7 @@ function TerminalHack({ C }) {
             {result === "lost" && (
               <div className="text-center">
                 <p className="mb-2 text-lg" style={{ color: C.red }}>CONNECTION LOST</p>
-                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>.</p>
+                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
                 <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.red, border: 'none', cursor: 'pointer' }}>CLOSE</button>
               </div>
             )}
@@ -799,7 +1039,7 @@ function SkillTree({ C }){
   const SKILLS = [
     { 
       id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, 
-      dx: "0px", dy: "0px", rot: "0deg", s: 4, // Shatter offset for Core
+      dx: "0px", dy: "0px", rot: "0deg", s: 4, // Center explosion scaling
       facts: [
         "The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts.",
         "Neural pathways are strengthened through repetition and pattern recognition.",
@@ -810,7 +1050,7 @@ function SkillTree({ C }){
     },
     { 
       id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, 
-      dx: "-200px", dy: "-200px", rot: "-180deg", s: 0, // Shatter offset for English
+      dx: "-200px", dy: "-200px", rot: "-180deg", s: 0, // Flies top left
       facts: [
         "Reading, handwriting and spoken confidence — built through stories, not just textbooks.",
         "Sub-vocal language processing decrypted through daily syntax parsing.",
@@ -820,8 +1060,8 @@ function SkillTree({ C }){
       ] 
     },
     { 
-      id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.cyan, // FIXED: MATH IS NOW CYAN
-      dx: "200px", dy: "-200px", rot: "180deg", s: 0, // Shatter offset for Maths
+      id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.cyan, 
+      dx: "200px", dy: "-200px", rot: "180deg", s: 0, // Flies top right
       facts: [
         "Tables, arithmetic and logical thinking, practised until the basics are genuinely secure.",
         "Algorithmic pattern recognition accelerates mental computation speeds.",
@@ -832,7 +1072,7 @@ function SkillTree({ C }){
     },
     { 
       id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, 
-      dx: "0px", dy: "300px", rot: "90deg", s: 0, // Shatter offset for Computer
+      dx: "0px", dy: "300px", rot: "90deg", s: 0, // Flies bottom center
       facts: [
         "Typing, mouse and keyboard fluency, and the digital skills every child will need going forward.",
         "Direct cybernetic interfacing via QWERTY matrix manipulation.",
@@ -850,7 +1090,7 @@ function SkillTree({ C }){
   
   const [powered, setPowered] = useState([]);
   const [vaultOpen, setVaultOpen] = useState(false);
-  const [shattered, setShattered] = useState(false); // NEW STATE FOR SHATTER ANIMATION
+  const [shattered, setShattered] = useState(false);
 
   const ref = useRef(null);
 
@@ -1037,9 +1277,25 @@ function ProgressRing({ percent, active, color, label, icon, suffix = "%" }) {
 
 function CyberStats({ C }){
   const [revealed, setRevealed] = useState(false);
+  const [stats, setStats] = useState({ fees: 100, attendance: 92, uptime: 80, inPerson: 100 });
   const ref = useRef(null);
   
   useEffect(() => {
+    if (window.STATS_API_URL) {
+      fetch(window.STATS_API_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.fees !== undefined) {
+            setStats({
+              fees: parseInt(data.fees) || 100,
+              attendance: parseInt(data.attendance) || 92,
+              uptime: parseInt(data.uptime) || 80,
+              inPerson: parseInt(data.inPerson) || 100
+            });
+          }
+        }).catch(err => console.log("Using local telemetry"));
+    }
+
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.3 });
@@ -1054,10 +1310,10 @@ function CyberStats({ C }){
         <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Read directly from the source.</h2>
       </div>
       <div className={`cyber-reveal ${revealed ? "in" : ""} grid grid-cols-2 gap-10 sm:grid-cols-4`}>
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="FREE — ZERO FEES" icon="fas fa-medal" />
-        <ProgressRing percent={92} active={revealed} color={C.purple} label="ATTENDANCE RATE" icon="fas fa-users" />
-        <ProgressRing percent={80} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" icon="fas fa-clock" />
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" icon="fas fa-satellite-dish" />
+        <ProgressRing percent={stats.fees} active={revealed} color={C.cyan} label="FREE — ZERO FEES" icon="fas fa-medal" />
+        <ProgressRing percent={stats.attendance} active={revealed} color={C.purple} label="ATTENDANCE RATE" icon="fas fa-users" />
+        <ProgressRing percent={stats.uptime} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" icon="fas fa-clock" />
+        <ProgressRing percent={stats.inPerson} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" icon="fas fa-satellite-dish" />
       </div>
     </section>
   );
