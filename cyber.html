@@ -254,7 +254,6 @@
   
   .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
   
-  /* Bugfix: Use translateY so it doesn't override translate(-50%, -50%) */
   @keyframes float-y {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-12px); }
@@ -294,6 +293,14 @@
   
   .cyber-reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease, transform 0.8s ease;}
   .cyber-reveal.in{opacity:1;transform:translateY(0);}
+
+  /* Deep Focus Mode Vignette */
+  .focus-vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.9) 100%);
+    animation: fadeInFocus 1.5s ease-out;
+  }
+  @keyframes fadeInFocus { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -386,6 +393,7 @@
     <div class="strip">
       <div class="wrap strip-inner">
         <div class="strip-item">
+          <!-- Disabled until React Mounts -->
           <button type="button" id="timeTravelBtn" class="time-switch-btn" disabled onclick="triggerTimeTravel(event)" aria-label="Access Neural Link" title="Establishing Neural Link...">
             <i class="fas fa-clock"></i>
           </button>
@@ -719,7 +727,7 @@
 
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Fully Restored & Bug Fixed)
+     THE 2086 NEURAL REACT APP (Fully Restored & FontAwesome Fixed)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
@@ -735,9 +743,9 @@ const PUZZLES = [
   { q: "A train covers 60km in 1hr. Distance in 45 min?", a: "45" },
 ];
 
-// FIXED: Icon ab manually color prop receive karega
-function Icon({ children, size = 18, color }) {
-  return <span style={{ fontSize: size, lineHeight: 1, display: "inline-block", color: color || 'inherit' }}>{children}</span>;
+// 1. FIXED ICONS: Ab FontAwesome icons use honge taaki basic ya blank emojis ka error na aaye.
+function FAIcon({ name, size = 18, color }) {
+  return <i className={name} style={{ fontSize: size, color: color || 'inherit' }}></i>;
 }
 
 function AbhaNeuralLink(){
@@ -767,8 +775,16 @@ function AbhaNeuralLink(){
   return (
     <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
       <button onClick={window.returnTo2026} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
-        ‹ TIME TRAVEL TO 2026
+        <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
       </button>
+
+      {/* 2. NEURAL SYNC FEATURE EXPLAINED: Visual Focus Mode Overlay */}
+      {syncMode && (
+        <div className="pointer-events-none fixed inset-0 z-[5] flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm focus-vignette transition-all duration-1000">
+          <h2 className="font-mono-cyber text-2xl text-cyan-400 glitch-layer mb-2 tracking-widest text-center px-4">DISTRACTIONS DISABLED.</h2>
+          <p className="font-mono-cyber text-xs text-white/50 tracking-[0.3em] uppercase">Deep Focus Mode Active.</p>
+        </div>
+      )}
 
       {!syncMode && <BackgroundField C={C} />}
       <TerminalHack C={C} />
@@ -850,9 +866,8 @@ function TerminalHack({ C }) {
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-6 backdrop-blur-sm">
           <div className="font-mono-cyber w-full max-w-md rounded-xl border p-6 text-sm" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 40px ${C.cyan}55` }}>
             <div className="mb-3 flex items-center justify-between text-cyan-300">
-              <span className="flex items-center gap-2"><Icon size={14}>⌨️</Icon> ROOT ACCESS — ABHA::TERMINAL</span>
-              {/* FIXED: Background explicitely transparent */}
-              <button onClick={close} aria-label="Close terminal" className="text-cyan-300 hover:text-cyan-100" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><Icon size={16}>✕</Icon></button>
+              <span className="flex items-center gap-2"><FAIcon name="fas fa-terminal" size={14}/> ROOT ACCESS — ABHA::TERMINAL</span>
+              <button onClick={close} aria-label="Close terminal" className="text-cyan-300 hover:text-cyan-100" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><FAIcon name="fas fa-times" size={16}/></button>
             </div>
 
             {result === null && (
@@ -915,8 +930,7 @@ function EnrollmentProtocol({ C, onClose }){
           <form onSubmit={handleSubmit} className="p-8">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="font-mono-cyber text-sm tracking-widest" style={{ color:C.cyan }}>ENROLLMENT PROTOCOL</h2>
-              {/* FIXED: Background explicitely transparent */}
-              <button type="button" onClick={onClose} className="text-white/50 hover:text-white p-2 text-lg outline-none" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>✕</button>
+              <button type="button" onClick={onClose} className="text-white/50 hover:text-white p-2 text-lg outline-none" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><FAIcon name="fas fa-times" size={16}/></button>
             </div>
             <div className="mb-4">
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">STUDENT IDENTIFIER (NAME)</label>
@@ -930,7 +944,7 @@ function EnrollmentProtocol({ C, onClose }){
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">PARENT COMM LINK (PHONE)</label>
               <input required type="tel" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})} className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none" style={{ borderColor:C.panelBorder }} />
             </div>
-            <button type="submit" className="font-mono-cyber pulse-ring w-full rounded py-4 text-xs font-bold text-black active:scale-95" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>INITIATE DATA SYNC ➔</button>
+            <button type="submit" className="font-mono-cyber pulse-ring w-full rounded py-4 text-xs font-bold text-black active:scale-95 transition-transform" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>INITIATE DATA SYNC ➔</button>
           </form>
         ) : step === 1 ? (
           <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
@@ -939,7 +953,7 @@ function EnrollmentProtocol({ C, onClose }){
           </div>
         ) : (
           <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
-             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background:`${C.cyan}33`, color:C.cyan, border:`1px solid ${C.cyan}` }}>✓</div>
+             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background:`${C.cyan}33`, color:C.cyan, border:`1px solid ${C.cyan}` }}><FAIcon name="fas fa-check" size={16}/></div>
              <p className="font-mono-cyber text-sm" style={{ color:C.cyan }}>SYNC COMPLETE</p>
              <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Data logged securely. You will be contacted shortly.</p>
              <button type="button" onClick={onClose} className="font-mono-cyber mt-6 w-full rounded py-3 text-xs font-bold text-black active:scale-95" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE TERMINAL</button>
@@ -983,7 +997,7 @@ function BootSequenceHero({ C, syncMode, onEnroll }){
 
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center transition-all duration-1000" style={{ opacity: booted ? 1 : 0, transform: booted ? "translateY(0)" : "translateY(24px)" }}>
         <div className="font-mono-cyber mb-6 flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] tracking-wide" style={{ borderColor:C.panelBorder, background:C.panel, color:C.cyan }}>
-          <Icon size={12}>📶</Icon> NEURAL LINK ACTIVE — FREE EVENING ACCESS
+          <FAIcon name="fas fa-satellite-dish" size={12}/> NEURAL LINK ACTIVE — FREE EVENING ACCESS
         </div>
         
         <h1 className="relative select-none text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
@@ -1015,10 +1029,10 @@ function BootSequenceHero({ C, syncMode, onEnroll }){
 
 function SkillTree({ C }){
   const SKILLS = [
-    { id:"core", label:"FOUNDATION CORE", emoji:"🧠", x:50, y:50, color:C.purple, desc:"The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
-    { id:"english", label:"ENGLISH", emoji:"📖", x:18, y:20, color:C.cyan, desc:"Reading, handwriting and spoken confidence — built through stories, not just textbooks." },
-    { id:"maths", label:"MATHEMATICS", emoji:"🔢", x:82, y:20, color:C.red, desc:"Tables, arithmetic and logical thinking, practised until the basics are genuinely secure." },
-    { id:"computer", label:"COMPUTER BASICS", emoji:"💻", x:50, y:88, color:C.cyan, desc:"Typing, mouse and keyboard fluency, and the digital skills every child will need going forward." },
+    { id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, desc:"The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
+    { id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, desc:"Reading, handwriting and spoken confidence — built through stories, not just textbooks." },
+    { id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.red, desc:"Tables, arithmetic and logical thinking, practised until the basics are genuinely secure." },
+    { id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, desc:"Typing, mouse and keyboard fluency, and the digital skills every child will need going forward." },
   ];
   const EDGES = [["core","english"],["core","maths"],["core","computer"]];
   const [active, setActive] = useState(null);
@@ -1046,29 +1060,30 @@ function SkillTree({ C }){
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           {EDGES.map(([a,b],i)=>{
             const from=findSkill(a), to=findSkill(b), isActive=active===a||active===b;
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.6:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
+            // 3. IMPROVED HOVER: Active lines will glow bright when a node is hovered.
+            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.8:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
           })}
         </svg>
         {SKILLS.map(skill=>{
           const isActive = active===skill.id;
           return (
-            /* FIXED: Animation ab wrapper ke andar hai, taaki translate(-50%, -50%) override na ho */
-            <div key={skill.id} className="absolute" style={{ left:`${skill.x}%`, top:`${skill.y}%`, transform: 'translate(-50%, -50%)' }}>
+            <div key={skill.id} className="absolute" style={{ left:`${skill.x}%`, top:`${skill.y}%`, transform: 'translate(-50%, -50%)', zIndex: isActive ? 20 : 10 }}>
                <button onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>setActive(isActive?null:skill.id)}
                  className="float-fast flex flex-col items-center gap-2 outline-none" style={{ animationDelay:`${skill.x%3}s`, background: 'transparent', border: 'none', cursor: 'pointer' }}>
                  <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
-                   style={{ borderColor:skill.color, background:isActive?`${skill.color}22`:"rgba(255,255,255,0.03)", boxShadow:isActive?`0 0 30px ${skill.color}88`:`0 0 12px ${skill.color}33`, transform:isActive?"scale(1.12)":"scale(1)" }}>
-                   <Icon size={skill.id==="core"?30:24}>{skill.emoji}</Icon>
+                   style={{ borderColor:skill.color, background:isActive?`${skill.color}33`:"rgba(255,255,255,0.03)", boxShadow:isActive?`0 0 40px ${skill.color}aa`:`0 0 12px ${skill.color}33`, transform:isActive?"scale(1.15)":"scale(1)" }}>
+                   <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={skill.color} />
                  </span>
-                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs">{skill.label}</span>
+                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm">{skill.label}</span>
                </button>
             </div>
           );
         })}
       </div>
       
-      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300" style={{ borderColor:C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0)":"translateY(6px)" }}>
-        <p className="text-sm leading-relaxed text-white/85">{active?findSkill(active).desc:"Hover or tap a node to inspect its module."}</p>
+      {/* 3. IMPROVED HOVER: Better card UI for active description */}
+      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300" style={{ borderColor: active ? findSkill(active).color : C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0) scale(1.05)":"translateY(6px) scale(1)", boxShadow: active ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
+        <p className="text-sm leading-relaxed text-white/85">{active ? findSkill(active).desc : "Hover or tap a node to inspect its module."}</p>
       </div>
     </section>
   );
@@ -1091,7 +1106,7 @@ function useCountUp(target, active, duration = 1400) {
   return value;
 }
 
-function ProgressRing({ percent, active, color, label, emoji, suffix = "%" }) {
+function ProgressRing({ percent, active, color, label, icon, suffix = "%" }) {
   const radius = 42, circumference = 2 * Math.PI * radius;
   const displayed = useCountUp(percent, active);
   const offset = circumference - (displayed / 100) * circumference;
@@ -1105,8 +1120,8 @@ function ProgressRing({ percent, active, color, label, emoji, suffix = "%" }) {
             style={{ transition: "stroke-dashoffset 1.4s ease-out", filter: `drop-shadow(0 0 6px ${color})` }} />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Icon size={18} color={color}>{emoji}</Icon>
-          <span className="font-mono-cyber mt-1 text-xl font-bold text-white">{displayed}{suffix}</span>
+          <FAIcon name={icon} size={18} color={color} />
+          <span className="font-mono-cyber mt-2 text-xl font-bold text-white">{displayed}{suffix}</span>
         </div>
       </div>
       <p className="font-mono-cyber text-center text-xs tracking-wide text-white/60">{label}</p>
@@ -1133,10 +1148,10 @@ function CyberStats({ C }){
         <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Read directly from the source.</h2>
       </div>
       <div className={`cyber-reveal ${revealed ? "in" : ""} grid grid-cols-2 gap-10 sm:grid-cols-4`}>
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="FREE — ZERO FEES" emoji="🏅" />
-        <ProgressRing percent={92} active={revealed} color={C.purple} label="ATTENDANCE RATE" emoji="👥" />
-        <ProgressRing percent={80} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" emoji="⏰" />
-        <ProgressRing percent={100} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" emoji="📡" />
+        <ProgressRing percent={100} active={revealed} color={C.cyan} label="FREE — ZERO FEES" icon="fas fa-medal" />
+        <ProgressRing percent={92} active={revealed} color={C.purple} label="ATTENDANCE RATE" icon="fas fa-users" />
+        <ProgressRing percent={80} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" icon="fas fa-clock" />
+        <ProgressRing percent={100} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" icon="fas fa-satellite-dish" />
       </div>
     </section>
   );
@@ -1222,9 +1237,9 @@ function FocusHealthBar({ active, C }) {
   const ss = String(seconds % 60).padStart(2, "0");
   
   return (
-    <div className="font-mono-cyber fixed left-1/2 top-4 z-50 w-64 -translate-x-1/2 rounded-full border px-4 py-2 text-[10px]" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.6)" }}>
-      <div className="mb-1 flex justify-between text-white/60"><span>FOCUS HEALTH</span><span>{mm}:{ss}</span></div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+    <div className="font-mono-cyber fixed left-1/2 top-6 z-50 w-72 -translate-x-1/2 rounded-full border px-4 py-3 text-[10px] shadow-2xl" style={{ borderColor: C.cyan, background: "rgba(0,0,0,0.8)", backdropFilter: 'blur(10px)' }}>
+      <div className="mb-2 flex justify-between text-white/80"><span>FOCUS HEALTH</span><span className="text-cyan-400 font-bold text-xs">{mm}:{ss}</span></div>
+      <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: C.cyan, transition: "width 1s linear" }} />
       </div>
     </div>
@@ -1236,17 +1251,17 @@ function ControlDock({ C, nightMode, setNightMode, syncMode, setSyncMode, setSho
   return (
     <>
       <FocusHealthBar active={syncMode} C={C} />
-      <div className="font-mono-cyber fixed bottom-6 left-6 z-50 flex flex-col gap-2 text-[10px]">
+      <div className="font-mono-cyber fixed bottom-6 left-6 z-[600] flex flex-col gap-2 text-[10px]">
         <button onClick={() => setSyncMode((s) => !s)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
           style={{ borderColor: syncMode ? C.cyan : C.panelBorder, background: syncMode ? `${C.cyan}22` : "rgba(0,0,0,0.4)", color: syncMode ? C.cyan : "white", cursor: 'pointer' }}>
-          <Icon size={12}>🎚️</Icon> NEURAL SYNC {syncMode ? "ON" : "OFF"}
+          <FAIcon name="fas fa-sliders-h" size={12}/> NEURAL SYNC {syncMode ? "ON" : "OFF"}
         </button>
         <button onClick={() => setNightMode((n) => !n)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
           style={{ borderColor: nightMode ? C.red : C.panelBorder, background: nightMode ? `${C.red}22` : "rgba(0,0,0,0.4)", color: nightMode ? C.red : "white", cursor: 'pointer' }}>
-          <Icon size={12}>🌙</Icon> NIGHT OWL PREVIEW
+          <FAIcon name="fas fa-moon" size={12}/> NIGHT OWL PREVIEW
         </button>
         <button onClick={() => setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.4)", cursor: 'pointer' }}>
-          <Icon size={12}>↺</Icon> SIMULATE 404 VOID
+          <FAIcon name="fas fa-redo-alt" size={12}/> SIMULATE 404 VOID
         </button>
       </div>
     </>
@@ -1274,14 +1289,14 @@ function FloatingOrb({ C, syncMode, onEnroll }){
   if (syncMode) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-6 right-6 z-[600] flex flex-col items-end gap-3">
       {open && !annoyed && (
         <div className="cyber-reveal in font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:"rgba(3,0,20,0.85)" }}>
           <button onClick={()=>{ setOpen(false); onEnroll(); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-            <Icon size={12}>›</Icon> Initiate Enrollment
+            <FAIcon name="fas fa-chevron-right" size={10}/> Initiate Enrollment
           </button>
           <a href="https://wa.me/916394254410" target="_blank" rel="noopener noreferrer" className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5" style={{ textDecoration: 'none' }} onClick={()=>setOpen(false)}>
-            <Icon size={12}>›</Icon> WhatsApp Comm
+            <FAIcon name="fas fa-chevron-right" size={10}/> WhatsApp Comm
           </a>
         </div>
       )}
@@ -1295,8 +1310,8 @@ function FloatingOrb({ C, syncMode, onEnroll }){
       )}
       
       <div className="float-slow">
-        <button onClick={handleOrbClick} aria-label="Neural link assistant" className={`pulse-ring flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md hover:scale-110 active:scale-95 transition-transform ${shake?"shake":""}`} style={{ borderColor:annoyed?C.red:C.cyan, background:annoyed?`radial-gradient(circle at 30% 30%, ${C.red}66, ${C.red}22)`:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)`, cursor: 'pointer' }}>
-          <Icon size={22} color="#fff">{open && !annoyed ? "✕" : "✨"}</Icon>
+        <button onClick={handleOrbClick} aria-label="Neural link assistant" className={`pulse-ring flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md hover:scale-110 active:scale-95 transition-transform ${shake?"shake":""}`} style={{ borderColor:annoyed?C.red:C.cyan, background:annoyed?`radial-gradient(circle at 30% 30%, ${C.red}66, ${C.red}22)`:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)`, cursor: 'pointer', outline: 'none' }}>
+          <FAIcon name={open && !annoyed ? "fas fa-times" : "fas fa-magic"} size={20} color="#fff" />
         </button>
       </div>
     </div>
@@ -1323,50 +1338,68 @@ function AnnoyedAnswer({ C, challenge, onDone }){
   );
 }
 
+// 4. FIXED 404 DRAG BUG: Absolute safe dragging using window-level coordinates.
 function ZeroGravityVoid({ C, onClose }){
   const targets = [{ id:"p", letter:"P", tx:20, ty:50 }, { id:"a", letter:"A", tx:32, ty:50 }, { id:"g", letter:"G", tx:44, ty:50 }, { id:"e", letter:"E", tx:56, ty:50 }, { id:"4", letter:"4", tx:68, ty:50 }, { id:"0", letter:"0", tx:80, ty:50 }];
   const [pieces, setPieces] = useState(targets.map(t => ({ ...t, x:10+Math.random()*80, y:10+Math.random()*30, placed:false })));
   const [repaired, setRepaired] = useState(false); 
-  const dragRef = useRef(null);
+  const containerRef = useRef(null);
+  const dragInfo = useRef({ id: null, active: false });
   
-  // FIXED: e.currentTarget use kiya taaki inner text select hone pe app crash na ho
-  function onPointerDown(e, id){ 
-    try { e.currentTarget.setPointerCapture(e.pointerId); } catch(err){}
-    dragRef.current = { id, pointerId: e.pointerId }; 
+  function startDrag(e, id) {
+     e.preventDefault();
+     dragInfo.current = { id, active: true };
   }
   
-  function onPointerMove(e){
-    if (!dragRef.current) return; 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100, y = ((e.clientY - rect.top) / rect.height) * 100;
-    setPieces(prev => prev.map(p => p.id === dragRef.current.id ? { ...p, x, y } : p));
+  function onPointerMove(e) {
+    if (!dragInfo.current.active || !containerRef.current) return; 
+    
+    // Support touch and mouse cleanly
+    let clientX, clientY;
+    if (e.touches && e.touches.length > 0) {
+       clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
+    } else {
+       clientX = e.clientX; clientY = e.clientY;
+    }
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
+
+    // Constrain to container
+    const safeX = Math.max(0, Math.min(100, x));
+    const safeY = Math.max(0, Math.min(100, y));
+
+    setPieces(prev => prev.map(p => p.id === dragInfo.current.id ? { ...p, x: safeX, y: safeY } : p));
   }
   
-  function onPointerUp(e){
-    if (!dragRef.current) return;
-    try { e.currentTarget.releasePointerCapture(dragRef.current.pointerId); } catch(err){}
-    const id = dragRef.current.id;
+  function onPointerUp(){
+    if (!dragInfo.current.active) return;
+    const id = dragInfo.current.id;
     setPieces(prev => {
       const next = prev.map(p => { if (p.id !== id) return p; const dist = Math.hypot(p.x - p.tx, p.y - p.ty); return dist < 8 ? { ...p, x: p.tx, y: p.ty, placed: true } : p; });
       if (next.every(p => p.placed)) setRepaired(true); return next;
     });
-    dragRef.current = null;
+    dragInfo.current = { id: null, active: false };
   }
 
   return (
-    <div className="fixed inset-0 z-[800] flex flex-col items-center justify-center bg-black/95 p-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[800] flex flex-col items-center justify-center bg-black/95 p-6 backdrop-blur-sm touch-none select-none" onMouseMove={onPointerMove} onMouseUp={onPointerUp} onTouchMove={onPointerMove} onTouchEnd={onPointerUp}>
       <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color:C.red }}>404 — GRAVITY OFFLINE. Drag back to repair.</p>
-      <div className="relative h-72 w-full max-w-xl rounded-xl border flex items-center justify-center overflow-hidden touch-none" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)", touchAction: "none" }} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}>
+      
+      <div ref={containerRef} className="relative h-72 w-full max-w-xl rounded-xl border flex items-center justify-center overflow-hidden touch-none" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)" }}>
+        {/* Targets */}
         {targets.map(t => (
           <div key={t.id} className="font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded border border-dashed text-white/20" style={{ left:`${t.tx}%`, top:`${t.ty}%`, borderColor:C.panelBorder }}>{t.letter}</div>
         ))}
+        {/* Draggables */}
         {pieces.map(p => (
-          /* FIXED: Animation inner element par shift kiya gaya hai */
-          <div key={p.id} className="absolute" style={{ left:`${p.x}%`, top:`${p.y}%`, transform: 'translate(-50%, -50%)', transition: p.placed ? "left 0.2s, top 0.2s" : "none", touchAction: "none" }}>
-            <button onPointerDown={(e) => onPointerDown(e, p.id)} className={`font-mono-cyber flex h-10 w-10 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`} style={{ borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white" }}>{p.letter}</button>
+          <div key={p.id} className="absolute" style={{ left:`${p.x}%`, top:`${p.y}%`, transform: 'translate(-50%, -50%)', transition: p.placed ? "left 0.2s, top 0.2s" : "none" }}>
+            <button onMouseDown={(e) => startDrag(e, p.id)} onTouchStart={(e) => startDrag(e, p.id)} className={`font-mono-cyber flex h-10 w-10 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`} style={{ borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white", outline: 'none' }}>{p.letter}</button>
           </div>
         ))}
       </div>
+      
       {repaired ? (
         <div className="mt-6 text-center">
           <p className="font-mono-cyber text-sm mb-4" style={{ color:C.cyan }}>PAGE REPAIRED</p>
