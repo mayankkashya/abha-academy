@@ -242,14 +242,25 @@
   .quiz-restart{ display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px; border:none;cursor:pointer;font-size:0.95rem; }
 
   /* =========================================
-     PORTAL EFFECT & FULL NEURAL OVERRIDES
+     PORTAL EFFECTS (DISTINCT ANIMATIONS)
      ========================================= */
-  .time-portal{
-    position:fixed; width:20px; height:20px;
-    background:#030014; border-radius:50%; z-index:99998;
-    pointer-events:none; transform:scale(0);
-    box-shadow:0 0 100px 40px #22e6ff, inset 0 0 50px 20px #a855f7;
-    transition:transform 0.9s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.4s ease;
+  
+  /* Modern/Cyber Scanline Portal */
+  .cyber-portal {
+    position: fixed; width: 20px; height: 20px;
+    background: #030014; border-radius: 50%; z-index: 99998;
+    pointer-events: none; transform: scale(0);
+    box-shadow: 0 0 100px 40px #22e6ff; /* Pure Cyan Glow */
+    transition: transform 0.9s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.4s ease;
+  }
+
+  /* Old/Classic Flame Portal */
+  .warm-portal {
+    position: fixed; width: 20px; height: 20px;
+    background: var(--dusk-950); border-radius: 50%; z-index: 999999;
+    pointer-events: none; transform: scale(0);
+    box-shadow: 0 0 100px 40px var(--flame-500); /* Warm Golden/Orange Glow */
+    transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.5s ease;
   }
   
   .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
@@ -300,7 +311,7 @@
   /* Deep Focus Mode Vignette */
   .focus-vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.9) 100%);
+    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.95) 100%);
     animation: fadeInFocus 1.5s ease-out;
   }
   @keyframes fadeInFocus { from { opacity: 0; } to { opacity: 1; } }
@@ -568,7 +579,7 @@
 
 
 <!-- =======================================================
-     SCRIPTS FOR 2026 LOGIC & PORTAL TRANSITION
+     SCRIPTS FOR 2026 LOGIC & DISTINCT PORTAL TRANSITIONS
      ======================================================= -->
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
@@ -700,37 +711,67 @@
     fetch(ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData }).then(() => { status.textContent = "Registration received successfully!"; status.style.color = '#25d366'; status.style.display = 'block'; e.target.reset(); submitBtn.textContent = "Submit registration"; if(window.celebrationBurst) window.celebrationBurst(); });
   });
 
-  // --- TIME PORTAL TRANSITION (To 2086) ---
+  // --- 1. TO CYBER MODE (PURE CYAN TRANSITION) ---
   window.triggerTimeTravel = function(e) {
     e.preventDefault();
     if(typeof window.setReactActive !== 'function') return; 
     
     const rect = e.currentTarget.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : null; const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
-    const portal = document.createElement('div'); portal.className = 'time-portal'; portal.style.left = x + 'px'; portal.style.top = y + 'px'; portal.style.marginTop = '-10px'; portal.style.marginLeft = '-10px'; document.body.appendChild(portal);
+    
+    const portal = document.createElement('div'); 
+    portal.className = 'cyber-portal'; // Uses Pure Cyan CSS
+    portal.style.left = x + 'px'; 
+    portal.style.top = y + 'px'; 
+    portal.style.marginTop = '-10px'; 
+    portal.style.marginLeft = '-10px'; 
+    document.body.appendChild(portal);
+    
     if(navigator.vibrate) navigator.vibrate(100);
     setTimeout(() => { portal.style.transform = 'scale(400)'; }, 20);
     setTimeout(() => {
       window.setReactActive(true);
-      document.body.style.overflow = 'hidden'; document.getElementById('normal-app').style.display = 'none';
-      portal.style.opacity = '0'; setTimeout(() => portal.remove(), 500);
+      document.body.style.overflow = 'hidden'; 
+      document.getElementById('normal-app').style.display = 'none';
+      portal.style.opacity = '0'; 
+      setTimeout(() => portal.remove(), 500);
     }, 900);
   };
 
-  // --- RETURN TO 2026 ---
-  window.returnTo2026 = function() {
-    const normalApp = document.getElementById('normal-app'); normalApp.style.display = 'block'; normalApp.style.opacity = '0';
-    const flash = document.createElement('div'); flash.style.position = 'fixed'; flash.style.inset = '0'; flash.style.backgroundColor = '#fff'; flash.style.zIndex = '999999'; flash.style.animation = 'glitch-flash 0.5s ease-out forwards'; document.body.appendChild(flash);
+  // --- 2. BACK TO 2026 (WARM FLAME TRANSITION) ---
+  window.returnTo2026 = function(e) {
+    const normalApp = document.getElementById('normal-app'); 
+    normalApp.style.display = 'block'; 
+    normalApp.style.opacity = '0';
+    
+    // Use click position or center screen
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    if (e && e.clientX) { x = e.clientX; y = e.clientY; }
+
+    const portal = document.createElement('div'); 
+    portal.className = 'warm-portal'; // Uses Warm Orange CSS
+    portal.style.left = x + 'px'; 
+    portal.style.top = y + 'px'; 
+    portal.style.marginTop = '-10px'; 
+    portal.style.marginLeft = '-10px'; 
+    document.body.appendChild(portal);
+    
     if(navigator.vibrate) navigator.vibrate(50);
+    setTimeout(() => { portal.style.transform = 'scale(400)'; }, 20);
+    
     setTimeout(() => {
       if(window.setReactActive) window.setReactActive(false);
-      document.body.style.overflow = ''; normalApp.style.opacity = '1'; setTimeout(() => flash.remove(), 500);
-    }, 300);
+      document.body.style.overflow = ''; 
+      normalApp.style.opacity = '1'; 
+      portal.style.opacity = '0';
+      setTimeout(() => portal.remove(), 500);
+    }, 800);
   };
 </script>
 
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Fully Restored & Easter Egg Added)
+     THE 2086 NEURAL REACT APP (Fully Restored & Fixed)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
@@ -747,7 +788,7 @@ const PUZZLES = [
 ];
 
 function FAIcon({ name, size = 18, color }) {
-  return <i className={name} style={{ fontSize: size, color: color || 'inherit' }}></i>;
+  return <i className={name} style={{ fontSize: size, lineHeight: 1, display: "inline-block", color: color || 'inherit' }}></i>;
 }
 
 function AbhaNeuralLink(){
@@ -776,7 +817,7 @@ function AbhaNeuralLink(){
 
   return (
     <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
-      <button onClick={window.returnTo2026} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
+      <button onClick={(e) => window.returnTo2026(e)} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
         <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
       </button>
 
@@ -879,7 +920,7 @@ function TerminalHack({ C }) {
                 <input autoFocus value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} className="mb-3 w-full rounded border bg-black/60 px-3 py-2 text-white outline-none" style={{ borderColor: C.panelBorder }} placeholder="answer_" />
                 <div className="flex items-center justify-between">
                   <span style={{ color: seconds <= 10 ? C.red : "white" }}>{seconds}s remaining</span>
-                  <button onClick={submit} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>DECRYPT</button>
+                  <button onClick={submit} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>DECRYPT</button>
                 </div>
               </>
             )}
@@ -889,7 +930,7 @@ function TerminalHack({ C }) {
                 <p className="mb-2 text-lg" style={{ color: C.cyan }}>ACCESS GRANTED</p>
                 <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
                 <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor: C.cyan, color: C.cyan }}>CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE</button>
+                <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE</button>
               </div>
             )}
 
@@ -897,7 +938,7 @@ function TerminalHack({ C }) {
               <div className="text-center">
                 <p className="mb-2 text-lg" style={{ color: C.red }}>CONNECTION LOST</p>
                 <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black" style={{ background: C.red, border: 'none', cursor: 'pointer' }}>CLOSE</button>
+                <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.red, border: 'none', cursor: 'pointer' }}>CLOSE</button>
               </div>
             )}
           </div>
@@ -945,7 +986,7 @@ function EnrollmentProtocol({ C, onClose }){
               <label className="font-mono-cyber mb-1 block text-[10px] text-white/60">PARENT COMM LINK (PHONE)</label>
               <input required type="tel" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})} className="w-full rounded border bg-black/50 p-3 text-sm text-white outline-none" style={{ borderColor:C.panelBorder }} />
             </div>
-            <button type="submit" className="font-mono-cyber pulse-ring w-full rounded py-4 text-xs font-bold text-black active:scale-95 transition-transform" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>INITIATE DATA SYNC ➔</button>
+            <button type="submit" className="font-mono-cyber pulse-ring w-full rounded py-4 text-xs font-bold text-black hover:scale-105 active:scale-95 transition-transform" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>INITIATE DATA SYNC ➔</button>
           </form>
         ) : step === 1 ? (
           <div className="flex h-64 flex-col items-center justify-center p-8 text-center">
@@ -957,7 +998,7 @@ function EnrollmentProtocol({ C, onClose }){
              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full" style={{ background:`${C.cyan}33`, color:C.cyan, border:`1px solid ${C.cyan}` }}><FAIcon name="fas fa-check" size={16}/></div>
              <p className="font-mono-cyber text-sm" style={{ color:C.cyan }}>SYNC COMPLETE</p>
              <p className="font-mono-cyber mt-2 text-[10px] text-white/50">Data logged securely. You will be contacted shortly.</p>
-             <button type="button" onClick={onClose} className="font-mono-cyber mt-6 w-full rounded py-3 text-xs font-bold text-black active:scale-95" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE TERMINAL</button>
+             <button type="button" onClick={onClose} className="font-mono-cyber mt-6 w-full rounded py-3 text-xs font-bold text-black hover:scale-105 active:scale-95 transition-transform" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE TERMINAL</button>
           </div>
         )}
       </div>
@@ -1043,7 +1084,7 @@ function CyberVault({ open, onClose, C }) {
               <li><span style={{color: C.cyan}}>COMPUTER:</span> The keyboard is an extension of your hands. Rest on ASDF/JKL; and do not look down.</li>
            </ul>
          </div>
-         <button onClick={onClose} className="w-full font-mono-cyber rounded-full py-3 text-black font-bold active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>WIPE CACHE & CLOSE</button>
+         <button onClick={onClose} className="w-full font-mono-cyber rounded-full py-3 text-black font-bold active:scale-95 transition-transform hover:scale-105" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>WIPE CACHE & CLOSE</button>
       </div>
     </div>
   );
@@ -1059,11 +1100,8 @@ function SkillTree({ C }){
   const EDGES = [["core","english"],["core","maths"],["core","computer"]];
   const [active, setActive] = useState(null);
   const [revealed, setRevealed] = useState(false);
-  
-  // NEW EASTER EGG STATE
   const [powered, setPowered] = useState([]);
   const [vaultOpen, setVaultOpen] = useState(false);
-
   const ref = useRef(null);
 
   useEffect(() => {
@@ -1076,9 +1114,7 @@ function SkillTree({ C }){
 
   const findSkill = id => SKILLS.find(s=>s.id===id);
   
-  // Easter Egg Logic
   const handleNodeClick = (id) => {
-    // If it's outer node, toggle power
     if (id !== "core") {
        if (powered.includes(id)) {
           setPowered(powered.filter(n => n !== id));
@@ -1086,13 +1122,11 @@ function SkillTree({ C }){
           setPowered([...powered, id]);
        }
     } else {
-       // If it's core and fully powered, open vault
        if (powered.length === 3) {
           setVaultOpen(true);
        }
     }
-    // Also set as active for mobile users
-    setActive(isActive ? null : id);
+    setActive(isActive => isActive === id ? null : id);
   };
 
   return (
@@ -1106,16 +1140,13 @@ function SkillTree({ C }){
       </div>
       
       <div className={`cyber-reveal ${revealed ? "in" : ""} relative mx-auto aspect-square w-full max-w-2xl`}>
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
           {EDGES.map(([a,b],i)=>{
             const from=findSkill(a), to=findSkill(b);
             const isActiveHover = active===a||active===b;
             const isPowered = powered.includes(a) || powered.includes(b);
-            
-            // Highlight line if powered or hovered
             const lineColor = isPowered ? C.cyan : (isActiveHover ? C.cyan : "rgba(255,255,255,0.12)");
             const lineWidth = isPowered ? 1.2 : (isActiveHover ? 0.8 : 0.3);
-            
             return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lineColor} strokeWidth={lineWidth} className={isPowered || isActiveHover ? "flow-line" : ""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
           })}
         </svg>
@@ -1124,7 +1155,6 @@ function SkillTree({ C }){
           const isPowered = powered.includes(skill.id);
           const isCoreOverload = skill.id === "core" && powered.length === 3;
           
-          // Outer nodes change style when powered
           let ringColor = skill.color;
           let shadow = `0 0 12px ${skill.color}33`;
           let transformScale = "scale(1)";
@@ -1151,7 +1181,7 @@ function SkillTree({ C }){
                    style={{ borderColor:ringColor, background:(isActiveHover || isPowered || isCoreOverload)?`${ringColor}33`:"rgba(255,255,255,0.03)", boxShadow:shadow, transform:transformScale }}>
                    <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={isCoreOverload ? '#fff' : ringColor} />
                  </span>
-                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm transition-all" style={{color: isCoreOverload ? C.red : 'rgba(255,255,255,0.7)', fontWeight: isCoreOverload ? 'bold' : 'normal'}}>
                    {isCoreOverload ? "CORE OVERLOAD" : skill.label}
                  </span>
                </button>
@@ -1187,13 +1217,13 @@ function useCountUp(target, active, duration = 1400) {
 }
 
 function ProgressRing({ percent, active, color, label, icon, suffix = "%" }) {
-  const radius = 42, circumference = 2 * Math.PI * radius;
+  const radius = 38, circumference = 2 * Math.PI * radius;
   const displayed = useCountUp(percent, active);
   const offset = circumference - (displayed / 100) * circumference;
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative h-32 w-32">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 100 100">
+        <svg className="h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
           <circle cx="50" cy="50" r={radius} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
             strokeDasharray={circumference} strokeDashoffset={active ? offset : circumference}
@@ -1332,15 +1362,15 @@ function ControlDock({ C, nightMode, setNightMode, syncMode, setSyncMode, setSho
     <>
       <FocusHealthBar active={syncMode} C={C} />
       <div className="font-mono-cyber fixed bottom-6 left-6 z-[600] flex flex-col gap-2 text-[10px]">
-        <button onClick={() => setSyncMode((s) => !s)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
+        <button onClick={() => setSyncMode((s) => !s)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors hover:scale-105 active:scale-95"
           style={{ borderColor: syncMode ? C.cyan : C.panelBorder, background: syncMode ? `${C.cyan}22` : "rgba(0,0,0,0.4)", color: syncMode ? C.cyan : "white", cursor: 'pointer' }}>
           <FAIcon name="fas fa-sliders-h" size={12}/> NEURAL SYNC {syncMode ? "ON" : "OFF"}
         </button>
-        <button onClick={() => setNightMode((n) => !n)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors"
+        <button onClick={() => setNightMode((n) => !n)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors hover:scale-105 active:scale-95"
           style={{ borderColor: nightMode ? C.red : C.panelBorder, background: nightMode ? `${C.red}22` : "rgba(0,0,0,0.4)", color: nightMode ? C.red : "white", cursor: 'pointer' }}>
           <FAIcon name="fas fa-moon" size={12}/> NIGHT OWL PREVIEW
         </button>
-        <button onClick={() => setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.4)", cursor: 'pointer' }}>
+        <button onClick={() => setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70 hover:scale-105 active:scale-95" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.4)", cursor: 'pointer' }}>
           <FAIcon name="fas fa-redo-alt" size={12}/> SIMULATE 404 VOID
         </button>
       </div>
@@ -1413,7 +1443,7 @@ function AnnoyedAnswer({ C, challenge, onDone }){
   return (
     <div className="flex gap-2">
       <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()} className="w-full rounded border bg-black/60 px-2 py-1 text-white outline-none" style={{ borderColor:C.panelBorder }} />
-      <button onClick={submit} className="rounded px-3 text-black" style={{ background:C.red, border: 'none', cursor: 'pointer' }}>GO</button>
+      <button onClick={submit} className="rounded px-3 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background:C.red, border: 'none', cursor: 'pointer' }}>GO</button>
     </div>
   );
 }
@@ -1433,7 +1463,6 @@ function ZeroGravityVoid({ C, onClose }){
   function onPointerMove(e) {
     if (!dragInfo.current.active || !containerRef.current) return; 
     
-    // Support touch and mouse cleanly
     let clientX, clientY;
     if (e.touches && e.touches.length > 0) {
        clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
@@ -1445,7 +1474,6 @@ function ZeroGravityVoid({ C, onClose }){
     const x = ((clientX - rect.left) / rect.width) * 100;
     const y = ((clientY - rect.top) / rect.height) * 100;
 
-    // Constrain to container
     const safeX = Math.max(0, Math.min(100, x));
     const safeY = Math.max(0, Math.min(100, y));
 
@@ -1467,14 +1495,12 @@ function ZeroGravityVoid({ C, onClose }){
       <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color:C.red }}>404 — GRAVITY OFFLINE. Drag back to repair.</p>
       
       <div ref={containerRef} className="relative h-72 w-full max-w-xl rounded-xl border flex items-center justify-center overflow-hidden touch-none" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)" }}>
-        {/* Targets */}
         {targets.map(t => (
           <div key={t.id} className="font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded border border-dashed text-white/20" style={{ left:`${t.tx}%`, top:`${t.ty}%`, borderColor:C.panelBorder }}>{t.letter}</div>
         ))}
-        {/* Draggables */}
         {pieces.map(p => (
           <div key={p.id} className="absolute" style={{ left:`${p.x}%`, top:`${p.y}%`, transform: 'translate(-50%, -50%)', transition: p.placed ? "left 0.2s, top 0.2s" : "none" }}>
-            <button onMouseDown={(e) => startDrag(e, p.id)} onTouchStart={(e) => startDrag(e, p.id)} className={`font-mono-cyber flex h-10 w-10 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`} style={{ borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white", outline: 'none' }}>{p.letter}</button>
+            <button onMouseDown={(e) => startDrag(e, p.id)} onTouchStart={(e) => startDrag(e, p.id)} className={`font-mono-cyber flex h-10 w-10 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`} style={{ borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white", outline: 'none', touchAction: 'none' }}>{p.letter}</button>
           </div>
         ))}
       </div>
@@ -1482,7 +1508,7 @@ function ZeroGravityVoid({ C, onClose }){
       {repaired ? (
         <div className="mt-6 text-center">
           <p className="font-mono-cyber text-sm mb-4" style={{ color:C.cyan }}>PAGE REPAIRED</p>
-          <button onClick={onClose} className="font-mono-cyber rounded-full px-5 py-2 text-black" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>RETURN TO SITE</button>
+          <button onClick={onClose} className="font-mono-cyber rounded-full px-5 py-2 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>RETURN TO SITE</button>
         </div>
       ) : ( 
         <button onClick={onClose} className="mt-8 font-mono-cyber rounded border px-6 py-2 text-xs text-white hover:bg-white/10" style={{borderColor:C.panelBorder, background: 'transparent', cursor: 'pointer'}}>Skip / Close</button> 
