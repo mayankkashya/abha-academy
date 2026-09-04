@@ -272,6 +272,9 @@
   
   @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(34,230,255,0.45);}100%{box-shadow:0 0 0 22px rgba(34,230,255,0);}}
   .pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4,0,0.6,1) infinite;}
+
+  @keyframes pulse-danger{0%{box-shadow:0 0 0 0 rgba(255,41,84,0.6);}100%{box-shadow:0 0 0 35px rgba(255,41,84,0);}}
+  .pulse-danger{animation:pulse-danger 1.5s cubic-bezier(0.4,0,0.6,1) infinite;}
   
   @keyframes dash-flow{to{stroke-dashoffset:-200;}}
   .flow-line{stroke-dasharray:6 10;animation:dash-flow 3s linear infinite;}
@@ -727,7 +730,7 @@
 
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Fully Restored & FontAwesome Fixed)
+     THE 2086 NEURAL REACT APP (Fully Restored & Easter Egg Added)
      ======================================================= -->
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
@@ -743,7 +746,6 @@ const PUZZLES = [
   { q: "A train covers 60km in 1hr. Distance in 45 min?", a: "45" },
 ];
 
-// 1. FIXED ICONS: Ab FontAwesome icons use honge taaki basic ya blank emojis ka error na aaye.
 function FAIcon({ name, size = 18, color }) {
   return <i className={name} style={{ fontSize: size, color: color || 'inherit' }}></i>;
 }
@@ -778,7 +780,6 @@ function AbhaNeuralLink(){
         <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
       </button>
 
-      {/* 2. NEURAL SYNC FEATURE EXPLAINED: Visual Focus Mode Overlay */}
       {syncMode && (
         <div className="pointer-events-none fixed inset-0 z-[5] flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm focus-vignette transition-all duration-1000">
           <h2 className="font-mono-cyber text-2xl text-cyan-400 glitch-layer mb-2 tracking-widest text-center px-4">DISTRACTIONS DISABLED.</h2>
@@ -1027,6 +1028,27 @@ function BootSequenceHero({ C, syncMode, onEnroll }){
   );
 }
 
+function CyberVault({ open, onClose, C }) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-6 backdrop-blur-md">
+      <div className="w-full max-w-lg rounded-xl border p-6 text-sm" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 50px ${C.cyan}44` }}>
+         <h3 className="font-mono-cyber text-2xl mb-4 glitch-layer" style={{ color: C.cyan }}><FAIcon name="fas fa-lock-open" size={20}/> DATA VAULT UNLOCKED</h3>
+         <p className="mb-4 text-white/80">You have successfully routed power to the Foundation Core.</p>
+         <div className="bg-black/50 border rounded p-4 mb-6" style={{borderColor: C.panelBorder}}>
+           <p className="text-white/60 mb-3 tracking-widest font-mono-cyber text-[10px]">CLASSIFIED STUDY HACKS [YEAR 2086]:</p>
+           <ul className="pl-4 space-y-3 text-white/90 font-mono-cyber text-xs">
+              <li><span style={{color: C.cyan}}>MATHEMATICS:</span> Do not memorize. Understand the pattern. The pattern is everything.</li>
+              <li><span style={{color: C.cyan}}>ENGLISH:</span> Vocabulary expands neural bandwidth. Read out loud to sync motor-vocal nodes.</li>
+              <li><span style={{color: C.cyan}}>COMPUTER:</span> The keyboard is an extension of your hands. Rest on ASDF/JKL; and do not look down.</li>
+           </ul>
+         </div>
+         <button onClick={onClose} className="w-full font-mono-cyber rounded-full py-3 text-black font-bold active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>WIPE CACHE & CLOSE</button>
+      </div>
+    </div>
+  );
+}
+
 function SkillTree({ C }){
   const SKILLS = [
     { id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, desc:"The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts." },
@@ -1037,6 +1059,11 @@ function SkillTree({ C }){
   const EDGES = [["core","english"],["core","maths"],["core","computer"]];
   const [active, setActive] = useState(null);
   const [revealed, setRevealed] = useState(false);
+  
+  // NEW EASTER EGG STATE
+  const [powered, setPowered] = useState([]);
+  const [vaultOpen, setVaultOpen] = useState(false);
+
   const ref = useRef(null);
 
   useEffect(() => {
@@ -1048,42 +1075,95 @@ function SkillTree({ C }){
   }, []);
 
   const findSkill = id => SKILLS.find(s=>s.id===id);
+  
+  // Easter Egg Logic
+  const handleNodeClick = (id) => {
+    // If it's outer node, toggle power
+    if (id !== "core") {
+       if (powered.includes(id)) {
+          setPowered(powered.filter(n => n !== id));
+       } else {
+          setPowered([...powered, id]);
+       }
+    } else {
+       // If it's core and fully powered, open vault
+       if (powered.length === 3) {
+          setVaultOpen(true);
+       }
+    }
+    // Also set as active for mobile users
+    setActive(isActive ? null : id);
+  };
 
   return (
     <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16">
+      <CyberVault open={vaultOpen} onClose={() => {setVaultOpen(false); setPowered([]);}} C={C} />
+      
       <div className={`cyber-reveal ${revealed ? "in" : ""} mb-16 text-center`}>
         <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.cyan}b3` }}>CURRICULUM MAP</p>
         <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Not subjects. A network of foundations.</h2>
+        <p className="font-mono-cyber text-xs mt-2 text-white/50">Click nodes to route power to the Foundation Core.</p>
       </div>
       
       <div className={`cyber-reveal ${revealed ? "in" : ""} relative mx-auto aspect-square w-full max-w-2xl`}>
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           {EDGES.map(([a,b],i)=>{
-            const from=findSkill(a), to=findSkill(b), isActive=active===a||active===b;
-            // 3. IMPROVED HOVER: Active lines will glow bright when a node is hovered.
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={isActive?C.cyan:"rgba(255,255,255,0.12)"} strokeWidth={isActive?0.8:0.3} className={isActive?"flow-line":""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
+            const from=findSkill(a), to=findSkill(b);
+            const isActiveHover = active===a||active===b;
+            const isPowered = powered.includes(a) || powered.includes(b);
+            
+            // Highlight line if powered or hovered
+            const lineColor = isPowered ? C.cyan : (isActiveHover ? C.cyan : "rgba(255,255,255,0.12)");
+            const lineWidth = isPowered ? 1.2 : (isActiveHover ? 0.8 : 0.3);
+            
+            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lineColor} strokeWidth={lineWidth} className={isPowered || isActiveHover ? "flow-line" : ""} style={{ transition:"stroke 0.3s, stroke-width 0.3s" }} />;
           })}
         </svg>
         {SKILLS.map(skill=>{
-          const isActive = active===skill.id;
+          const isActiveHover = active===skill.id;
+          const isPowered = powered.includes(skill.id);
+          const isCoreOverload = skill.id === "core" && powered.length === 3;
+          
+          // Outer nodes change style when powered
+          let ringColor = skill.color;
+          let shadow = `0 0 12px ${skill.color}33`;
+          let transformScale = "scale(1)";
+          let animClass = "";
+          
+          if (isCoreOverload) {
+             ringColor = C.red;
+             shadow = `0 0 40px ${C.red}aa`;
+             transformScale = "scale(1.25)";
+             animClass = "pulse-danger shake";
+          } else if (isActiveHover || isPowered) {
+             shadow = `0 0 40px ${skill.color}aa`;
+             transformScale = "scale(1.15)";
+             if (skill.id === "core") {
+                ringColor = powered.length > 0 ? C.cyan : skill.color;
+             }
+          }
+          
           return (
-            <div key={skill.id} className="absolute" style={{ left:`${skill.x}%`, top:`${skill.y}%`, transform: 'translate(-50%, -50%)', zIndex: isActive ? 20 : 10 }}>
-               <button onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>setActive(isActive?null:skill.id)}
-                 className="float-fast flex flex-col items-center gap-2 outline-none" style={{ animationDelay:`${skill.x%3}s`, background: 'transparent', border: 'none', cursor: 'pointer' }}>
+            <div key={skill.id} className="absolute" style={{ left:`${skill.x}%`, top:`${skill.y}%`, transform: 'translate(-50%, -50%)', zIndex: isActiveHover || isCoreOverload ? 20 : 10 }}>
+               <button onMouseEnter={()=>setActive(skill.id)} onMouseLeave={()=>setActive(null)} onClick={()=>handleNodeClick(skill.id)}
+                 className={`float-fast flex flex-col items-center gap-2 outline-none ${animClass}`} style={{ animationDelay:`${skill.x%3}s`, background: 'transparent', border: 'none', cursor: 'pointer' }}>
                  <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
-                   style={{ borderColor:skill.color, background:isActive?`${skill.color}33`:"rgba(255,255,255,0.03)", boxShadow:isActive?`0 0 40px ${skill.color}aa`:`0 0 12px ${skill.color}33`, transform:isActive?"scale(1.15)":"scale(1)" }}>
-                   <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={skill.color} />
+                   style={{ borderColor:ringColor, background:(isActiveHover || isPowered || isCoreOverload)?`${ringColor}33`:"rgba(255,255,255,0.03)", boxShadow:shadow, transform:transformScale }}>
+                   <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={isCoreOverload ? '#fff' : ringColor} />
                  </span>
-                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm">{skill.label}</span>
+                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                   {isCoreOverload ? "CORE OVERLOAD" : skill.label}
+                 </span>
                </button>
             </div>
           );
         })}
       </div>
       
-      {/* 3. IMPROVED HOVER: Better card UI for active description */}
       <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300" style={{ borderColor: active ? findSkill(active).color : C.panelBorder, background:C.panel, opacity:active?1:0.35, transform:active?"translateY(0) scale(1.05)":"translateY(6px) scale(1)", boxShadow: active ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
-        <p className="text-sm leading-relaxed text-white/85">{active ? findSkill(active).desc : "Hover or tap a node to inspect its module."}</p>
+        <p className="text-sm leading-relaxed text-white/85">
+          {powered.length === 3 && active === "core" ? "SYSTEM OVERLOAD. CLICK CORE TO ACCESS VAULT." : (active ? findSkill(active).desc : "Hover or click a node to inspect its module.")}
+        </p>
       </div>
     </section>
   );
@@ -1338,7 +1418,6 @@ function AnnoyedAnswer({ C, challenge, onDone }){
   );
 }
 
-// 4. FIXED 404 DRAG BUG: Absolute safe dragging using window-level coordinates.
 function ZeroGravityVoid({ C, onClose }){
   const targets = [{ id:"p", letter:"P", tx:20, ty:50 }, { id:"a", letter:"A", tx:32, ty:50 }, { id:"g", letter:"G", tx:44, ty:50 }, { id:"e", letter:"E", tx:56, ty:50 }, { id:"4", letter:"4", tx:68, ty:50 }, { id:"0", letter:"0", tx:80, ty:50 }];
   const [pieces, setPieces] = useState(targets.map(t => ({ ...t, x:10+Math.random()*80, y:10+Math.random()*30, placed:false })));
