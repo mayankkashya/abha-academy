@@ -318,9 +318,18 @@
             <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
           </button>
           <ul class="lang-menu" id="langMenu" role="listbox">
+            <!-- ALL INDIAN LANGUAGES EXPANDED -->
             <li role="option" data-lang="en" class="active">English</li>
             <li role="option" data-lang="hi">हिंदी (Hindi)</li>
             <li role="option" data-lang="bn">বাংলা (Bengali)</li>
+            <li role="option" data-lang="te">తెలుగు (Telugu)</li>
+            <li role="option" data-lang="mr">मराठी (Marathi)</li>
+            <li role="option" data-lang="ta">தமிழ் (Tamil)</li>
+            <li role="option" data-lang="ur">اردو (Urdu)</li>
+            <li role="option" data-lang="gu">ગુજરાતી (Gujarati)</li>
+            <li role="option" data-lang="kn">ಕನ್ನಡ (Kannada)</li>
+            <li role="option" data-lang="ml">മലയാളം (Malayalam)</li>
+            <li role="option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</li>
           </ul>
         </div>
       </div>
@@ -820,7 +829,8 @@ function AbhaNeuralLink(){
 
   return (
     <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
-      <button onClick={(e) => window.returnTo2026(e)} className="fixed top-6 left-6 z-[500] font-mono-cyber flex items-center gap-2 rounded-full border px-5 py-3 text-xs font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.05)", boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
+      {/* FIXED BUTTON RESPONSIVENESS AND OPACITY */}
+      <button onClick={(e) => window.returnTo2026(e)} className="fixed top-4 left-4 sm:top-6 sm:left-6 z-[5000] font-mono-cyber flex items-center gap-2 rounded-full border px-4 py-2 sm:px-5 sm:py-3 text-[10px] sm:text-xs font-bold transition-all hover:scale-105 active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: C.void, boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
         <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
       </button>
 
