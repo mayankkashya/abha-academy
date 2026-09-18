@@ -33,7 +33,7 @@
     --ok-green:#25d366; --radius-lg:22px; --radius-md:14px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:auto;} /* JS handles smooth scroll now */
+  html{scroll-behavior:auto;}
   body{ background:var(--dusk-950); color:var(--cream-100); font-family:'Work Sans',sans-serif; line-height:1.65; overflow-x:hidden; -webkit-tap-highlight-color: transparent;}
   h1,h2,h3,.display{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-0.01em; }
   a{color:inherit;} img,svg{display:block;max-width:100%;}
@@ -112,7 +112,7 @@
   .flame-mid{transform-origin:50% 100%;animation:flicker-mid 1.7s ease-in-out infinite;}
   .flame-tip{transform-origin:50% 100%;animation:flicker-tip 0.9s ease-in-out infinite;}
   @keyframes flicker-outer{ 0%{transform:scaleY(1) scaleX(1) rotate(0deg);} 18%{transform:scaleY(1.06) scaleX(0.95) rotate(-2deg);} 34%{transform:scaleY(0.96) scaleX(1.04) rotate(1.5deg);} 52%{transform:scaleY(1.04) scaleX(0.97) rotate(-1deg);} 68%{transform:scaleY(0.93) scaleX(1.05) rotate(2deg);} 83%{transform:scaleY(1.03) scaleX(0.98) rotate(-1.4deg);} 100%{transform:scaleY(1) scaleX(1) rotate(0deg);} }
-  @keyframes flicker-mid{ 0%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);} 22%{transform:scaleY(0.94) scaleX(1.06) translateX(1px) rotate(2deg);} 40%{transform:scaleY(1.07) scaleX(0.93) translateX(-1px) rotate(-2.5deg);} 61%{transform:scaleY(0.96) scaleX(1.03) translateX(1px) rotate(1.5deg);} 80%{transform:scaleY(1.05) scaleX(0.95) translateX(-1px) rotate(-1.5deg);} 100%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);} }
+  @keyframes flicker-mid{ 0%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);} 22%{transform:scaleY(0.94) scaleX(1.06) translateX(1px) rotate(2deg);} 40%{transform:scaleY(1.07) scaleX(0.93) translateX(-1px) rotate(-2.5deg);} 61%{transform:scaleY(0.96) scaleX(1.03) translateX(1px) rotate(1.5deg);} 80%{transform:scaleY(1.05) scaleX(0.95) translateX(-1px) rotate(-1.5deg);} 100%{transform:scaleY(1) scaleX(1) rotate(0deg);} }
   @keyframes flicker-tip{ 0%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;} 25%{transform:scaleY(1.1) translateY(-1px) rotate(3deg);opacity:1;} 50%{transform:scaleY(0.9) translateY(0.5px) rotate(-3deg);opacity:0.88;} 75%{transform:scaleY(1.06) translateY(-0.5px) rotate(2deg);opacity:0.98;} 100%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;} }
 
   .scroll-progress{ position:fixed;top:0;left:0;height:3px;width:0%; background:linear-gradient(90deg,var(--flame-500),var(--ember-500),var(--flame-300)); z-index:2000;transition:width 0.1s ease-out; box-shadow:0 0 8px rgba(245,166,35,0.6); }
@@ -128,7 +128,6 @@
 
   @media (prefers-reduced-motion:reduce){ .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;} .reveal{opacity:1;transform:none;transition:none;} }
   
-  /* FIXED: Focus Outline Bug on Links */
   a:focus, button:focus { outline: none; }
   :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
 
@@ -136,7 +135,6 @@
   .strip-inner{ max-width:1180px;margin:0 auto;padding:1.6rem 6%; display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between; }
   .strip-item{display:flex;gap:0.8rem;align-items:flex-start;flex:1 1 220px;}
   
-  /* THE TIME TRAVEL SWITCH BUTTON */
   .time-switch-btn{
     background:rgba(245,166,35,0.1); border:1px solid rgba(245,166,35,0.3); color:var(--flame-300);
     width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center;
@@ -280,16 +278,37 @@
 
   .focus-vignette { position: fixed; inset: 0; pointer-events: none; z-index: 100; background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.95) 100%); animation: fadeInFocus 1.5s ease-out; }
   @keyframes fadeInFocus { from { opacity: 0; } to { opacity: 1; } }
+
+  /* =========================================
+     EASTER EGGS CSS
+     ========================================= */
+  #matrixCanvas { position: fixed; inset: 0; z-index: 2147483645; pointer-events: none; opacity: 0; transition: opacity 1.5s ease-in-out; mix-blend-mode: screen; }
+  #matrixCanvas.raining { opacity: 1; }
+
+  .memory-overlay { position: fixed; inset: 0; z-index: 3000; background: rgba(13,16,36,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+  .memory-overlay.show { opacity: 1; visibility: visible; }
+  .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 25px; perspective: 1000px; }
+  @media (max-width: 400px) { .memory-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+  
+  .mem-card { width: 75px; height: 95px; background: rgba(255,255,255,0.03); border: 1px solid rgba(245,166,35,0.25); border-radius: 14px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .mem-card:hover { border-color: rgba(245,166,35,0.5); }
+  .mem-card.flipped { transform: rotateY(180deg); }
+  
+  .mem-card .front, .mem-card .back { position: absolute; inset: 0; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border-radius: 14px; }
+  .mem-card .back { transform: rotateY(180deg); background: linear-gradient(135deg, var(--flame-500), var(--ember-500)); color: var(--dusk-950); box-shadow: 0 0 20px rgba(245,166,35,0.4); border: none; }
+  
+  .close-memory { margin-top: 35px; padding: 12px 28px; border-radius: 99px; font-family: 'Work Sans', sans-serif; font-weight: 600; background: transparent; color: var(--flame-300); border: 1px solid var(--flame-300); cursor: pointer; transition: 0.3s ease; }
+  .close-memory:hover { background: var(--flame-300); color: var(--dusk-950); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(245,166,35,0.2); }
 </style>
 </head>
 <body>
 
 <!-- =======================================================
-     APP CONFIGURATION (PASTE API URLS HERE)
+     APP CONFIGURATION
      ======================================================= -->
 <script>
   window.ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
-  window.STATS_API_URL = ""; // E.g., "https://script.google.com/macros/s/.../exec"
+  window.STATS_API_URL = "";
 </script>
 
 <!-- =======================================================
@@ -318,7 +337,6 @@
             <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
           </button>
           <ul class="lang-menu" id="langMenu" role="listbox">
-            <!-- ALL INDIAN LANGUAGES EXPANDED -->
             <li role="option" data-lang="en" class="active">English</li>
             <li role="option" data-lang="hi">हिंदी (Hindi)</li>
             <li role="option" data-lang="bn">বাংলা (Bengali)</li>
@@ -376,7 +394,6 @@
     <div class="strip">
       <div class="wrap strip-inner">
         <div class="strip-item">
-          <!-- Disabled until React Mounts -->
           <button type="button" id="timeTravelBtn" class="time-switch-btn" disabled onclick="triggerTimeTravel(event)" aria-label="Access Neural Link" title="Establishing Neural Link...">
             <i class="fas fa-clock"></i>
           </button>
@@ -534,13 +551,23 @@
      ======================================================= -->
 <div id="neural-root"></div>
 
+<!-- =======================================================
+     EASTER EGG ELEMENTS (Matrix Rain & Memory Game)
+     ======================================================= -->
+<canvas id="matrixCanvas"></canvas>
+
+<div class="memory-overlay" id="memoryOverlay" role="dialog" aria-modal="true">
+  <h2 style="color: var(--cream-100); font-family: 'Fraunces', serif; font-size: 2rem; margin-bottom: 0.5rem;">Brain Sync Check</h2>
+  <p style="color: var(--cream-300); font-size: 0.95rem; font-family: 'JetBrains Mono', monospace;">Match the subjects to complete memory sync.</p>
+  <div class="memory-grid" id="memoryGrid"></div>
+  <button class="close-memory" id="closeMemoryBtn">Abort Simulation</button>
+</div>
 
 <!-- =======================================================
-     SCRIPTS FOR 2026 LOGIC & HARDWARE-ACCELERATED TRANSITIONS
+     SCRIPTS FOR 2026 LOGIC & TRANSITIONS
      ======================================================= -->
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
-  // -- Translate --
   function googleTranslateElementInit(){
     new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en', autoDisplay:false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE },'google_translate_element');
   }
@@ -561,7 +588,6 @@
   }
   function applyLanguage(lang){ setGoogTransCookie(lang); location.reload(); }
 
-  // -- Normal Logic Init --
   document.addEventListener('DOMContentLoaded', function(){
     const langSwitch = document.getElementById('langSwitch'), langBtn = document.getElementById('langBtn'), langMenu = document.getElementById('langMenu'), langLabel = document.getElementById('langLabel');
     const savedCookie = getCookie('googtrans'); const savedLang = savedCookie && savedCookie.split('/')[2] ? savedCookie.split('/')[2] : 'en';
@@ -581,7 +607,6 @@
     function updateProgress(){ const scrollTop = window.scrollY; const docHeight = document.documentElement.scrollHeight - window.innerHeight; const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0; progressBar.style.width = pct + '%'; }
     window.addEventListener('scroll', updateProgress, { passive: true }); updateProgress();
 
-    // FIXED: JS Smooth Scrolling to fix "Both Not Working" bug on navigation links
     document.querySelectorAll('.nav-links a, .btn-ghost, .btn-primary[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -589,14 +614,11 @@
           e.preventDefault();
           const target = document.querySelector(href);
           if (target) {
-            const headerOffset = 70; // Offset for sticky header
+            const headerOffset = 70;
             const elementPosition = target.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: "smooth"
-            });
-            this.blur(); // Removes focus outline box
+            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+            this.blur();
           }
         }
       });
@@ -612,7 +634,7 @@
       const emojis = ['✨','🔥','🪔','⭐'];
       for (let i = 0; i < 14; i++){ const s = document.createElement('span'); s.className = 'spark'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const dx = (Math.random() - 0.5) * 220; const dy = -(100 + Math.random() * 120); const rot = (Math.random() - 0.5) * 180; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = (46 + (Math.random()-0.5) * 20) + '%'; s.style.top = '35%'; s.style.animationDelay = (Math.random()*0.2) + 's'; diyaStage.appendChild(s); setTimeout(function(){ s.remove(); }, 1700); }
     }
-    function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2600); }
+    window.showToast = function(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2600); };
     if (flame && diyaStage){ flame.addEventListener('click', function(){ flameTaps++; clearTimeout(flameTapTimer); flameTapTimer = setTimeout(function(){ flameTaps = 0; }, 2200); if (flameTaps >= 5){ flameTaps = 0; spawnSparks(); playCrackle(); showToast("🪔 Ek diya jal gaya — gyaan ki roshni badhti rahegi!"); } }); }
 
     const flameSwayEl = document.getElementById('flameSway');
@@ -662,7 +684,7 @@
       }
     };
 
-    // Quiz Logic
+    // Hidden Quiz Logic
     (function(){
       const questionBank = [{ subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 }, { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 }, { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 }];
       const overlay = document.getElementById('quizOverlay'), card = document.getElementById('quizCard'); let questions=[], qIndex=0, score=0;
@@ -693,7 +715,7 @@
     fetch(window.ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData }).then(() => { status.textContent = "Registration received successfully!"; status.style.color = '#25d366'; status.style.display = 'block'; e.target.reset(); submitBtn.textContent = "Submit registration"; if(window.celebrationBurst) window.celebrationBurst(); });
   });
 
-  // --- 1. TO CYBER MODE (PURE CYAN CLIP-PATH) ---
+  // Time Travel Transition to Cyber Mode
   window.triggerTimeTravel = function(e) {
     e.preventDefault();
     if(typeof window.setReactActive !== 'function') return; 
@@ -734,7 +756,7 @@
     }, 700);
   };
 
-  // --- 2. BACK TO 2026 (WARM FLAME CLIP-PATH) ---
+  // Return Transition to 2026 Normal Mode
   window.returnTo2026 = function(e) {
     const normalApp = document.getElementById('normal-app'); 
     normalApp.style.display = 'block'; 
@@ -770,13 +792,163 @@
       setTimeout(() => { wipe.remove(); ring.remove(); }, 500);
     }, 700);
   };
+
+  // --- EASTER EGG 1: KONAMI MATRIX DIGITAL RAIN ---
+  (function(){
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+    
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789अआइईउऊएऐओऔकखगघ'.split('');
+    const fontSize = 16;
+    const columns = w / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+    let matrixInterval;
+
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(13, 16, 36, 0.15)';
+      ctx.fillRect(0, 0, w, h);
+      
+      ctx.fillStyle = '#f5a623';
+      ctx.font = fontSize + 'px "JetBrains Mono", monospace';
+      
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        
+        if (drops[i] * fontSize > h && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let kIndex = 0;
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === konami[kIndex]) {
+        kIndex++;
+        if (kIndex === konami.length) {
+          canvas.classList.add('raining');
+          if(window.showToast) window.showToast("⚡ OVERRIDE: MATRIX INITIATED");
+          
+          matrixInterval = setInterval(drawMatrix, 50);
+          
+          setTimeout(() => {
+            canvas.classList.remove('raining');
+            setTimeout(() => clearInterval(matrixInterval), 1500);
+          }, 12000); 
+          
+          kIndex = 0;
+        }
+      } else {
+        kIndex = 0;
+      }
+    });
+  })();
+
+  // --- EASTER EGG 2: HIDDEN MEMORY MATCH GAME ---
+  (function(){
+    const overlay = document.getElementById('memoryOverlay');
+    const grid = document.getElementById('memoryGrid');
+    const closeBtn = document.getElementById('closeMemoryBtn');
+    
+    const footerTags = document.querySelectorAll('footer p');
+    const footerYear = Array.from(footerTags).find(p => p.textContent.includes('2026'));
+    let tapCount = 0, tapTimer;
+
+    if(footerYear) {
+      footerYear.innerHTML = footerYear.innerHTML.replace('2026', '<span id="secretYear" style="cursor:pointer; display:inline-block; transition:color 0.2s;">2026</span>');
+      const secretYear = document.getElementById('secretYear');
+      
+      secretYear.addEventListener('click', () => {
+        tapCount++;
+        secretYear.style.color = 'var(--flame-500)';
+        
+        clearTimeout(tapTimer);
+        tapTimer = setTimeout(() => {
+          tapCount = 0;
+          secretYear.style.color = '';
+        }, 1000);
+        
+        if(tapCount >= 3) {
+          tapCount = 0;
+          secretYear.style.color = '';
+          initMemoryGame();
+          overlay.classList.add('show');
+        }
+      });
+    }
+
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('show');
+      setTimeout(() => { closeBtn.textContent = "Abort Simulation"; }, 400);
+    });
+
+    const iconSet = ['fa-book-open', 'fa-calculator', 'fa-desktop', 'fa-brain'];
+    const deck = [...iconSet, ...iconSet]; 
+    let flippedCards = [];
+    let matchedCount = 0;
+
+    function initMemoryGame() {
+      grid.innerHTML = '';
+      flippedCards = [];
+      matchedCount = 0;
+      
+      const shuffled = deck.sort(() => 0.5 - Math.random());
+
+      shuffled.forEach(icon => {
+        const card = document.createElement('div');
+        card.className = 'mem-card';
+        card.innerHTML = `
+          <div class="front"><i class="fas fa-fingerprint" style="color:rgba(255,255,255,0.08); font-size: 1.5rem;"></i></div>
+          <div class="back"><i class="fas ${icon}"></i></div>
+        `;
+        
+        card.addEventListener('click', () => {
+          if(card.classList.contains('flipped') || flippedCards.length >= 2) return;
+          
+          card.classList.add('flipped');
+          flippedCards.push({ card, icon });
+
+          if(flippedCards.length === 2) {
+            if(flippedCards[0].icon === flippedCards[1].icon) {
+              matchedCount += 2;
+              flippedCards = [];
+              
+              if(matchedCount === deck.length) {
+                setTimeout(() => {
+                  if(window.celebrationBurst) window.celebrationBurst();
+                  closeBtn.textContent = "Protocol Completed. Exit.";
+                }, 600);
+              }
+            } else {
+              setTimeout(() => {
+                flippedCards[0].card.classList.remove('flipped');
+                flippedCards[1].card.classList.remove('flipped');
+                flippedCards = [];
+              }, 900);
+            }
+          }
+        });
+        grid.appendChild(card);
+      });
+    }
+  })();
 </script>
 
 <!-- =======================================================
-     THE 2086 NEURAL REACT APP (Burst/Reassemble + Live API + Math Cyan)
+     THE 2086 NEURAL REACT APP
      ======================================================= -->
 <script type="text/babel" data-presets="react">
-const { useState, useEffect, useRef, useCallback } = React;
+const { useState, useEffect, useRef } = React;
 const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
 const NIGHT_COLORS = { void:"#0a0014", panel:"rgba(255,255,255,0.05)", panelBorder:"rgba(255,42,120,0.25)", cyan:"#ff2fa0", purple:"#7c3aed", red:"#ff2954" };
 
@@ -829,7 +1001,6 @@ function AbhaNeuralLink(){
 
   return (
     <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
-      {/* FIXED BUTTON RESPONSIVENESS AND OPACITY */}
       <button onClick={(e) => window.returnTo2026(e)} className="fixed top-4 left-4 sm:top-6 sm:left-6 z-[5000] font-mono-cyber flex items-center gap-2 rounded-full border px-4 py-2 sm:px-5 sm:py-3 text-[10px] sm:text-xs font-bold transition-all hover:scale-105 active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: C.void, boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
         <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
       </button>
@@ -1049,7 +1220,7 @@ function SkillTree({ C }){
   const SKILLS = [
     { 
       id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, 
-      dx: "0px", dy: "0px", rot: "0deg", s: 4, // Center explosion scaling
+      dx: "0px", dy: "0px", rot: "0deg", s: 4,
       facts: [
         "The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts.",
         "Neural pathways are strengthened through repetition and pattern recognition.",
@@ -1060,7 +1231,7 @@ function SkillTree({ C }){
     },
     { 
       id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, 
-      dx: "-200px", dy: "-200px", rot: "-180deg", s: 0, // Flies top left
+      dx: "-200px", dy: "-200px", rot: "-180deg", s: 0,
       facts: [
         "Reading, handwriting and spoken confidence — built through stories, not just textbooks.",
         "Sub-vocal language processing decrypted through daily syntax parsing.",
@@ -1071,7 +1242,7 @@ function SkillTree({ C }){
     },
     { 
       id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.cyan, 
-      dx: "200px", dy: "-200px", rot: "180deg", s: 0, // Flies top right
+      dx: "200px", dy: "-200px", rot: "180deg", s: 0,
       facts: [
         "Tables, arithmetic and logical thinking, practised until the basics are genuinely secure.",
         "Algorithmic pattern recognition accelerates mental computation speeds.",
@@ -1082,7 +1253,7 @@ function SkillTree({ C }){
     },
     { 
       id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, 
-      dx: "0px", dy: "300px", rot: "90deg", s: 0, // Flies bottom center
+      dx: "0px", dy: "300px", rot: "90deg", s: 0,
       facts: [
         "Typing, mouse and keyboard fluency, and the digital skills every child will need going forward.",
         "Direct cybernetic interfacing via QWERTY matrix manipulation.",
@@ -1115,7 +1286,6 @@ function SkillTree({ C }){
   const findSkill = id => SKILLS.find(s=>s.id===id);
   
   const handleNodeClick = (id, e) => {
-    // Check if triggering Shatter
     if (id === "core" && powered.length === 3) {
        const rect = e.currentTarget.getBoundingClientRect();
        if(window.cyberBurst) window.cyberBurst(rect.left + rect.width/2, rect.top + rect.height/2);
@@ -1148,7 +1318,6 @@ function SkillTree({ C }){
 
   const closeVault = () => {
     setVaultOpen(false);
-    // Magnetic snap back reassemble effect
     setTimeout(() => {
         setShattered(false);
         setPowered([]);
@@ -1202,7 +1371,6 @@ function SkillTree({ C }){
              }
           }
           
-          // Shatter styles overriding normal state
           const shatterStyle = shattered ? {
               transform: `translate(calc(-50% + ${skill.dx}), calc(-50% + ${skill.dy})) rotate(${skill.rot}) scale(${skill.s})`,
               opacity: 0,
@@ -1344,26 +1512,6 @@ function MidnightNotes({ C }) {
         </ul>
       </div>
     </section>
-  );
-}
-
-function NightOwlBanner({ nightMode }) {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    if (nightMode) {
-      setShow(true);
-      const t = setTimeout(() => setShow(false), 3200);
-      return () => clearTimeout(t);
-    }
-  }, [nightMode]);
-  
-  if (!show) return null;
-  return (
-    <div className="glitch-flash fixed inset-0 z-[190] flex items-center justify-center bg-black/95">
-      <p className="font-mono-cyber text-center text-sm text-pink-300">
-        Late night dedication detected.<br />Accessing midnight protocols<span className="caret">_</span>
-      </p>
-    </div>
   );
 }
 
