@@ -7,7 +7,12 @@
 <meta name="description" content="Free evening coaching for Class 0 to 8 in English, Maths and Computers. Classes run 6 PM to 10 PM, taught personally.">
 
 <script>
-  window.onerror = function(msg, url, line) { console.error("Mobile Error: " + msg + " at " + line); return false; };
+  window.addEventListener("error", (event) => {
+      console.error("Unhandled error:", event.error || event.message);
+  });
+  window.addEventListener("unhandledrejection", (event) => {
+      console.error("Unhandled promise rejection:", event.reason);
+  });
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +69,7 @@
   .lang-btn:hover,.lang-btn:focus-visible{border-color:var(--flame-300);}
   .lang-btn i.fa-chevron-down{font-size:0.7rem;color:var(--flame-300);transition:transform 0.2s;}
   .lang-switch.open .lang-btn i.fa-chevron-down{transform:rotate(180deg);}
-  .lang-menu{ position:absolute;top:calc(100% + 8px);right:0; min-width:170px; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.14); border-radius:12px; padding:0.4rem; list-style:none; box-shadow:0 14px 34px rgba(0,0,0,0.45); opacity:0;visibility:hidden;transform:translateY(-6px); transition:opacity 0.18s, transform 0.18s, visibility 0.18s; z-index:1100; max-height:280px;overflow-y:auto; }
+  .lang-menu{ position:absolute;top:calc(100% + 8px);right:0; min-width:170px; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.14); border-radius:12px; padding:0.4rem; list-style:none; box-shadow:0 14px 34px rgba(0,0,0,0.45); opacity:0;visibility:hidden;transform:translateY(-6px); transition:opacity 0.18s, transform 0.18s, visibility 0.18s; z-index:1100; max-height:260px; overflow-y:auto; -webkit-overflow-scrolling: touch; }
   .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);}
   .lang-menu li{ padding:0.55rem 0.8rem;border-radius:8px; font-size:0.9rem;color:var(--cream-300); cursor:pointer;transition:background 0.15s, color 0.15s; }
   .lang-menu li:hover{background:rgba(245,166,35,0.12);color:var(--flame-300);}
@@ -156,7 +161,7 @@
   @media (max-width:820px){.subject-grid{grid-template-columns:1fr;}}
   .subject-card{ border:1px solid rgba(248,241,227,0.1); background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01)); border-radius:var(--radius-lg); padding:2.2rem 1.9rem; transition:border-color 0.3s, transform 0.3s; }
   .subject-card:hover{border-color:rgba(245,166,35,0.45);transform:translateY(-6px);}
-  .subject-card .icon{ width:52px;height:52px;border-radius:14px; display:flex;align-items:center;justify-content:center; background:rgba(245,166,35,0.12);color:var(--flame-300);font-size:1.4rem;margin-bottom:1.3rem; cursor:pointer;transition:background 0.2s, transform 0.2s; }
+  .subject-card .icon{ width:52px;height:52px;border-radius:14px; display:flex;align-items:center;justify-content:center; background:rgba(245,166,35,0.12);color:var(--flame-300);font-size:1.4rem;margin-bottom:1.3rem; cursor:pointer;transition:background 0.2s, transform 0.2s; border: none; outline: none; }
   .subject-card .icon:active{transform:scale(0.92);background:rgba(245,166,35,0.22);}
   .subject-card h3{font-size:1.3rem;color:var(--cream-100);margin-bottom:0.6rem;}
   .subject-card p{color:var(--cream-muted);font-size:0.96rem;}
@@ -348,6 +353,8 @@
             <li role="option" data-lang="kn">ಕನ್ನಡ (Kannada)</li>
             <li role="option" data-lang="ml">മലയാളം (Malayalam)</li>
             <li role="option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</li>
+            <li role="option" data-lang="or">ଓଡ଼ିଆ (Odia)</li>
+            <li role="option" data-lang="as">অসমীয়া (Assamese)</li>
           </ul>
         </div>
       </div>
@@ -415,17 +422,17 @@
         </div>
         <div class="subject-grid">
           <div class="subject-card">
-            <div class="icon" data-subject="english"><i class="fas fa-book-open"></i></div>
+            <button type="button" class="icon" data-subject="english" aria-label="English"><i class="fas fa-book-open"></i></button>
             <h3>English</h3>
             <p>Reading, handwriting, spoken confidence and everyday vocabulary — built through stories, not just textbooks.</p>
           </div>
           <div class="subject-card">
-            <div class="icon" data-subject="maths"><i class="fas fa-calculator"></i></div>
+            <button type="button" class="icon" data-subject="maths" aria-label="Mathematics"><i class="fas fa-calculator"></i></button>
             <h3>Mathematics</h3>
             <p>Tables, arithmetic and logical thinking, practised until the basics are genuinely secure, not just memorised.</p>
           </div>
           <div class="subject-card">
-            <div class="icon" data-subject="computer"><i class="fas fa-desktop"></i></div>
+            <button type="button" class="icon" data-subject="computer" aria-label="Computer Basics"><i class="fas fa-desktop"></i></button>
             <h3>Computer Basics</h3>
             <p>Typing, using a mouse and keyboard, and simple digital skills every child will need going forward.</p>
           </div>
@@ -520,7 +527,7 @@
             </div>
             <div class="form-row">
               <label for="phone">Phone / WhatsApp number</label>
-              <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number">
+              <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit Indian mobile number">
             </div>
             <button type="submit" class="submit-btn">Submit registration</button>
             <p class="form-status" id="formStatus"></p>
@@ -569,17 +576,29 @@
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
   function googleTranslateElementInit(){
-    new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en', autoDisplay:false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE },'google_translate_element');
+    new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,or,as,en', autoDisplay:false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE },'google_translate_element');
   }
+  
   (function watchdog(){
+    let ticks = 0;
     const kill = () => {
-      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame').forEach(el=>{ el.style.display='none'; el.style.visibility='hidden'; el.style.height='0'; });
-      document.body.style.top='0px'; document.body.style.position='static';
+      const frames = document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame, .skiptranslate');
+      if (frames.length > 0) {
+        frames.forEach(el => { el.style.display='none'; el.style.visibility='hidden'; el.style.height='0'; });
+        document.body.style.top='0px'; 
+        document.body.style.position='static';
+      }
     };
-    kill(); new MutationObserver(kill).observe(document.documentElement,{attributes:true,childList:true,subtree:true}); setInterval(kill, 400);
+    
+    // Check quickly on load, then stop after 5 seconds to save CPU
+    const timer = setInterval(() => {
+      kill();
+      ticks++;
+      if (ticks > 25) clearInterval(timer);
+    }, 200);
   })();
 
-  const LANG_NAMES = { en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)', mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)', kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)' };
+  const LANG_NAMES = { en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)', mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)', kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)', or:'ଓଡ଼ିଆ (Odia)', as:'অসমীয়া (Assamese)' };
   function getCookie(name){ const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)')); return match ? decodeURIComponent(match[2]) : null; }
   function setGoogTransCookie(lang){
     const domains = [location.hostname, '.' + location.hostname, ''];
@@ -649,8 +668,27 @@
 
     if (flameSwayEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
       let lastScrollY = window.scrollY, skew = 0, skewVel = 0, stretch = 1, stretchVel = 0;
-      window.addEventListener('scroll', function(){ const currentY = window.scrollY; const delta = currentY - lastScrollY; lastScrollY = currentY; skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35)); stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006)); }, { passive: true });
-      function physicsLoop(){ skewVel += (0 - skew) * 0.16; skewVel *= 0.78; skew += skewVel; skew = Math.max(-10, Math.min(10, skew)); stretchVel += (1 - stretch) * 0.18; stretchVel *= 0.8; stretch += stretchVel; flameSwayEl.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')'; requestAnimationFrame(physicsLoop); } requestAnimationFrame(physicsLoop);
+      let isFlameVisible = true;
+      
+      const flameObs = new IntersectionObserver(e => { isFlameVisible = e[0].isIntersecting; });
+      flameObs.observe(flameSwayEl);
+
+      window.addEventListener('scroll', function(){ 
+        if(!isFlameVisible) return;
+        const currentY = window.scrollY; const delta = currentY - lastScrollY; lastScrollY = currentY; 
+        skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35)); 
+        stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006)); 
+      }, { passive: true });
+
+      function physicsLoop(){ 
+        if(isFlameVisible) {
+          skewVel += (0 - skew) * 0.16; skewVel *= 0.78; skew += skewVel; skew = Math.max(-10, Math.min(10, skew)); 
+          stretchVel += (1 - stretch) * 0.18; stretchVel *= 0.8; stretch += stretchVel; 
+          flameSwayEl.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')'; 
+        }
+        requestAnimationFrame(physicsLoop); 
+      } 
+      requestAnimationFrame(physicsLoop);
     }
 
     window.celebrationBurst = function(){
@@ -686,10 +724,35 @@
 
     // Hidden Quiz Logic
     (function(){
-      const questionBank = [{ subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 }, { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 }, { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 }];
-      const overlay = document.getElementById('quizOverlay'), card = document.getElementById('quizCard'); let questions=[], qIndex=0, score=0;
-      function openQuiz(){ questions=questionBank.sort(()=>Math.random()-0.5).slice(0,3); qIndex=0; score=0; overlay.classList.add('show'); renderQuestion(); }
+      const questionBank = [
+        { subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 },
+        { subject: 'English', q: "What is the opposite of 'HOT'?", options: ["WARM","SUNNY","COLD","BOILING"], correct: 2 },
+        { subject: 'English', q: "Choose the correct spelling:", options: ["Aple","Apple","Appel","Aplee"], correct: 1 },
+        { subject: 'English', q: "Which is a naming word (noun)?", options: ["Run","Quickly","Tree","Jump"], correct: 2 },
+        { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 },
+        { subject: 'Maths', q: "What is 15 - 6?", options: ["8","9","10","11"], correct: 1 },
+        { subject: 'Maths', q: "How many sides does a triangle have?", options: ["2","3","4","5"], correct: 1 },
+        { subject: 'Maths', q: "What is 3 x 4?", options: ["7","10","12","15"], correct: 2 },
+        { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 },
+        { subject: 'Computer', q: "What do we use to type words?", options: ["Mouse","Keyboard","Speaker","Printer"], correct: 1 },
+        { subject: 'Computer', q: "Which of these is the 'brain' of the computer?", options: ["Monitor","CPU","Mouse","Keyboard"], correct: 1 },
+        { subject: 'Computer', q: "Which device is used to click and point?", options: ["Mouse","Printer","CPU","Keyboard"], correct: 0 }
+      ];
+      
+      const overlay = document.getElementById('quizOverlay'), card = document.getElementById('quizCard'); 
+      let questions=[], qIndex=0, score=0;
+      
+      function openQuiz(){ 
+        let shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+        questions = shuffled.slice(0, 3);
+        qIndex=0; 
+        score=0; 
+        overlay.classList.add('show'); 
+        renderQuestion(); 
+      }
+      
       function closeQuiz(){ overlay.classList.remove('show'); }
+      
       function renderQuestion(){
         if(qIndex>=questions.length) return renderResult();
         const item=questions[qIndex]; let opts=''; item.options.forEach((opt,i)=>opts+=`<button class="quiz-option" data-index="${i}">${opt}</button>`);
@@ -697,12 +760,15 @@
         document.getElementById('quizCloseBtn').addEventListener('click', closeQuiz);
         card.querySelectorAll('.quiz-option').forEach(btn=>{ btn.addEventListener('click', ()=>{ const chosen=parseInt(btn.getAttribute('data-index')); const allBtns=card.querySelectorAll('.quiz-option'); allBtns.forEach(b=>b.disabled=true); if(chosen===item.correct){btn.classList.add('correct'); score++; if(typeof playCrackle==='function') playCrackle();}else{btn.classList.add('wrong'); allBtns[item.correct].classList.add('correct');} setTimeout(()=>{qIndex++; renderQuestion();}, 900); }); });
       }
+      
       function renderResult(){
         card.innerHTML=`<div class="quiz-head"><h3>Result</h3><button class="quiz-close" id="quizCloseBtn2">&times;</button></div><div class="quiz-result"><h3>${score} / ${questions.length}</h3><p>Badhiya!</p><button class="quiz-restart" id="quizRestartBtn">Play Again</button></div>`;
         document.getElementById('quizCloseBtn2').addEventListener('click', closeQuiz); document.getElementById('quizRestartBtn').addEventListener('click', openQuiz);
         if(score===questions.length && window.celebrationBurst) window.celebrationBurst();
       }
+      
       overlay.addEventListener('click', e=>{ if(e.target===overlay) closeQuiz(); });
+      
       const secretSequence = ['english', 'maths', 'computer']; let tapProgress=[], tapResetTimer=null;
       document.querySelectorAll('.subject-card .icon[data-subject]').forEach(icon=>{ icon.addEventListener('click', ()=>{ const subject=icon.getAttribute('data-subject'); tapProgress.push(subject); clearTimeout(tapResetTimer); tapResetTimer=setTimeout(()=>{tapProgress=[];}, 3000); if(tapProgress.length>secretSequence.length) tapProgress=tapProgress.slice(-secretSequence.length); if(tapProgress.length===secretSequence.length && tapProgress.every((v,i)=>v===secretSequence[i])){ tapProgress=[]; openQuiz(); } }); });
     })();
@@ -710,9 +776,35 @@
 
   document.getElementById('enrollForm').addEventListener('submit', function(e){
     e.preventDefault();
-    const status = document.getElementById('formStatus'); const submitBtn = e.target.querySelector('.submit-btn'); submitBtn.textContent = "Submitting...";
-    const formData = new FormData(); formData.append('parentName', document.getElementById('parentName').value); formData.append('childName', document.getElementById('childName').value); formData.append('grade', document.getElementById('grade').value); formData.append('phone', document.getElementById('phone').value);
-    fetch(window.ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData }).then(() => { status.textContent = "Registration received successfully!"; status.style.color = '#25d366'; status.style.display = 'block'; e.target.reset(); submitBtn.textContent = "Submit registration"; if(window.celebrationBurst) window.celebrationBurst(); });
+    const status = document.getElementById('formStatus'); 
+    const submitBtn = e.target.querySelector('.submit-btn'); 
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+    
+    const formData = new FormData(); 
+    formData.append('parentName', document.getElementById('parentName').value); 
+    formData.append('childName', document.getElementById('childName').value); 
+    formData.append('grade', document.getElementById('grade').value); 
+    formData.append('phone', document.getElementById('phone').value);
+    
+    fetch(window.ENROLL_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData })
+      .then(() => { 
+        status.textContent = "Registration received successfully!"; 
+        status.style.color = '#25d366'; 
+        status.style.display = 'block'; 
+        e.target.reset(); 
+        if(window.celebrationBurst) window.celebrationBurst(); 
+      })
+      .catch((err) => {
+        status.textContent = "Something went wrong. Please try WhatsApp.";
+        status.style.color = '#e2673b';
+        status.style.display = 'block';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit registration";
+      });
   });
 
   // Time Travel Transition to Cyber Mode
@@ -1001,9 +1093,12 @@ function AbhaNeuralLink(){
 
   return (
     <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
-      <button onClick={(e) => window.returnTo2026(e)} className="fixed top-4 left-4 sm:top-6 sm:left-6 z-[5000] font-mono-cyber flex items-center gap-2 rounded-full border px-4 py-2 sm:px-5 sm:py-3 text-[10px] sm:text-xs font-bold transition-all hover:scale-105 active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: C.void, boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
-        <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
-      </button>
+      
+      <div className="sticky top-0 left-0 right-0 z-[5000] flex items-center justify-between p-4 sm:p-6 bg-gradient-to-b from-[#030014] via-[#030014]/90 to-transparent backdrop-blur-md">
+        <button onClick={(e) => window.returnTo2026(e)} className="font-mono-cyber flex items-center gap-2 rounded-full border px-4 py-2 sm:px-5 sm:py-3 text-[10px] sm:text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-lg" style={{ borderColor: C.cyan, color: C.cyan, background: "rgba(34,230,255,0.08)", boxShadow:`0 0 15px ${C.cyan}44`, cursor: 'pointer' }}>
+          <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
+        </button>
+      </div>
 
       {syncMode && (
         <div className="pointer-events-none fixed inset-0 z-[5] flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm focus-vignette transition-all duration-1000">
