@@ -2,1814 +2,867 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ABHA Academy — Free Evening Classes, Class 0 to 8</title>
-<meta name="description" content="Free evening coaching for Class 0 to 8 in English, Maths and Computers. Classes run 6 PM to 10 PM, taught personally.">
-
-<script>
-  window.onerror = function(msg, url, line) { console.error("Mobile Error: " + msg + " at " + line); return false; };
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!-- CDNs for 2086 Neural Mode -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.20/babel.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config = { corePlugins: { preflight: false } }</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050816">
+<meta name="description" content="ABHA Academy — free evening education for Class 0 to 8 in English, Maths and Computers.">
+<title>ABHA Academy // CYBER LEARNING</title>
 
 <style>
-  /* =========================================
-     NORMAL SITE CSS (2026 MODE)
-     ========================================= */
-  :root{
-    --dusk-950:#0d1024; --dusk-900:#12162e; --dusk-800:#1b2140; --dusk-700:#262d52;
-    --flame-500:#f5a623; --flame-300:#ffd37a; --ember-500:#e2673b;
-    --cream-100:#f8f1e3; --cream-300:#e4dac5; --cream-muted:#b9b1c9;
-    --ok-green:#25d366; --radius-lg:22px; --radius-md:14px;
+:root{
+  --bg:#050816;
+  --panel:rgba(10,16,38,.78);
+  --panel-2:rgba(14,23,49,.92);
+  --cyan:#38f5ff;
+  --blue:#4d7cff;
+  --purple:#b66cff;
+  --green:#42ff9b;
+  --yellow:#ffe66d;
+  --pink:#ff4fd8;
+  --red:#ff5577;
+  --text:#eef7ff;
+  --muted:#8da1bd;
+  --line:rgba(80,220,255,.18);
+  --shadow:0 0 35px rgba(56,245,255,.12);
+  --radius:22px;
+  --max:1180px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(77,124,255,.14),transparent 28%),
+    radial-gradient(circle at 85% 20%,rgba(182,108,255,.12),transparent 26%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.35;
+  background-image:
+    linear-gradient(rgba(56,245,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(56,245,255,.035) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,#000,transparent 80%);
+  z-index:-2;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at center,transparent 30%,rgba(0,0,0,.42));
+  z-index:-1;
+}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.container{width:min(calc(100% - 32px),var(--max));margin:auto}
+
+/* NAV */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter:blur(18px);
+  background:rgba(5,8,22,.72);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.logo-mark{
+  width:38px;height:38px;border:1px solid var(--cyan);
+  border-radius:11px;display:grid;place-items:center;
+  color:var(--cyan);
+  box-shadow:0 0 20px rgba(56,245,255,.25),inset 0 0 14px rgba(56,245,255,.1);
+}
+.logo small{display:block;color:var(--muted);font-size:9px;letter-spacing:.2em}
+.nav-links{display:flex;gap:22px;color:#b7c9df;font-size:14px}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  background:rgba(56,245,255,.06);
+  padding:10px 16px;border-radius:999px;font-weight:800;
+}
+.nav-cta:hover{background:rgba(56,245,255,.14);box-shadow:0 0 22px rgba(56,245,255,.18)}
+.menu{display:none;background:none;border:0;color:var(--text);font-size:25px}
+
+/* HERO */
+.hero{min-height:calc(100vh - 72px);display:grid;place-items:center;padding:72px 0 55px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+.status{
+  display:inline-flex;align-items:center;gap:9px;
+  border:1px solid rgba(66,255,155,.28);
+  background:rgba(66,255,155,.06);
+  color:var(--green);padding:8px 12px;border-radius:999px;
+  font-size:12px;font-weight:800;letter-spacing:.08em;
+}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+.kicker{margin:22px 0 10px;color:var(--cyan);font:700 12px ui-monospace,monospace;letter-spacing:.2em}
+h1{
+  margin:0;
+  font-size:clamp(48px,8vw,92px);
+  line-height:.88;
+  letter-spacing:-.06em;
+  text-transform:uppercase;
+}
+.gradient{
+  background:linear-gradient(100deg,var(--cyan),#fff,var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-copy{max-width:680px;color:#aebed2;font-size:18px;line-height:1.75;margin:25px 0}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  border:1px solid var(--line);
+  border-radius:14px;padding:13px 18px;
+  font-weight:900;transition:.2s ease;
+}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),#76a0ff);color:#03101a;border:0}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(56,245,255,.2)}
+.btn-ghost{background:rgba(255,255,255,.03);color:var(--text)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-size:13px}
+.hero-meta strong{color:var(--text);display:block;font-size:17px}
+
+/* CYBER CORE */
+.core-wrap{display:grid;place-items:center}
+.cyber-core{
+  width:min(420px,82vw);aspect-ratio:1;
+  position:relative;display:grid;place-items:center;
+}
+.core-ring{
+  position:absolute;inset:8%;
+  border:1px solid rgba(56,245,255,.35);
+  border-radius:50%;
+  box-shadow:0 0 50px rgba(56,245,255,.12);
+  animation:spin 18s linear infinite;
+}
+.core-ring:nth-child(2){inset:18%;border-color:rgba(182,108,255,.4);animation-direction:reverse;animation-duration:13s}
+.core-ring:nth-child(3){inset:29%;border-style:dashed;animation-duration:9s}
+.core-ring::after{
+  content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;
+  border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan);
+}
+.core-center{
+  width:42%;aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;text-align:center;
+  border:1px solid var(--cyan);
+  background:radial-gradient(circle,rgba(56,245,255,.22),rgba(8,15,35,.95) 62%);
+  box-shadow:0 0 50px rgba(56,245,255,.2),inset 0 0 40px rgba(56,245,255,.1);
+}
+.core-center b{font-size:34px;letter-spacing:.08em}
+.core-center span{font:700 10px ui-monospace,monospace;color:var(--cyan)}
+.orbit-label{
+  position:absolute;padding:8px 10px;border:1px solid var(--line);
+  background:rgba(5,8,22,.8);border-radius:10px;color:#c8d8ea;
+  font:700 10px ui-monospace,monospace;backdrop-filter:blur(10px)
+}
+.l1{top:5%;right:8%}.l2{bottom:13%;left:2%}.l3{top:48%;right:-3%}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SECTIONS */
+section{padding:90px 0}
+.section-head{max-width:720px;margin-bottom:32px}
+.eyebrow{font:800 11px ui-monospace,monospace;color:var(--cyan);letter-spacing:.18em}
+h2{font-size:clamp(32px,5vw,58px);margin:10px 0 12px;letter-spacing:-.04em}
+.section-head p{color:var(--muted);line-height:1.7;margin:0}
+
+/* CARDS */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{
+  background:linear-gradient(145deg,rgba(15,25,54,.82),rgba(7,12,29,.85));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:25px;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,rgba(56,245,255,.07),transparent 35%,rgba(182,108,255,.05));
+  pointer-events:none;
+}
+.card-icon{font-size:30px;margin-bottom:18px}
+.card h3{margin:0 0 8px;font-size:21px}
+.card p{margin:0;color:var(--muted);line-height:1.65}
+.tag{display:inline-block;margin-top:18px;color:var(--cyan);font:700 11px ui-monospace,monospace}
+
+/* SCHEDULE */
+.schedule{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.schedule-row{
+  display:flex;justify-content:space-between;gap:20px;
+  padding:17px 0;border-bottom:1px solid var(--line)
+}
+.schedule-row:last-child{border-bottom:0}
+.schedule-row span{color:var(--muted)}
+.schedule-row b{color:var(--text)}
+
+/* NEURAL */
+.neural{
+  border:1px solid rgba(182,108,255,.3);
+  background:radial-gradient(circle at 70% 20%,rgba(182,108,255,.14),transparent 35%),rgba(10,13,34,.8);
+  border-radius:30px;padding:35px;overflow:hidden;position:relative;
+}
+.neural-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.neural-code{
+  min-height:250px;border:1px solid var(--line);border-radius:18px;
+  padding:18px;background:#02050e;font:12px/1.8 ui-monospace,monospace;color:#86f7ff;
+  overflow:hidden;
+}
+.neural-code span{color:#a67cff}
+.neural-btn{
+  margin-top:18px;border:1px solid var(--purple);background:rgba(182,108,255,.08);
+  color:#d9c0ff;border-radius:12px;padding:12px 15px;font-weight:900
+}
+
+/* QUIZ */
+.quiz{max-width:760px}
+.quiz-question{font-size:23px;font-weight:800;margin-bottom:18px}
+.quiz-options{display:grid;gap:10px}
+.option{
+  text-align:left;width:100%;border:1px solid var(--line);
+  background:rgba(255,255,255,.025);color:var(--text);
+  padding:14px;border-radius:13px
+}
+.option:hover{border-color:var(--cyan)}
+.option.correct{border-color:var(--green);background:rgba(66,255,155,.08)}
+.option.wrong{border-color:var(--red);background:rgba(255,85,119,.08)}
+.quiz-result{margin-top:15px;color:var(--muted);min-height:24px}
+
+/* ENROLL */
+.enroll{
+  display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:start
+}
+.form{
+  background:rgba(8,13,31,.86);border:1px solid var(--line);
+  border-radius:24px;padding:25px
+}
+.field{margin-bottom:15px}
+.field label{display:block;color:#bdcce0;font-size:13px;font-weight:800;margin-bottom:7px}
+.field input,.field select,.field textarea{
+  width:100%;border:1px solid var(--line);background:#050a19;
+  color:var(--text);border-radius:12px;padding:13px;outline:none
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,245,255,.07)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-note{color:var(--muted);font-size:12px;line-height:1.6;margin-top:12px}
+.form-status{margin-top:15px;padding:12px;border-radius:12px;display:none;font-size:13px}
+.form-status.success{display:block;background:rgba(66,255,155,.08);border:1px solid rgba(66,255,155,.25);color:var(--green)}
+.form-status.error{display:block;background:rgba(255,85,119,.08);border:1px solid rgba(255,85,119,.25);color:#ff9bb0}
+.btn-submit[disabled]{opacity:.55;cursor:not-allowed}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:13px}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* MODAL */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);
+  display:none;place-items:center;padding:20px;z-index:100
+}
+.modal.open{display:grid}
+.modal-box{
+  width:min(680px,100%);background:#070c20;border:1px solid var(--cyan);
+  border-radius:24px;padding:28px;box-shadow:0 0 70px rgba(56,245,255,.18)
+}
+.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:start}
+.close{background:none;border:0;color:var(--muted);font-size:25px}
+.modal p{color:var(--muted);line-height:1.7}
+.modal ul{color:#b7c9df;line-height:2}
+
+/* MOBILE */
+@media(max-width:850px){
+  .nav-links,.nav-cta{display:none}
+  .menu{display:block}
+  .nav.open .nav-links{
+    display:flex;position:absolute;top:72px;left:0;right:0;
+    padding:18px 20px;background:rgba(5,8,22,.97);
+    flex-direction:column;border-bottom:1px solid var(--line)
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:auto;}
-  body{ background:var(--dusk-950); color:var(--cream-100); font-family:'Work Sans',sans-serif; line-height:1.65; overflow-x:hidden; -webkit-tap-highlight-color: transparent;}
-  h1,h2,h3,.display{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-0.01em; }
-  a{color:inherit;} img,svg{display:block;max-width:100%;}
-  .wrap{max-width:1180px;margin:0 auto;padding-left:6%;padding-right:6%;}
-  .eyebrow{ text-transform:uppercase; letter-spacing:0.14em; font-size:0.78rem; font-weight:600; color:var(--flame-300); }
-
-  .sky-glow{position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 45% at 82% -6%, rgba(245,166,35,0.16), transparent 60%),radial-gradient(50% 40% at 10% 8%, rgba(226,103,59,0.10), transparent 60%),var(--dusk-950); transition:transform 0.6s ease-out; will-change:transform;}
-  .stars{position:fixed;inset:0;z-index:-1;opacity:0.5; background-image:radial-gradient(1.5px 1.5px at 20% 30%, rgba(248,241,227,0.5), transparent),radial-gradient(1.5px 1.5px at 70% 15%, rgba(248,241,227,0.4), transparent),radial-gradient(1px 1px at 45% 60%, rgba(248,241,227,0.35), transparent),radial-gradient(1.5px 1.5px at 88% 45%, rgba(248,241,227,0.4), transparent),radial-gradient(1px 1px at 60% 80%, rgba(248,241,227,0.3), transparent); background-size:600px 600px; transition:transform 0.8s ease-out; will-change:transform;}
-
-  header.nav{ position:sticky; top:0; z-index:1000; background:rgba(13,16,36,0.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(248,241,227,0.08); }
-  .nav-inner{ max-width:1180px;margin:0 auto;padding:0.9rem 6%; display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap; }
-  .logo{ font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem; display:flex;align-items:center;gap:0.55rem;text-decoration:none;color:var(--cream-100); }
-  .logo .flame-dot{width:9px;height:9px;border-radius:50%;background:var(--flame-500);box-shadow:0 0 12px 3px rgba(245,166,35,0.7);}
-  .nav-cluster{display:flex;align-items:center;gap:1.4rem;}
-  .nav-links{list-style:none;display:flex;gap:1.6rem;}
-  .nav-links a{text-decoration:none;font-size:0.95rem;color:var(--cream-300);transition:color 0.25s;display:inline-block;padding:0.5rem 0.2rem;min-height:44px;line-height:1.6;}
-  .nav-links a:hover,.nav-links a:focus-visible{color:var(--flame-300);}
-  
-  #google_translate_element{ position:absolute !important; width:1px !important;height:1px !important; overflow:hidden !important;opacity:0 !important; pointer-events:none !important; top:-9999px !important;left:-9999px !important; }
-  .goog-te-gadget img{ display:none !important; }
-  iframe.goog-te-banner-frame, .goog-te-banner-frame, .skiptranslate iframe{ display:none !important; visibility:hidden !important; height:0 !important; }
-  html body{ top:0 !important; position:static !important; margin-top:0 !important; padding-top:0 !important; }
-  #goog-gt-tt,.goog-tooltip,.goog-tooltip:hover{ display:none !important; visibility:hidden !important; }
-  .goog-text-highlight{ background:none !important; box-shadow:none !important; }
-
-  .lang-switch{position:relative;}
-  .lang-btn{ display:flex;align-items:center;gap:0.5rem; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.2); color:var(--cream-100); font-family:'Work Sans',sans-serif; font-size:0.88rem;font-weight:600; padding:0.55rem 0.9rem;border-radius:999px; cursor:pointer;transition:border-color 0.2s; }
-  .lang-btn:hover,.lang-btn:focus-visible{border-color:var(--flame-300);}
-  .lang-btn i.fa-chevron-down{font-size:0.7rem;color:var(--flame-300);transition:transform 0.2s;}
-  .lang-switch.open .lang-btn i.fa-chevron-down{transform:rotate(180deg);}
-  .lang-menu{ position:absolute;top:calc(100% + 8px);right:0; min-width:170px; background:var(--dusk-800); border:1px solid rgba(248,241,227,0.14); border-radius:12px; padding:0.4rem; list-style:none; box-shadow:0 14px 34px rgba(0,0,0,0.45); opacity:0;visibility:hidden;transform:translateY(-6px); transition:opacity 0.18s, transform 0.18s, visibility 0.18s; z-index:1100; max-height:280px;overflow-y:auto; }
-  .lang-switch.open .lang-menu{opacity:1;visibility:visible;transform:translateY(0);}
-  .lang-menu li{ padding:0.55rem 0.8rem;border-radius:8px; font-size:0.9rem;color:var(--cream-300); cursor:pointer;transition:background 0.15s, color 0.15s; }
-  .lang-menu li:hover{background:rgba(245,166,35,0.12);color:var(--flame-300);}
-
-  @media (max-width:760px){ .nav-links{display:none;} .lang-menu{right:auto;left:0;} }
-
-  .hero{padding:5.5rem 0 4rem;}
-  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center;}
-  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
-
-  .badge{ display:inline-flex;align-items:center;gap:0.5rem; border:1px solid rgba(245,166,35,0.4); background:rgba(245,166,35,0.08); color:var(--flame-300); padding:0.4rem 0.9rem;border-radius:999px; font-size:0.82rem;font-weight:600;margin-bottom:1.4rem; }
-  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--ok-green);}
-
-  .hero h1{font-size:clamp(2.3rem,5vw,3.4rem);line-height:1.08;margin-bottom:1.2rem;color:var(--cream-100);}
-  .hero h1 em{font-style:normal;color:var(--flame-300);}
-  .hero p.lede{font-size:1.15rem;color:var(--cream-300);max-width:520px;margin-bottom:2rem;}
-
-  .cta-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
-  .btn-primary{ display:inline-flex;align-items:center;gap:0.6rem; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; padding:0.95rem 1.8rem;border-radius:999px;text-decoration:none;border:none;cursor:pointer; box-shadow:0 8px 24px rgba(245,166,35,0.35); transition:transform 0.25s ease, box-shadow 0.25s ease; }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,166,35,0.5);}
-  .btn-ghost{ display:inline-flex;align-items:center;gap:0.55rem; color:var(--cream-100);text-decoration:none;font-weight:600;font-size:1rem; padding:0.95rem 0.4rem;border-bottom:1px solid rgba(248,241,227,0.3); }
-  .btn-ghost:hover{border-color:var(--flame-300);color:var(--flame-300);}
-
-  .hero-note{margin-top:1.6rem;font-size:0.9rem;color:var(--cream-muted);}
-
-  .live-status{ margin-top:1.1rem;display:inline-flex;align-items:center;gap:0.6rem; font-size:0.88rem;font-weight:600;color:var(--cream-300); background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.14); padding:0.55rem 1rem;border-radius:999px; }
-  .live-status.is-live{border-color:rgba(37,211,102,0.4);background:rgba(37,211,102,0.08);color:var(--cream-100);}
-  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--cream-muted);flex-shrink:0;}
-  .live-dot.pulse{background:var(--ok-green);box-shadow:0 0 8px rgba(37,211,102,0.7);animation:live-pulse 1.4s ease-in-out infinite;}
-  @keyframes live-pulse{ 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.45;transform:scale(1.35);} }
-
-  .ambient-particles{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
-  .particle{ position:absolute;bottom:-20px;border-radius:50%; background:radial-gradient(circle, rgba(255,211,122,0.9), rgba(245,166,35,0.15) 65%, transparent 75%); filter:blur(0.3px); animation:particle-float linear infinite; }
-  @keyframes particle-float{ 0%{transform:translateY(0) translateX(0);opacity:0;} 8%{opacity:var(--p-opacity,0.5);} 92%{opacity:var(--p-opacity,0.5);} 100%{transform:translateY(-115vh) translateX(var(--drift,20px));opacity:0;} }
-  @media (prefers-reduced-motion:reduce){ .particle{display:none;} }
-
-  .diya-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:340px;}
-  .diya-glow{ position:absolute;bottom:38%;left:50%;transform:translateX(-50%); width:260px;height:260px;border-radius:50%; background:radial-gradient(circle, rgba(255,211,122,0.55), rgba(245,166,35,0.12) 55%, transparent 72%); filter:blur(6px); animation:glow-pulse 3.2s ease-in-out infinite; }
-  @keyframes glow-pulse{ 0%,100%{opacity:0.75;transform:translateX(-50%) scale(1);} 50%{opacity:1;transform:translateX(-50%) scale(1.08);} }
-  #flameSway{transition:opacity 0.5s ease-out;}
-  #flameSway.ignite-init{opacity:0;}
-  #flameSway.igniting{animation:ignite-pop 0.55s cubic-bezier(.2,1.4,.4,1);}
-  @keyframes ignite-pop{ 0%{transform:scale(0.2);opacity:0;} 55%{transform:scale(1.25);opacity:1;} 75%{transform:scale(0.9);} 100%{transform:scale(1);opacity:1;} }
-  .flame-outer{transform-origin:50% 100%;animation:flicker-outer 2.6s ease-in-out infinite;cursor:pointer;}
-  .flame-mid{transform-origin:50% 100%;animation:flicker-mid 1.7s ease-in-out infinite;}
-  .flame-tip{transform-origin:50% 100%;animation:flicker-tip 0.9s ease-in-out infinite;}
-  @keyframes flicker-outer{ 0%{transform:scaleY(1) scaleX(1) rotate(0deg);} 18%{transform:scaleY(1.06) scaleX(0.95) rotate(-2deg);} 34%{transform:scaleY(0.96) scaleX(1.04) rotate(1.5deg);} 52%{transform:scaleY(1.04) scaleX(0.97) rotate(-1deg);} 68%{transform:scaleY(0.93) scaleX(1.05) rotate(2deg);} 83%{transform:scaleY(1.03) scaleX(0.98) rotate(-1.4deg);} 100%{transform:scaleY(1) scaleX(1) rotate(0deg);} }
-  @keyframes flicker-mid{ 0%{transform:scaleY(1) scaleX(1) translateX(0) rotate(0deg);} 22%{transform:scaleY(0.94) scaleX(1.06) translateX(1px) rotate(2deg);} 40%{transform:scaleY(1.07) scaleX(0.93) translateX(-1px) rotate(-2.5deg);} 61%{transform:scaleY(0.96) scaleX(1.03) translateX(1px) rotate(1.5deg);} 80%{transform:scaleY(1.05) scaleX(0.95) translateX(-1px) rotate(-1.5deg);} 100%{transform:scaleY(1) scaleX(1) rotate(0deg);} }
-  @keyframes flicker-tip{ 0%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;} 25%{transform:scaleY(1.1) translateY(-1px) rotate(3deg);opacity:1;} 50%{transform:scaleY(0.9) translateY(0.5px) rotate(-3deg);opacity:0.88;} 75%{transform:scaleY(1.06) translateY(-0.5px) rotate(2deg);opacity:0.98;} 100%{transform:scaleY(1) translateY(0) rotate(0deg);opacity:0.95;} }
-
-  .scroll-progress{ position:fixed;top:0;left:0;height:3px;width:0%; background:linear-gradient(90deg,var(--flame-500),var(--ember-500),var(--flame-300)); z-index:2000;transition:width 0.1s ease-out; box-shadow:0 0 8px rgba(245,166,35,0.6); }
-
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1);}
-  .reveal.visible{opacity:1;transform:translateY(0);}
-  .reveal-stagger.visible{transition-delay:var(--stagger-delay,0s);}
-
-  .spark{ position:absolute;pointer-events:none; font-size:1.2rem; animation:spark-rise 1.4s ease-out forwards; z-index:50; user-select:none; }
-  @keyframes spark-rise{ 0%{opacity:0;transform:translate(0,0) scale(0.4) rotate(0deg);} 15%{opacity:1;} 100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-140px)) scale(1.1) rotate(var(--rot,90deg));} }
-  .flame-toast{ position:fixed;left:50%;bottom:2.4rem;transform:translateX(-50%) translateY(20px); background:var(--dusk-800); border:1px solid rgba(245,166,35,0.4); color:var(--cream-100); padding:0.9rem 1.6rem;border-radius:999px; font-size:0.95rem;font-weight:600; box-shadow:0 14px 34px rgba(0,0,0,0.5); opacity:0;transition:opacity 0.35s ease, transform 0.35s ease; z-index:2000;pointer-events:none; display:flex;align-items:center;gap:0.5rem; }
-  .flame-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  @media (prefers-reduced-motion:reduce){ .flame-outer,.flame-mid,.flame-tip,.diya-glow{animation:none;} .reveal{opacity:1;transform:none;transition:none;} }
-  
-  a:focus, button:focus { outline: none; }
-  :focus-visible{outline:2px solid var(--flame-300);outline-offset:2px;}
-
-  .strip{ border-top:1px solid rgba(248,241,227,0.08); border-bottom:1px solid rgba(248,241,227,0.08); background:rgba(255,255,255,0.02); }
-  .strip-inner{ max-width:1180px;margin:0 auto;padding:1.6rem 6%; display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between; }
-  .strip-item{display:flex;gap:0.8rem;align-items:flex-start;flex:1 1 220px;}
-  
-  .time-switch-btn{
-    background:rgba(245,166,35,0.1); border:1px solid rgba(245,166,35,0.3); color:var(--flame-300);
-    width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    font-size:1.4rem; cursor:pointer; outline:none; transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-    box-shadow:0 0 15px rgba(245,166,35,0.2); position:relative; z-index:10;
-  }
-  .time-switch-btn:not(:disabled):hover, .time-switch-btn:not(:disabled):active{ transform:rotate(-180deg) scale(1.15); box-shadow:0 0 25px rgba(245,166,35,0.6); background:rgba(245,166,35,0.2); }
-  .time-switch-btn:disabled{ opacity:0.5; cursor:wait; filter:grayscale(0.8); box-shadow:none; }
-  
-  .strip-item h4{font-family:'Work Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--cream-100);margin-bottom:0.15rem;}
-  .strip-item p{font-size:0.86rem;color:var(--cream-muted);}
-
-  section{padding:5.5rem 0;}
-  .section-head{max-width:640px;margin-bottom:3rem;}
-  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem);color:var(--cream-100);margin-top:0.5rem;}
-  .section-head p{color:var(--cream-muted);margin-top:0.9rem;font-size:1.05rem;}
-
-  .subject-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
-  @media (max-width:820px){.subject-grid{grid-template-columns:1fr;}}
-  .subject-card{ border:1px solid rgba(248,241,227,0.1); background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01)); border-radius:var(--radius-lg); padding:2.2rem 1.9rem; transition:border-color 0.3s, transform 0.3s; }
-  .subject-card:hover{border-color:rgba(245,166,35,0.45);transform:translateY(-6px);}
-  .subject-card .icon{ width:52px;height:52px;border-radius:14px; display:flex;align-items:center;justify-content:center; background:rgba(245,166,35,0.12);color:var(--flame-300);font-size:1.4rem;margin-bottom:1.3rem; cursor:pointer;transition:background 0.2s, transform 0.2s; }
-  .subject-card .icon:active{transform:scale(0.92);background:rgba(245,166,35,0.22);}
-  .subject-card h3{font-size:1.3rem;color:var(--cream-100);margin-bottom:0.6rem;}
-  .subject-card p{color:var(--cream-muted);font-size:0.96rem;}
-
-  .schedule-wrap{ border:1px solid rgba(248,241,227,0.1); border-radius:var(--radius-lg); overflow:hidden; background:rgba(255,255,255,0.02); }
-  .schedule-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  table{width:100%;min-width:480px;border-collapse:collapse;}
-  th{ text-align:left;padding:1.1rem 1.6rem; font-size:0.78rem;text-transform:uppercase; letter-spacing:0.08em; color:var(--flame-300);background:rgba(245,166,35,0.06); font-weight:600; }
-  td{padding:1.15rem 1.6rem;border-top:1px solid rgba(248,241,227,0.08);font-size:0.98rem;}
-  tr td:first-child{color:var(--cream-100);font-weight:600;}
-  tr td:not(:first-child){color:var(--cream-muted);}
-
-  .teacher{ display:grid;grid-template-columns:0.85fr 1.15fr;gap:3rem;align-items:center; }
-  @media (max-width:860px){.teacher{grid-template-columns:1fr;}}
-  .teacher-card{ border:1px solid rgba(248,241,227,0.1); border-radius:var(--radius-lg); padding:2.4rem; background:linear-gradient(160deg, rgba(226,103,59,0.08), rgba(255,255,255,0.02)); }
-  .teacher-card .quote-mark{font-family:'Fraunces',serif;font-size:3rem;color:var(--flame-300);line-height:0.6;margin-bottom:1rem;display:block;}
-  .teacher-card p{font-size:1.05rem;color:var(--cream-300);}
-  .teacher-card .sign{margin-top:1.4rem;font-weight:600;color:var(--cream-100);font-family:'Fraunces',serif;font-size:1.1rem;}
-  .teacher-facts{display:flex;flex-direction:column;gap:1.3rem;}
-  .fact{display:flex;gap:1rem;align-items:flex-start;}
-  .fact i{color:var(--flame-300);font-size:1.2rem;margin-top:0.15rem;width:22px;}
-  .fact h4{font-size:1rem;color:var(--cream-100);margin-bottom:0.15rem;}
-  .fact p{font-size:0.92rem;color:var(--cream-muted);}
-
-  .enroll-panel{ display:grid;grid-template-columns:1fr 1fr;gap:0; border:1px solid rgba(245,166,35,0.25); border-radius:var(--radius-lg); overflow:hidden; background:rgba(255,255,255,0.02); }
-  @media (max-width:860px){.enroll-panel{grid-template-columns:1fr;}}
-  .enroll-side{ padding:3rem 2.6rem; background:linear-gradient(160deg, rgba(245,166,35,0.14), rgba(226,103,59,0.06)); display:flex;flex-direction:column;justify-content:center; }
-  .enroll-side h3{font-size:1.7rem;color:var(--cream-100);margin-bottom:1rem;}
-  .enroll-side p{color:var(--cream-300);font-size:0.98rem;margin-bottom:1.6rem;}
-  .enroll-side ul{list-style:none;display:flex;flex-direction:column;gap:0.7rem;}
-  .enroll-side li{display:flex;gap:0.6rem;align-items:center;font-size:0.92rem;color:var(--cream-300);}
-  .enroll-side li i{color:var(--ok-green);}
-
-  .enroll-form{padding:3rem 2.6rem;}
-  .form-row{margin-bottom:1.25rem;}
-  .form-row label{ display:block;font-size:0.82rem;font-weight:600;text-transform:uppercase; letter-spacing:0.05em;color:var(--cream-muted);margin-bottom:0.5rem; }
-  .form-row input,.form-row select{ width:100%;padding:0.85rem 1rem; background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.16); border-radius:10px;color:var(--cream-100);font-size:1rem;font-family:'Work Sans',sans-serif; outline:none;transition:border-color 0.25s, box-shadow 0.25s; }
-  .form-row input:focus,.form-row select:focus{ border-color:var(--flame-500); box-shadow:0 0 0 3px rgba(245,166,35,0.18); }
-  .submit-btn{ width:100%;padding:1rem;border:none;border-radius:10px;cursor:pointer; background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;font-size:1.02rem; transition:transform 0.2s, box-shadow 0.2s; box-shadow:0 6px 18px rgba(245,166,35,0.3); }
-  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(245,166,35,0.45);}
-  .form-status{margin-top:1rem;font-size:0.9rem;text-align:center;display:none;}
-
-  .contact-strip{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;margin-top:3rem;}
-  .contact-pill{ display:flex;align-items:center;gap:0.7rem; border:1px solid rgba(248,241,227,0.12); background:rgba(255,255,255,0.02); padding:0.9rem 1.5rem;border-radius:999px; text-decoration:none;color:var(--cream-100);font-size:0.95rem; transition:border-color 0.25s; }
-  .contact-pill:hover{border-color:var(--flame-300);}
-  .contact-pill i{color:var(--flame-300);}
-
-  .wa-float{ position:fixed;bottom:1.8rem;right:1.8rem;z-index:900; width:58px;height:58px;border-radius:50%; background:var(--ok-green);color:#fff; display:flex;align-items:center;justify-content:center; font-size:1.6rem;text-decoration:none; box-shadow:0 8px 22px rgba(37,211,102,0.45); transition:transform 0.25s; }
-  .wa-float:hover{transform:scale(1.08);}
-
-  footer{ border-top:1px solid rgba(248,241,227,0.08); padding:2.6rem 0; text-align:center;color:var(--cream-muted);font-size:0.88rem; }
-  footer strong{color:var(--cream-300);}
-
-  .quiz-overlay{ position:fixed;inset:0;z-index:3000; background:rgba(9,11,24,0.86); backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px); display:flex;align-items:center;justify-content:center; padding:1.4rem; opacity:0;visibility:hidden; transition:opacity 0.3s ease, visibility 0.3s ease; }
-  .quiz-overlay.show{opacity:1;visibility:visible;}
-  .quiz-card{ width:100%;max-width:440px; background:linear-gradient(165deg, var(--dusk-800), var(--dusk-900)); border:1px solid rgba(245,166,35,0.3); border-radius:var(--radius-lg); padding:1.8rem 1.7rem; box-shadow:0 30px 70px rgba(0,0,0,0.55); transform:translateY(18px) scale(0.97); transition:transform 0.3s ease; max-height:88vh;overflow-y:auto; }
-  .quiz-overlay.show .quiz-card{transform:translateY(0) scale(1);}
-  .quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
-  .quiz-head h3{font-size:1.25rem;color:var(--cream-100);display:flex;align-items:center;gap:0.5rem;}
-  .quiz-close{ background:none;border:none;color:var(--cream-muted);font-size:1.3rem; cursor:pointer;padding:0.2rem 0.5rem;line-height:1;transition:color 0.2s; }
-  .quiz-close:hover{color:var(--flame-300);}
-  .quiz-diyas{display:flex;gap:0.5rem;margin-bottom:1.3rem;}
-  .quiz-diya{font-size:1.3rem;opacity:0.25;transition:opacity 0.3s, transform 0.3s;filter:grayscale(1);}
-  .quiz-diya.lit{opacity:1;filter:grayscale(0);transform:scale(1.15);}
-  .quiz-badge{ display:inline-block;font-size:0.72rem;font-weight:700;text-transform:uppercase; letter-spacing:0.06em;color:var(--dusk-950); background:var(--flame-300);padding:0.25rem 0.6rem;border-radius:999px;margin-bottom:0.8rem; }
-  .quiz-question{font-size:1.08rem;color:var(--cream-100);margin-bottom:1.2rem;line-height:1.5;}
-  .quiz-options{display:flex;flex-direction:column;gap:0.7rem;}
-  .quiz-option{ text-align:left;padding:0.8rem 1rem;border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(248,241,227,0.14); color:var(--cream-300);font-size:0.98rem;font-family:'Work Sans',sans-serif; cursor:pointer;transition:border-color 0.2s, background 0.2s, transform 0.15s; }
-  .quiz-option:hover{border-color:rgba(245,166,35,0.4);}
-  .quiz-option:active{transform:scale(0.98);}
-  .quiz-option.correct{background:rgba(37,211,102,0.16);border-color:var(--ok-green);color:var(--cream-100);}
-  .quiz-option.wrong{background:rgba(226,103,59,0.16);border-color:var(--ember-500);color:var(--cream-100);}
-  .quiz-option[disabled]{cursor:default;pointer-events:none;}
-  .quiz-result{text-align:center;padding:1rem 0;}
-  .quiz-result h3{font-size:1.4rem;color:var(--flame-300);margin-bottom:0.6rem;}
-  .quiz-result p{color:var(--cream-300);margin-bottom:1.4rem;}
-  .quiz-restart{ display:inline-block;background:linear-gradient(135deg,var(--flame-500),var(--ember-500)); color:var(--dusk-950);font-weight:700;padding:0.7rem 1.5rem;border-radius:999px; border:none;cursor:pointer;font-size:0.95rem; }
-
-  /* =========================================
-     HARDWARE-ACCELERATED WIPE TRANSITIONS
-     ========================================= */
-  .cyber-wipe { position: fixed; inset: 0; z-index: 2147483640; background: #030014; pointer-events: none; clip-path: circle(0px at var(--x) var(--y)); transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease; }
-  .cyber-wipe.expand { clip-path: circle(150vmax at var(--x) var(--y)); }
-  .cyber-ring { position: fixed; width: 80px; height: 80px; border: 4px solid #22e6ff; border-radius: 50%; transform: translate(-50%, -50%) scale(0); box-shadow: 0 0 20px 5px #22e6ff, inset 0 0 20px 5px #22e6ff; z-index: 2147483641; pointer-events: none; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease; }
-  .cyber-ring.expand { transform: translate(-50%, -50%) scale(50); opacity: 0; }
-
-  .warm-wipe { position: fixed; inset: 0; z-index: 2147483640; background: #0d1024; pointer-events: none; clip-path: circle(0px at var(--x) var(--y)); transition: clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease; }
-  .warm-wipe.expand { clip-path: circle(150vmax at var(--x) var(--y)); }
-  .warm-ring { position: fixed; width: 80px; height: 80px; border: 4px solid #f5a623; border-radius: 50%; transform: translate(-50%, -50%) scale(0); box-shadow: 0 0 20px 5px #f5a623, inset 0 0 20px 5px #f5a623; z-index: 2147483641; pointer-events: none; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease; }
-  .warm-ring.expand { transform: translate(-50%, -50%) scale(50); opacity: 0; }
-  
-  .font-mono-cyber{font-family:'JetBrains Mono',ui-monospace,monospace;}
-  
-  @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-  .float-slow { animation: float-y 6s ease-in-out infinite; }
-  .float-med { animation: float-y 4.2s ease-in-out infinite; }
-  .float-fast { animation: float-y 3s ease-in-out infinite; }
-  
-  @keyframes glitch-1{ 0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);} 93%{clip-path:inset(10% 0 60% 0);transform:translate(-2px,0);} 95%{clip-path:inset(60% 0 5% 0);transform:translate(2px,0);} 97%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,0);} }
-  .glitch-layer{animation:glitch-1 3.4s infinite linear;}
-  
-  @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(34,230,255,0.45);}100%{box-shadow:0 0 0 22px rgba(34,230,255,0);}}
-  .pulse-ring{animation:pulse-ring 2.2s cubic-bezier(0.4,0,0.6,1) infinite;}
-
-  @keyframes pulse-danger{0%{box-shadow:0 0 0 0 rgba(255,41,84,0.6);}100%{box-shadow:0 0 0 35px rgba(255,41,84,0);}}
-  .pulse-danger{animation:pulse-danger 1.5s cubic-bezier(0.4,0,0.6,1) infinite;}
-  
-  .flow-line{stroke-dasharray:6 10;animation:dash-flow 3s linear infinite;}
-  @keyframes dash-flow{to{stroke-dashoffset:-200;}}
-  
-  @keyframes shake{ 0%,100%{transform:translate(0,0) rotate(0deg);} 20%{transform:translate(-4px,2px) rotate(-3deg);} 40%{transform:translate(4px,-2px) rotate(3deg);} 60%{transform:translate(-3px,-2px) rotate(-2deg);} 80%{transform:translate(3px,2px) rotate(2deg);} }
-  .shake{animation:shake 0.4s ease-in-out;}
-  
-  @keyframes blink{50%{opacity:0;}}
-  .caret{animation:blink 1s step-end infinite;}
-  
-  .cyber-reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease, transform 0.8s ease;}
-  .cyber-reveal.in{opacity:1;transform:translateY(0);}
-
-  .focus-vignette { position: fixed; inset: 0; pointer-events: none; z-index: 100; background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.95) 100%); animation: fadeInFocus 1.5s ease-out; }
-  @keyframes fadeInFocus { from { opacity: 0; } to { opacity: 1; } }
-
-  /* =========================================
-     EASTER EGGS CSS
-     ========================================= */
-  #matrixCanvas { position: fixed; inset: 0; z-index: 2147483645; pointer-events: none; opacity: 0; transition: opacity 1.5s ease-in-out; mix-blend-mode: screen; }
-  #matrixCanvas.raining { opacity: 1; }
-
-  .memory-overlay { position: fixed; inset: 0; z-index: 3000; background: rgba(13,16,36,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-  .memory-overlay.show { opacity: 1; visibility: visible; }
-  .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 25px; perspective: 1000px; }
-  @media (max-width: 400px) { .memory-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-  
-  .mem-card { width: 75px; height: 95px; background: rgba(255,255,255,0.03); border: 1px solid rgba(245,166,35,0.25); border-radius: 14px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-  .mem-card:hover { border-color: rgba(245,166,35,0.5); }
-  .mem-card.flipped { transform: rotateY(180deg); }
-  
-  .mem-card .front, .mem-card .back { position: absolute; inset: 0; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border-radius: 14px; }
-  .mem-card .back { transform: rotateY(180deg); background: linear-gradient(135deg, var(--flame-500), var(--ember-500)); color: var(--dusk-950); box-shadow: 0 0 20px rgba(245,166,35,0.4); border: none; }
-  
-  .close-memory { margin-top: 35px; padding: 12px 28px; border-radius: 99px; font-family: 'Work Sans', sans-serif; font-weight: 600; background: transparent; color: var(--flame-300); border: 1px solid var(--flame-300); cursor: pointer; transition: 0.3s ease; }
-  .close-memory:hover { background: var(--flame-300); color: var(--dusk-950); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(245,166,35,0.2); }
+  .hero-grid,.neural-grid,.enroll,.schedule{grid-template-columns:1fr}
+  .hero{padding-top:50px}
+  .core-wrap{order:-1}
+  .grid-3{grid-template-columns:1fr}
+  .hero-copy{font-size:16px}
+}
+@media(max-width:520px){
+  .container{width:min(calc(100% - 22px),var(--max))}
+  section{padding:65px 0}
+  .form-grid{grid-template-columns:1fr}
+  .cyber-core{width:92vw}
+  .neural{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
 </style>
 </head>
+
 <body>
 
-<!-- =======================================================
-     APP CONFIGURATION
-     ======================================================= -->
-<script>
-  window.ENROLL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
-  window.STATS_API_URL = "";
-</script>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#top" aria-label="ABHA Academy home">
+      <span class="logo-mark">A</span>
+      <span>ABHA <small>ACADEMY // 01</small></span>
+    </a>
 
-<!-- =======================================================
-     NORMAL 2026 HTML CONTENT
-     ======================================================= -->
-<div id="normal-app" style="transition: opacity 0.4s ease;">
-  <div class="scroll-progress" id="scrollProgress"></div>
-  <div class="ambient-particles" id="ambientParticles"></div>
-  <div class="flame-toast" id="flameToast"></div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#mission">Mission</a>
+      <a href="#subjects">Learning</a>
+      <a href="#neural">Neural</a>
+      <a href="#enroll">Join</a>
+    </nav>
 
-  <div class="sky-glow"></div>
-  <div class="stars"></div>
-
-  <header class="nav">
-    <div class="nav-inner">
-      <a href="#top" class="logo"><span class="flame-dot"></span>ABHA Academy</a>
-      <div class="nav-cluster">
-        <ul class="nav-links">
-          <li><a href="#subjects">Subjects</a></li>
-          <li><a href="#schedule">Timings</a></li>
-          <li><a href="#teacher">About</a></li>
-          <li><a href="#enroll">Enroll</a></li>
-        </ul>
-        <div class="lang-switch" id="langSwitch">
-          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
-            <i class="fas fa-globe"></i> <span id="langLabel">English</span> <i class="fas fa-chevron-down"></i>
-          </button>
-          <ul class="lang-menu" id="langMenu" role="listbox">
-            <li role="option" data-lang="en" class="active">English</li>
-            <li role="option" data-lang="hi">हिंदी (Hindi)</li>
-            <li role="option" data-lang="bn">বাংলা (Bengali)</li>
-            <li role="option" data-lang="te">తెలుగు (Telugu)</li>
-            <li role="option" data-lang="mr">मराठी (Marathi)</li>
-            <li role="option" data-lang="ta">தமிழ் (Tamil)</li>
-            <li role="option" data-lang="ur">اردو (Urdu)</li>
-            <li role="option" data-lang="gu">ગુજરાતી (Gujarati)</li>
-            <li role="option" data-lang="kn">ಕನ್ನಡ (Kannada)</li>
-            <li role="option" data-lang="ml">മലയാളം (Malayalam)</li>
-            <li role="option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main id="top">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <div class="badge"><span class="dot"></span> Free, forever &middot; Class 0 to 8</div>
-          <h1>Every evening, we <em>light one more lamp</em> of learning.</h1>
-          <p class="lede">ABHA Academy runs free English, Maths and Computer classes for Class 0–8 students, every evening from 6 to 10 PM — taught personally, at no cost to any family.</p>
-          <div class="cta-row">
-            <a href="#enroll" class="btn-primary"><i class="fas fa-graduation-cap"></i> Enroll your child</a>
-            <a href="#schedule" class="btn-ghost">See today's timing →</a>
-          </div>
-        </div>
-
-        <div class="diya-stage">
-          <div class="diya-glow" aria-hidden="true"></div>
-          <svg viewBox="0 0 240 220" width="260" height="240" role="img" aria-label="An illustration of a lit oil lamp, symbolising ABHA Academy">
-            <defs>
-              <linearGradient id="lampShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD37A"/><stop offset="1" stop-color="#E2673B"/></linearGradient>
-              <linearGradient id="flameOuterGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#3B5B8C"/><stop offset="22%" stop-color="#E2673B"/><stop offset="55%" stop-color="#F5A623"/><stop offset="100%" stop-color="#FFE9B8"/></linearGradient>
-              <linearGradient id="flameMidGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#E2673B"/><stop offset="45%" stop-color="#FFC15E"/><stop offset="100%" stop-color="#FFF3D6"/></linearGradient>
-            </defs>
-            <g id="flameSway" class="ignite-init" style="transform-box: fill-box; transform-origin: 50% 100%;">
-              <path class="flame-outer" d="M120,58 C136,76 148,94 144,112 C141,126 130,134 120,134 C110,134 99,126 96,112 C92,94 104,76 120,58 Z" fill="url(#flameOuterGrad)"/>
-              <path class="flame-mid" d="M120,76 C129,88 135,99 132,110 C130,119 125,124 120,124 C115,124 110,119 108,110 C105,99 111,88 120,76 Z" fill="url(#flameMidGrad)" opacity="0.92"/>
-              <path class="flame-tip" d="M120,90 C125,97 128,103 126,109 C125,114 122,117 120,117 C118,117 115,114 114,109 C112,103 115,97 120,90 Z" fill="#FFF6E0" opacity="0.95"/>
-            </g>
-            <circle id="flameHitArea" cx="120" cy="95" r="55" fill="transparent" style="cursor:pointer;"/>
-            <rect x="116" y="112" width="8" height="14" fill="#C77A2B"/>
-            <path d="M40 150 Q120 118 200 150 L188 168 Q120 142 52 168 Z" fill="#E2673B"/>
-            <ellipse cx="120" cy="168" rx="70" ry="16" fill="#F5A623"/>
-            <ellipse cx="120" cy="168" rx="70" ry="16" fill="url(#lampShade)" opacity="0.5"/>
-            <ellipse cx="120" cy="176" rx="58" ry="10" fill="#C4501F"/>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <div class="strip">
-      <div class="wrap strip-inner">
-        <div class="strip-item">
-          <button type="button" id="timeTravelBtn" class="time-switch-btn" disabled onclick="triggerTimeTravel(event)" aria-label="Access Neural Link" title="Establishing Neural Link...">
-            <i class="fas fa-clock"></i>
-          </button>
-          <div><h4>6 PM – 10 PM, every evening</h4><p>Click the clock for a surprise.</p></div>
-        </div>
-        <div class="strip-item">
-          <i class="fas fa-hand-holding-heart"></i>
-          <div><h4>Zero fees</h4><p>No admission cost, no monthly charge, ever.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <section id="subjects">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow">What we teach</span>
-          <h2>Three subjects, built up patiently</h2>
-          <p>Every batch starts from where the child actually is — not where the syllabus assumes they are.</p>
-        </div>
-        <div class="subject-grid">
-          <div class="subject-card">
-            <div class="icon" data-subject="english"><i class="fas fa-book-open"></i></div>
-            <h3>English</h3>
-            <p>Reading, handwriting, spoken confidence and everyday vocabulary — built through stories, not just textbooks.</p>
-          </div>
-          <div class="subject-card">
-            <div class="icon" data-subject="maths"><i class="fas fa-calculator"></i></div>
-            <h3>Mathematics</h3>
-            <p>Tables, arithmetic and logical thinking, practised until the basics are genuinely secure, not just memorised.</p>
-          </div>
-          <div class="subject-card">
-            <div class="icon" data-subject="computer"><i class="fas fa-desktop"></i></div>
-            <h3>Computer Basics</h3>
-            <p>Typing, using a mouse and keyboard, and simple digital skills every child will need going forward.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="schedule">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow">Timing</span>
-          <h2>Evening batches, by grade</h2>
-          <p>Classes are grouped by age so every child gets material at the right level.</p>
-        </div>
-        <div class="schedule-wrap">
-          <div class="schedule-scroll">
-            <table>
-              <thead>
-                <tr><th>Grade</th><th>Days</th><th>Time</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Class 0 – 3 (Juniors)</td><td>Mon · Wed · Fri</td><td>6:00 – 7:15 PM</td></tr>
-                <tr><td>Class 4 – 6 (Middle)</td><td>Tue · Thu · Sat</td><td>7:30 – 8:45 PM</td></tr>
-                <tr><td>Class 7 – 8 (Seniors)</td><td>Mon · Wed · Fri</td><td>8:45 – 10:00 PM</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="teacher">
-      <div class="wrap teacher">
-        <div class="teacher-card">
-          <span class="quote-mark">&ldquo;</span>
-          <p>I work a regular day job till 5:30. These evening hours are set aside on purpose — because I believe no child should miss out on a strong foundation just because their family can't afford tuition.</p>
-          <p class="sign">— Founder, ABHA Academy</p>
-        </div>
-        <div class="teacher-facts">
-          <div class="fact">
-            <i class="fas fa-briefcase"></i>
-            <div><h4>A teacher who shows up daily</h4><p>Classes are taught in person, every evening, without exception.</p></div>
-          </div>
-          <div class="fact">
-            <i class="fas fa-users"></i>
-            <div><h4>Small, focused batches</h4><p>Grouped by grade so lessons stay relevant to each child.</p></div>
-          </div>
-          <div class="fact">
-            <i class="fas fa-hands-helping"></i>
-            <div><h4>Built for the neighbourhood</h4><p>A local, free initiative — not a franchise or a paid course.</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="enroll">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow">Join us</span>
-          <h2>Enroll your child</h2>
-          <p>Fill in a few details below, or call/WhatsApp directly — whichever is easier for you.</p>
-        </div>
-
-        <div class="enroll-panel">
-          <div class="enroll-side">
-            <h3>Why families choose ABHA</h3>
-            <p>A steady, honest option for foundational learning — close to home, and free of cost.</p>
-            <ul>
-              <li><i class="fas fa-check-circle"></i> No fees at any point</li>
-              <li><i class="fas fa-check-circle"></i> Evening batches that fit school hours</li>
-              <li><i class="fas fa-check-circle"></i> Grouped by grade, taught in person</li>
-              <li><i class="fas fa-check-circle"></i> Site available in your language</li>
-            </ul>
-          </div>
-          <form class="enroll-form" id="enrollForm">
-            <div class="form-row">
-              <label for="parentName">Parent's name</label>
-              <input type="text" id="parentName" name="parentName" required placeholder="Enter full name">
-            </div>
-            <div class="form-row">
-              <label for="childName">Child's name</label>
-              <input type="text" id="childName" name="childName" required placeholder="Enter child's name">
-            </div>
-            <div class="form-row">
-              <label for="grade">Grade</label>
-              <select id="grade" name="grade" required>
-                <option value="" disabled selected>Choose a batch</option>
-                <option value="0-3">Class 0–3 · 6:00 PM</option>
-                <option value="4-6">Class 4–6 · 7:30 PM</option>
-                <option value="7-8">Class 7–8 · 8:45 PM</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label for="phone">Phone / WhatsApp number</label>
-              <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number">
-            </div>
-            <button type="submit" class="submit-btn">Submit registration</button>
-            <p class="form-status" id="formStatus"></p>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <a href="https://wa.me/916394254410" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-
-  <!-- Hidden Quiz Game -->
-  <div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-label="ABHA Quiz Challenge">
-    <div class="quiz-card" id="quizCard"></div>
+    <a class="nav-cta" href="#enroll">JOIN FREE</a>
+    <button class="menu" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
   </div>
+</header>
 
-  <footer>
-    <p><strong>ABHA Academy</strong> &middot; Free evening classes for Class 0–8</p>
-    <p style="margin-top:0.4rem;">B870, Phase 1, Metro Vihar, Holambi Kalan, Delhi</p>
-    <p style="margin-top:0.4rem;">&copy; 2026 ABHA Academy. Every evening, a little more light.</p>
-  </footer>
-</div>
+<main id="top">
 
-<!-- =======================================================
-     2086 NEURAL LINK OVERLAY (REACT APP ROOT)
-     ======================================================= -->
-<div id="neural-root"></div>
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="status"><span class="status-dot"></span>SYSTEM ONLINE // EVENING LEARNING</div>
+      <div class="kicker">ABHA ACADEMY / EDUCATION NETWORK</div>
+      <h1>LEARN<br><span class="gradient">BEYOND</span><br>LIMITS.</h1>
+      <p class="hero-copy">
+        Free evening education for students from Class 0 to 8.
+        English, Maths and Computers — taught in a modern, friendly environment.
+      </p>
 
-<!-- =======================================================
-     EASTER EGG ELEMENTS (Matrix Rain & Memory Game)
-     ======================================================= -->
-<canvas id="matrixCanvas"></canvas>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#enroll">START LEARNING →</a>
+        <a class="btn btn-ghost" href="#neural">ENTER NEURAL MODE</a>
+      </div>
 
-<div class="memory-overlay" id="memoryOverlay" role="dialog" aria-modal="true">
-  <h2 style="color: var(--cream-100); font-family: 'Fraunces', serif; font-size: 2rem; margin-bottom: 0.5rem;">Brain Sync Check</h2>
-  <p style="color: var(--cream-300); font-size: 0.95rem; font-family: 'JetBrains Mono', monospace;">Match the subjects to complete memory sync.</p>
-  <div class="memory-grid" id="memoryGrid"></div>
-  <button class="close-memory" id="closeMemoryBtn">Abort Simulation</button>
-</div>
-
-<!-- =======================================================
-     SCRIPTS FOR 2026 LOGIC & TRANSITIONS
-     ======================================================= -->
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script>
-  function googleTranslateElementInit(){
-    new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'hi,bn,te,mr,ta,ur,gu,kn,ml,pa,en', autoDisplay:false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE },'google_translate_element');
-  }
-  (function watchdog(){
-    const kill = () => {
-      document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame').forEach(el=>{ el.style.display='none'; el.style.visibility='hidden'; el.style.height='0'; });
-      document.body.style.top='0px'; document.body.style.position='static';
-    };
-    kill(); new MutationObserver(kill).observe(document.documentElement,{attributes:true,childList:true,subtree:true}); setInterval(kill, 400);
-  })();
-
-  const LANG_NAMES = { en:'English', hi:'हिंदी (Hindi)', bn:'বাংলা (Bengali)', te:'తెలుగు (Telugu)', mr:'मराठी (Marathi)', ta:'தமிழ் (Tamil)', ur:'اردو (Urdu)', gu:'ગુજરાતી (Gujarati)', kn:'ಕನ್ನಡ (Kannada)', ml:'മലയാളം (Malayalam)', pa:'ਪੰਜਾਬੀ (Punjabi)' };
-  function getCookie(name){ const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)')); return match ? decodeURIComponent(match[2]) : null; }
-  function setGoogTransCookie(lang){
-    const domains = [location.hostname, '.' + location.hostname, ''];
-    if(lang === 'en'){ domains.forEach(d=>{ document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' + (d ? (' domain=' + d + ';') : ''); }); }
-    else { const val = '/en/' + lang; document.cookie = 'googtrans=' + val + '; path=/'; document.cookie = 'googtrans=' + val + '; path=/; domain=' + location.hostname; }
-  }
-  function applyLanguage(lang){ setGoogTransCookie(lang); location.reload(); }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    const langSwitch = document.getElementById('langSwitch'), langBtn = document.getElementById('langBtn'), langMenu = document.getElementById('langMenu'), langLabel = document.getElementById('langLabel');
-    const savedCookie = getCookie('googtrans'); const savedLang = savedCookie && savedCookie.split('/')[2] ? savedCookie.split('/')[2] : 'en';
-    if (LANG_NAMES[savedLang]) { langLabel.textContent = LANG_NAMES[savedLang]; langMenu.querySelectorAll('li').forEach(li=>{ li.classList.toggle('active', li.getAttribute('data-lang') === savedLang); }); }
-    langBtn.addEventListener('click', function(e){ e.stopPropagation(); const isOpen = langSwitch.classList.toggle('open'); langBtn.setAttribute('aria-expanded', isOpen); });
-    document.addEventListener('click', function(){ langSwitch.classList.remove('open'); langBtn.setAttribute('aria-expanded','false'); });
-    langMenu.querySelectorAll('li').forEach(function(item){
-      item.addEventListener('click', function(e){ e.stopPropagation(); const lang = item.getAttribute('data-lang'); langMenu.querySelectorAll('li').forEach(li=>li.classList.remove('active')); item.classList.add('active'); langLabel.textContent = LANG_NAMES[lang] || 'English'; langSwitch.classList.remove('open'); applyLanguage(lang); });
-    });
-
-    const revealEls = document.querySelectorAll('.section-head, .subject-card, .schedule-wrap, .teacher-card, .fact, .enroll-panel, .contact-strip');
-    revealEls.forEach(function(el, i){ el.classList.add('reveal', 'reveal-stagger'); el.style.setProperty('--stagger-delay', (i % 4) * 0.09 + 's'); });
-    const revealObserver = new IntersectionObserver(function(entries){ entries.forEach(function(entry){ if (entry.isIntersecting){ entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-    revealEls.forEach(function(el){ revealObserver.observe(el); });
-
-    const progressBar = document.getElementById('scrollProgress');
-    function updateProgress(){ const scrollTop = window.scrollY; const docHeight = document.documentElement.scrollHeight - window.innerHeight; const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0; progressBar.style.width = pct + '%'; }
-    window.addEventListener('scroll', updateProgress, { passive: true }); updateProgress();
-
-    document.querySelectorAll('.nav-links a, .btn-ghost, .btn-primary[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const href = this.getAttribute('href');
-        if (href.startsWith('#')) {
-          e.preventDefault();
-          const target = document.querySelector(href);
-          if (target) {
-            const headerOffset = 70;
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-            this.blur();
-          }
-        }
-      });
-    });
-
-    const flame = document.getElementById('flameHitArea'), diyaStage = document.querySelector('.diya-stage'), toast = document.getElementById('flameToast');
-    let flameTaps = 0, flameTapTimer = null;
-    let audioCtx = null;
-    function playCrackle(){
-      try{ audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); const duration = 0.35; const bufferSize = audioCtx.sampleRate * duration; const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate); const data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++){ const decay = Math.pow(1 - i / bufferSize, 2.2); const pop = Math.random() < 0.02 ? (Math.random() - 0.5) * 1.4 : 0; data[i] = ((Math.random() * 2 - 1) * 0.35 + pop) * decay; } const noise = audioCtx.createBufferSource(); noise.buffer = buffer; const bandpass = audioCtx.createBiquadFilter(); bandpass.type = 'bandpass'; bandpass.frequency.value = 1800; bandpass.Q.value = 0.7; const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); noise.connect(bandpass); bandpass.connect(gain); gain.connect(audioCtx.destination); noise.start(); } catch(err){ }
-    }
-    function spawnSparks(){
-      const emojis = ['✨','🔥','🪔','⭐'];
-      for (let i = 0; i < 14; i++){ const s = document.createElement('span'); s.className = 'spark'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const dx = (Math.random() - 0.5) * 220; const dy = -(100 + Math.random() * 120); const rot = (Math.random() - 0.5) * 180; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = (46 + (Math.random()-0.5) * 20) + '%'; s.style.top = '35%'; s.style.animationDelay = (Math.random()*0.2) + 's'; diyaStage.appendChild(s); setTimeout(function(){ s.remove(); }, 1700); }
-    }
-    window.showToast = function(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2600); };
-    if (flame && diyaStage){ flame.addEventListener('click', function(){ flameTaps++; clearTimeout(flameTapTimer); flameTapTimer = setTimeout(function(){ flameTaps = 0; }, 2200); if (flameTaps >= 5){ flameTaps = 0; spawnSparks(); playCrackle(); showToast("🪔 Ek diya jal gaya — gyaan ki roshni badhti rahegi!"); } }); }
-
-    const flameSwayEl = document.getElementById('flameSway');
-    if (flameSwayEl){ setTimeout(function(){ flameSwayEl.classList.remove('ignite-init'); flameSwayEl.classList.add('igniting'); if (diyaStage) spawnSparks(); setTimeout(function(){ flameSwayEl.classList.remove('igniting'); }, 600); }, 350); }
-
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
-      const starsEl = document.querySelector('.stars'), glowEl = document.querySelector('.sky-glow'); let parallaxTicking = false;
-      document.addEventListener('mousemove', function(e){ if (parallaxTicking) return; parallaxTicking = true; requestAnimationFrame(function(){ const px = (e.clientX / window.innerWidth - 0.5); const py = (e.clientY / window.innerHeight - 0.5); if (starsEl) starsEl.style.transform = 'translate(' + (px*14) + 'px,' + (py*14) + 'px)'; if (glowEl) glowEl.style.transform = 'translate(' + (px*-8) + 'px,' + (py*-8) + 'px)'; parallaxTicking = false; }); });
-      
-      document.querySelectorAll('.subject-card').forEach(function(card){ card.style.transition = 'transform 0.15s ease-out, border-color 0.3s'; card.addEventListener('mousemove', function(e){ const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top; const cx = rect.width/2, cy = rect.height/2; const rotateY = ((x-cx)/cx) * 7; const rotateX = -((y-cy)/cy) * 7; card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-6px)'; }); card.addEventListener('mouseleave', function(){ card.style.transform = ''; }); });
-    }
-
-    if (flameSwayEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      let lastScrollY = window.scrollY, skew = 0, skewVel = 0, stretch = 1, stretchVel = 0;
-      window.addEventListener('scroll', function(){ const currentY = window.scrollY; const delta = currentY - lastScrollY; lastScrollY = currentY; skewVel += Math.max(-3.2, Math.min(3.2, delta * 0.35)); stretchVel += Math.max(-0.05, Math.min(0.05, Math.abs(delta) * 0.006)); }, { passive: true });
-      function physicsLoop(){ skewVel += (0 - skew) * 0.16; skewVel *= 0.78; skew += skewVel; skew = Math.max(-10, Math.min(10, skew)); stretchVel += (1 - stretch) * 0.18; stretchVel *= 0.8; stretch += stretchVel; flameSwayEl.style.transform = 'skewX(' + skew.toFixed(2) + 'deg) scaleY(' + stretch.toFixed(3) + ')'; requestAnimationFrame(physicsLoop); } requestAnimationFrame(physicsLoop);
-    }
-
-    window.celebrationBurst = function(){
-      const emojis = ['🪔','✨','🔥','⭐','🎉']; const count = 26;
-      for (let i = 0; i < count; i++){ const s = document.createElement('span'); s.className = 'spark'; s.style.position = 'fixed'; s.style.zIndex='999999'; s.style.fontSize = (1 + Math.random()*0.8) + 'rem'; s.textContent = emojis[Math.floor(Math.random()*emojis.length)]; const startX = Math.random() * window.innerWidth; const dx = (Math.random() - 0.5) * 160; const dy = -(window.innerHeight * 0.35 + Math.random() * window.innerHeight * 0.35); const rot = (Math.random() - 0.5) * 260; s.style.setProperty('--dx', dx + 'px'); s.style.setProperty('--dy', dy + 'px'); s.style.setProperty('--rot', rot + 'deg'); s.style.left = startX + 'px'; s.style.top = (window.innerHeight * 0.85) + 'px'; s.style.animationDuration = (1.6 + Math.random()*0.8) + 's'; s.style.animationDelay = (Math.random()*0.4) + 's'; document.body.appendChild(s); setTimeout(function(){ s.remove(); }, 2600); }
-    };
-
-    window.cyberBurst = function(x, y) {
-      const colors = ['#ff2954', '#22e6ff', '#a855f7', '#ffffff'];
-      for (let i = 0; i < 40; i++) {
-        const s = document.createElement('div');
-        s.style.position = 'fixed';
-        s.style.zIndex = '9999999';
-        const size = Math.random() * 6 + 2;
-        s.style.width = size + 'px';
-        s.style.height = size + 'px';
-        s.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        s.style.left = x + 'px';
-        s.style.top = y + 'px';
-        s.style.boxShadow = `0 0 10px ${s.style.backgroundColor}`;
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = 50 + Math.random() * 250;
-        const dx = Math.cos(angle) * velocity;
-        const dy = Math.sin(angle) * velocity;
-        s.style.transition = 'transform 0.8s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 0.8s ease-out';
-        document.body.appendChild(s);
-        void s.offsetWidth;
-        s.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 720}deg)`;
-        s.style.opacity = '0';
-        setTimeout(() => s.remove(), 800);
-      }
-    };
-
-    // Hidden Quiz Logic
-    (function(){
-      const questionBank = [{ subject: 'English', q: "Which word rhymes with 'CAT'?", options: ["DOG","HAT","SUN","PEN"], correct: 1 }, { subject: 'Maths', q: "What is 7 + 5?", options: ["10","11","12","13"], correct: 2 }, { subject: 'Computer', q: "Which part of the computer shows the picture?", options: ["Keyboard","Monitor","Mouse","CPU"], correct: 1 }];
-      const overlay = document.getElementById('quizOverlay'), card = document.getElementById('quizCard'); let questions=[], qIndex=0, score=0;
-      function openQuiz(){ questions=questionBank.sort(()=>Math.random()-0.5).slice(0,3); qIndex=0; score=0; overlay.classList.add('show'); renderQuestion(); }
-      function closeQuiz(){ overlay.classList.remove('show'); }
-      function renderQuestion(){
-        if(qIndex>=questions.length) return renderResult();
-        const item=questions[qIndex]; let opts=''; item.options.forEach((opt,i)=>opts+=`<button class="quiz-option" data-index="${i}">${opt}</button>`);
-        card.innerHTML = `<div class="quiz-head"><h3>🪔 ABHA Quiz</h3><button class="quiz-close" id="quizCloseBtn">&times;</button></div><span class="quiz-badge">${item.subject}</span><div class="quiz-question">${item.q}</div><div class="quiz-options">${opts}</div>`;
-        document.getElementById('quizCloseBtn').addEventListener('click', closeQuiz);
-        card.querySelectorAll('.quiz-option').forEach(btn=>{ btn.addEventListener('click', ()=>{ const chosen=parseInt(btn.getAttribute('data-index')); const allBtns=card.querySelectorAll('.quiz-option'); allBtns.forEach(b=>b.disabled=true); if(chosen===item.correct){btn.classList.add('correct'); score++; if(typeof playCrackle==='function') playCrackle();}else{btn.classList.add('wrong'); allBtns[item.correct].classList.add('correct');} setTimeout(()=>{qIndex++; renderQuestion();}, 900); }); });
-      }
-      function renderResult(){
-        card.innerHTML=`<div class="quiz-head"><h3>Result</h3><button class="quiz-close" id="quizCloseBtn2">&times;</button></div><div class="quiz-result"><h3>${score} / ${questions.length}</h3><p>Badhiya!</p><button class="quiz-restart" id="quizRestartBtn">Play Again</button></div>`;
-        document.getElementById('quizCloseBtn2').addEventListener('click', closeQuiz); document.getElementById('quizRestartBtn').addEventListener('click', openQuiz);
-        if(score===questions.length && window.celebrationBurst) window.celebrationBurst();
-      }
-      overlay.addEventListener('click', e=>{ if(e.target===overlay) closeQuiz(); });
-      const secretSequence = ['english', 'maths', 'computer']; let tapProgress=[], tapResetTimer=null;
-      document.querySelectorAll('.subject-card .icon[data-subject]').forEach(icon=>{ icon.addEventListener('click', ()=>{ const subject=icon.getAttribute('data-subject'); tapProgress.push(subject); clearTimeout(tapResetTimer); tapResetTimer=setTimeout(()=>{tapProgress=[];}, 3000); if(tapProgress.length>secretSequence.length) tapProgress=tapProgress.slice(-secretSequence.length); if(tapProgress.length===secretSequence.length && tapProgress.every((v,i)=>v===secretSequence[i])){ tapProgress=[]; openQuiz(); } }); });
-    })();
-  });
-
-  // =====================================================================
-  // NEW OFFLINE-FIRST FORM HANDLER
-  // =====================================================================
-  class FormManager {
-      constructor(formId, statusId, scriptUrl) {
-          this.form = document.getElementById(formId);
-          this.statusEl = document.getElementById(statusId);
-          this.scriptUrl = scriptUrl;
-          this.queueKey = 'abha_offline_enrollments';
-
-          if (this.form) {
-              this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-              // Listen for internet returning to sync data
-              window.addEventListener('online', () => this.syncOfflineData());
-          }
-      }
-
-      async handleSubmit(e) {
-          e.preventDefault();
-          const submitBtn = this.form.querySelector('.submit-btn');
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Processing...";
-
-          const formData = new FormData(this.form);
-          const data = Object.fromEntries(formData.entries());
-
-          if (!navigator.onLine) {
-              this.saveOffline(data);
-              this.showStatus("Saved offline. Will submit when internet returns.", "#f5a623");
-              this.form.reset();
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Submit registration";
-              return;
-          }
-
-          try {
-              await fetch(this.scriptUrl, { method: 'POST', mode: 'no-cors', body: formData });
-              this.showStatus("Registration received successfully!", "#25d366");
-              this.form.reset();
-              if (typeof window.celebrationBurst === 'function') window.celebrationBurst();
-          } catch (error) {
-              this.saveOffline(data);
-              this.showStatus("Network error. Saved offline.", "#e2673b");
-          } finally {
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Submit registration";
-          }
-      }
-
-      saveOffline(data) {
-          const queue = JSON.parse(localStorage.getItem(this.queueKey) || '[]');
-          queue.push({ data, timestamp: Date.now() });
-          localStorage.setItem(this.queueKey, JSON.stringify(queue));
-      }
-
-      async syncOfflineData() {
-          const queue = JSON.parse(localStorage.getItem(this.queueKey) || '[]');
-          if (queue.length === 0) return;
-
-          this.showStatus("Syncing offline registrations...", "#f5a623");
-          let remainingQueue = [];
-
-          for (const item of queue) {
-              const formData = new FormData();
-              Object.keys(item.data).forEach(key => formData.append(key, item.data[key]));
-              
-              try {
-                  await fetch(this.scriptUrl, { method: 'POST', mode: 'no-cors', body: formData });
-              } catch (error) {
-                  remainingQueue.push(item);
-              }
-          }
-
-          localStorage.setItem(this.queueKey, JSON.stringify(remainingQueue));
-          if (remainingQueue.length === 0) {
-              this.showStatus("All offline data synced!", "#25d366");
-              setTimeout(() => { this.statusEl.style.display = 'none'; }, 4000);
-          }
-      }
-
-      showStatus(msg, color) {
-          this.statusEl.textContent = msg;
-          this.statusEl.style.color = color;
-          this.statusEl.style.display = 'block';
-      }
-  }
-
-  // Initialize the new form manager once the DOM is ready
-  document.addEventListener('DOMContentLoaded', () => {
-      window.enrollmentManager = new FormManager('enrollForm', 'formStatus', window.ENROLL_SCRIPT_URL);
-  });
-
-  // Time Travel Transition to Cyber Mode
-  window.triggerTimeTravel = function(e) {
-    e.preventDefault();
-    if(typeof window.setReactActive !== 'function') return; 
-    
-    const rect = e.currentTarget.getBoundingClientRect(); 
-    const touch = e.touches ? e.touches[0] : null; 
-    const x = touch ? touch.clientX : (e.clientX || rect.left + rect.width/2); 
-    const y = touch ? touch.clientY : (e.clientY || rect.top + rect.height/2);
-    
-    const wipe = document.createElement('div');
-    wipe.className = 'cyber-wipe';
-    wipe.style.setProperty('--x', x + 'px');
-    wipe.style.setProperty('--y', y + 'px');
-    document.body.appendChild(wipe);
-
-    const ring = document.createElement('div');
-    ring.className = 'cyber-ring';
-    ring.style.left = x + 'px';
-    ring.style.top = y + 'px';
-    document.body.appendChild(ring);
-    
-    document.body.style.overflow = 'hidden';
-    if(navigator.vibrate) navigator.vibrate(100);
-    
-    void wipe.offsetWidth;
-    wipe.classList.add('expand');
-    ring.classList.add('expand');
-    
-    setTimeout(() => {
-      window.setReactActive(true);
-      const normalApp = document.getElementById('normal-app');
-      normalApp.style.opacity = '0';
-      setTimeout(() => {
-        normalApp.style.display = 'none';
-        wipe.style.opacity = '0'; 
-        setTimeout(() => { wipe.remove(); ring.remove(); }, 500);
-      }, 100);
-    }, 700);
-  };
-
-  // Return Transition to 2026 Normal Mode
-  window.returnTo2026 = function(e) {
-    const normalApp = document.getElementById('normal-app'); 
-    normalApp.style.display = 'block'; 
-    normalApp.style.opacity = '0';
-    
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 2;
-    if (e && e.clientX) { x = e.clientX; y = e.clientY; }
-
-    const wipe = document.createElement('div');
-    wipe.className = 'warm-wipe';
-    wipe.style.setProperty('--x', x + 'px');
-    wipe.style.setProperty('--y', y + 'px');
-    document.body.appendChild(wipe);
-
-    const ring = document.createElement('div');
-    ring.className = 'warm-ring';
-    ring.style.left = x + 'px';
-    ring.style.top = y + 'px';
-    document.body.appendChild(ring);
-    
-    if(navigator.vibrate) navigator.vibrate(50);
-    
-    void wipe.offsetWidth;
-    wipe.classList.add('expand');
-    ring.classList.add('expand');
-    
-    setTimeout(() => {
-      if(window.setReactActive) window.setReactActive(false);
-      document.body.style.overflow = ''; 
-      normalApp.style.opacity = '1'; 
-      wipe.style.opacity = '0';
-      setTimeout(() => { wipe.remove(); ring.remove(); }, 500);
-    }, 700);
-  };
-
-  // --- EASTER EGG 1: KONAMI MATRIX DIGITAL RAIN ---
-  (function(){
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-    
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789अआइईउऊएऐओऔकखगघ'.split('');
-    const fontSize = 16;
-    const columns = w / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    let matrixInterval;
-
-    window.addEventListener('resize', () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    });
-
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(13, 16, 36, 0.15)';
-      ctx.fillRect(0, 0, w, h);
-      
-      ctx.fillStyle = '#f5a623';
-      ctx.font = fontSize + 'px "JetBrains Mono", monospace';
-      
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        
-        if (drops[i] * fontSize > h && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-    let kIndex = 0;
-    
-    document.addEventListener('keydown', (e) => {
-      if (e.key === konami[kIndex]) {
-        kIndex++;
-        if (kIndex === konami.length) {
-          canvas.classList.add('raining');
-          if(window.showToast) window.showToast("⚡ OVERRIDE: MATRIX INITIATED");
-          
-          matrixInterval = setInterval(drawMatrix, 50);
-          
-          setTimeout(() => {
-            canvas.classList.remove('raining');
-            setTimeout(() => clearInterval(matrixInterval), 1500);
-          }, 12000); 
-          
-          kIndex = 0;
-        }
-      } else {
-        kIndex = 0;
-      }
-    });
-  })();
-
-  // --- EASTER EGG 2: HIDDEN MEMORY MATCH GAME ---
-  (function(){
-    const overlay = document.getElementById('memoryOverlay');
-    const grid = document.getElementById('memoryGrid');
-    const closeBtn = document.getElementById('closeMemoryBtn');
-    
-    const footerTags = document.querySelectorAll('footer p');
-    const footerYear = Array.from(footerTags).find(p => p.textContent.includes('2026'));
-    let tapCount = 0, tapTimer;
-
-    if(footerYear) {
-      footerYear.innerHTML = footerYear.innerHTML.replace('2026', '<span id="secretYear" style="cursor:pointer; display:inline-block; transition:color 0.2s;">2026</span>');
-      const secretYear = document.getElementById('secretYear');
-      
-      secretYear.addEventListener('click', () => {
-        tapCount++;
-        secretYear.style.color = 'var(--flame-500)';
-        
-        clearTimeout(tapTimer);
-        tapTimer = setTimeout(() => {
-          tapCount = 0;
-          secretYear.style.color = '';
-        }, 1000);
-        
-        if(tapCount >= 3) {
-          tapCount = 0;
-          secretYear.style.color = '';
-          initMemoryGame();
-          overlay.classList.add('show');
-        }
-      });
-    }
-
-    closeBtn.addEventListener('click', () => {
-      overlay.classList.remove('show');
-      setTimeout(() => { closeBtn.textContent = "Abort Simulation"; }, 400);
-    });
-
-    const iconSet = ['fa-book-open', 'fa-calculator', 'fa-desktop', 'fa-brain'];
-    const deck = [...iconSet, ...iconSet]; 
-    let flippedCards = [];
-    let matchedCount = 0;
-
-    function initMemoryGame() {
-      grid.innerHTML = '';
-      flippedCards = [];
-      matchedCount = 0;
-      
-      const shuffled = deck.sort(() => 0.5 - Math.random());
-
-      shuffled.forEach(icon => {
-        const card = document.createElement('div');
-        card.className = 'mem-card';
-        card.innerHTML = `
-          <div class="front"><i class="fas fa-fingerprint" style="color:rgba(255,255,255,0.08); font-size: 1.5rem;"></i></div>
-          <div class="back"><i class="fas ${icon}"></i></div>
-        `;
-        
-        card.addEventListener('click', () => {
-          if(card.classList.contains('flipped') || flippedCards.length >= 2) return;
-          
-          card.classList.add('flipped');
-          flippedCards.push({ card, icon });
-
-          if(flippedCards.length === 2) {
-            if(flippedCards[0].icon === flippedCards[1].icon) {
-              matchedCount += 2;
-              flippedCards = [];
-              
-              if(matchedCount === deck.length) {
-                setTimeout(() => {
-                  if(window.celebrationBurst) window.celebrationBurst();
-                  closeBtn.textContent = "Protocol Completed. Exit.";
-                }, 600);
-              }
-            } else {
-              setTimeout(() => {
-                flippedCards[0].card.classList.remove('flipped');
-                flippedCards[1].card.classList.remove('flipped');
-                flippedCards = [];
-              }, 900);
-            }
-          }
-        });
-        grid.appendChild(card);
-      });
-    }
-  })();
-</script>
-
-<!-- =======================================================
-     THE 2086 NEURAL REACT APP
-     ======================================================= -->
-<script type="text/babel" data-presets="react">
-const { useState, useEffect, useRef } = React;
-const COLORS = { void:"#030014", panel:"rgba(255,255,255,0.04)", panelBorder:"rgba(255,255,255,0.08)", cyan:"#22e6ff", purple:"#a855f7", red:"#ff2954" };
-const NIGHT_COLORS = { void:"#0a0014", panel:"rgba(255,255,255,0.05)", panelBorder:"rgba(255,42,120,0.25)", cyan:"#ff2fa0", purple:"#7c3aed", red:"#ff2954" };
-
-const SECRET_CODE = ["a", "b", "h", "a", "2", "0", "8", "6"];
-const PUZZLES = [
-  { q: "12 x 8 = ?", a: "96" },
-  { q: "Next in sequence: 2, 4, 8, 16, ?", a: "32" },
-  { q: "If today is Monday, what day is it in 10 days?", a: "thursday" },
-  { q: "Binary 101 in decimal = ?", a: "5" },
-];
-
-function FAIcon({ name, size = 18, color }) {
-  return <i className={name} style={{ fontSize: size, lineHeight: 1, display: "inline-block", color: color || 'inherit' }}></i>;
-}
-
-function Typewriter({ text }) {
-  const [displayed, setDisplayed] = useState("");
-  useEffect(() => {
-    setDisplayed("");
-    let i = 0;
-    const interval = setInterval(() => {
-      setDisplayed(text.substring(0, i+1));
-      i++;
-      if(i >= text.length) clearInterval(interval);
-    }, 15);
-    return () => clearInterval(interval);
-  }, [text]);
-  return <span>{displayed}<span className="caret">_</span></span>;
-}
-
-function AbhaNeuralLink(){
-  const [isActive, setIsActive] = useState(false);
-  const [nightMode, setNightMode] = useState(false);
-  const [syncMode, setSyncMode] = useState(false);
-  const [showVoid, setShowVoid] = useState(false);
-  const C = nightMode ? NIGHT_COLORS : COLORS;
-
-  useEffect(() => { 
-    window.setReactActive = setIsActive; 
-    const travelBtn = document.getElementById('timeTravelBtn');
-    if(travelBtn) {
-       travelBtn.removeAttribute('disabled');
-       travelBtn.title = "Access Neural Link";
-    }
-    const hour = new Date().getHours();
-    if (hour >= 0 && hour < 5) setNightMode(true);
-  }, []);
-  
-  if(!isActive) return null;
-
-  return (
-    <div className="fixed inset-0 z-[99999] overflow-y-auto overflow-x-hidden text-white transition-colors duration-700" style={{ background: C.void, fontFamily: "'Space Grotesk', sans-serif" }}>
-      <button onClick={(e) => window.returnTo2026(e)} className="fixed top-4 left-4 sm:top-6 sm:left-6 z-[5000] font-mono-cyber flex items-center gap-2 rounded-full border px-4 py-2 sm:px-5 sm:py-3 text-[10px] sm:text-xs font-bold transition-all hover:scale-105 active:scale-95" style={{ borderColor: C.cyan, color: C.cyan, background: C.void, boxShadow:`0 0 20px ${C.cyan}33`, cursor: 'pointer' }}>
-        <FAIcon name="fas fa-chevron-left" size={12}/> TIME TRAVEL TO 2026
-      </button>
-
-      {syncMode && (
-        <div className="pointer-events-none fixed inset-0 z-[5] flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm focus-vignette transition-all duration-1000">
-          <h2 className="font-mono-cyber text-2xl text-cyan-400 glitch-layer mb-2 tracking-widest text-center px-4">DISTRACTIONS DISABLED.</h2>
-          <p className="font-mono-cyber text-xs text-white/50 tracking-[0.3em] uppercase">Deep Focus Mode Active.</p>
-        </div>
-      )}
-
-      {!syncMode && (
-        <>
-          <BackgroundField C={C} />
-          <TerminalHack C={C} />
-          <BootSequenceHero C={C} />
-          <SkillTree C={C} />
-          <CyberStats C={C} />
-          {nightMode && <MidnightNotes C={C} />}
-        </>
-      )}
-      
-      <ControlDock C={C} nightMode={nightMode} setNightMode={setNightMode} syncMode={syncMode} setSyncMode={setSyncMode} setShowVoid={setShowVoid} />
-      <FloatingOrb C={C} syncMode={syncMode} />
-      
-      {showVoid && <ZeroGravityVoid C={C} onClose={() => setShowVoid(false)} />}
-      
-      {!syncMode && (
-        <footer className="relative z-10 border-t mt-20 px-6 py-10 text-center" style={{ borderColor:"rgba(255,255,255,0.08)" }}>
-          <p className="font-mono-cyber text-xs tracking-widest text-white/40">NEURAL LINK ACTIVE · CLASS 0-8 SECURE COMMS</p>
-        </footer>
-      )}
+      <div class="hero-meta">
+        <div><strong>0–8</strong>Classes</div>
+        <div><strong>6–10 PM</strong>Evening classes</div>
+        <div><strong>₹0</strong>Admission fee</div>
+      </div>
     </div>
-  );
-}
 
-function BackgroundField({ C }){
-  const particles = Array.from({ length: 22 });
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage:"linear-gradient(rgba(34,230,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,230,255,0.06) 1px, transparent 1px)", backgroundSize:"42px 42px", maskImage:"radial-gradient(ellipse 70% 60% at 50% 20%, black 40%, transparent 100%)" }} />
-      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-3xl" style={{ background:`radial-gradient(circle, ${C.purple}33, transparent 70%)` }} />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full blur-3xl" style={{ background:`radial-gradient(circle, ${C.cyan}2a, transparent 70%)` }} />
-      {particles.map((_, i) => (
-        <span key={i} className="absolute rounded-full float-slow" style={{ left:`${(i * 37) % 100}%`, top:`${(i * 53) % 100}%`, width:2+(i%3), height:2+(i%3), background:i%3===0?C.cyan:i%3===1?C.purple:C.red, opacity:0.5, animationDelay:`${(i%7)*0.6}s`, animationDuration:`${5+(i%5)}s` }} />
-      ))}
-    </div>
-  );
-}
-
-function TerminalHack({ C }) {
-  const [open, setOpen] = useState(false);
-  const [glitching, setGlitching] = useState(false);
-  const bufferRef = useRef([]);
-  const [puzzle] = useState(() => PUZZLES[Math.floor(Math.random() * PUZZLES.length)]);
-  const [input, setInput] = useState("");
-  const [seconds, setSeconds] = useState(30);
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    function onKey(e) {
-      const k = e.key.toLowerCase();
-      bufferRef.current = [...bufferRef.current, k].slice(-SECRET_CODE.length);
-      if (bufferRef.current.join("") === SECRET_CODE.join("")) {
-        setGlitching(true);
-        setTimeout(() => { setGlitching(false); setOpen(true); }, 700);
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
-    if (!open || result) return;
-    if (seconds <= 0) { setResult("lost"); return; }
-    const t = setTimeout(() => setSeconds((s) => s - 1), 1000);
-    return () => clearTimeout(t);
-  }, [open, seconds, result]);
-
-  function submit() {
-    if (input.trim().toLowerCase() === puzzle.a.toLowerCase()) { setResult("won"); } else { setResult("lost"); }
-  }
-
-  function close() {
-    setOpen(false); setResult(null); setInput(""); setSeconds(30); bufferRef.current = [];
-  }
-
-  return (
-    <>
-      {glitching && <div className="glitch-flash fixed inset-0 z-[200] bg-white mix-blend-difference" />}
-      {open && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-6 backdrop-blur-sm">
-          <div className="font-mono-cyber w-full max-w-md rounded-xl border p-6 text-sm" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 40px ${C.cyan}55` }}>
-            <div className="mb-3 flex items-center justify-between text-cyan-300">
-              <span className="flex items-center gap-2"><FAIcon name="fas fa-terminal" size={14}/> ROOT ACCESS — ABHA::TERMINAL</span>
-              <button onClick={close} aria-label="Close terminal" className="text-cyan-300 hover:text-cyan-100" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><FAIcon name="fas fa-times" size={16}/></button>
-            </div>
-
-            {result === null && (
-              <>
-                <p className="mb-2 text-white/70">&gt; secret sequence accepted.</p>
-                <p className="mb-2 text-white/70">&gt; solve to decrypt CYBER-SCHOLAR badge:</p>
-                <p className="mb-4 text-lg text-white">{puzzle.q}</p>
-                <input autoFocus value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} className="mb-3 w-full rounded border bg-black/60 px-3 py-2 text-white outline-none" style={{ borderColor: C.panelBorder }} placeholder="answer_" />
-                <div className="flex items-center justify-between">
-                  <span style={{ color: seconds <= 10 ? C.red : "white" }}>{seconds}s remaining</span>
-                  <button onClick={submit} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>DECRYPT</button>
-                </div>
-              </>
-            )}
-
-            {result === "won" && (
-              <div className="text-center">
-                <p className="mb-2 text-lg" style={{ color: C.cyan }}>ACCESS GRANTED</p>
-                <p className="mb-4 text-white/80">You've earned the <b>CYBER-SCHOLAR</b> badge. Show this at ABHA Academy for priority evening batch placement.</p>
-                <p className="mb-4 rounded border px-3 py-2 tracking-widest" style={{ borderColor: C.cyan, color: C.cyan }}>CODE: ABHA-SCHOLAR-{puzzle.a.toUpperCase().slice(0,3)}86</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>CLOSE</button>
-              </div>
-            )}
-
-            {result === "lost" && (
-              <div className="text-center">
-                <p className="mb-2 text-lg" style={{ color: C.red }}>CONNECTION LOST</p>
-                <p className="mb-4 text-white/70">Correct answer was: <b>{puzzle.a}</b>. Type ABHA2086 again to retry.</p>
-                <button onClick={close} className="rounded-full px-4 py-1.5 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background: C.red, border: 'none', cursor: 'pointer' }}>CLOSE</button>
-              </div>
-            )}
-          </div>
+    <div class="core-wrap" aria-hidden="true">
+      <div class="cyber-core">
+        <div class="core-ring"></div>
+        <div class="core-ring"></div>
+        <div class="core-ring"></div>
+        <div class="core-center">
+          <div><b>ABHA</b><br><span>LEARNING CORE</span></div>
         </div>
-      )}
-    </>
-  );
-}
+        <div class="orbit-label l1">KNOWLEDGE://ACTIVE</div>
+        <div class="orbit-label l2">CLASS://0-8</div>
+        <div class="orbit-label l3">FREE://ACCESS</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-function BootSequenceHero({ C }){
-  const bootLines = [
-    "> initializing abha academy neural link...",
-    "> authenticating local node — holambi kalan, delhi",
-    "> loading curriculum modules: english / maths / computer",
-    "> zero-cost protocol confirmed — no fees, ever",
-    "> connection established.",
-  ];
-  const [visibleLines, setVisibleLines] = useState(0);
-  const [booted, setBooted] = useState(false);
+<section id="mission">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">01 // MISSION</div>
+      <h2>Education should feel possible.</h2>
+      <p>
+        ABHA Academy is designed to make evening learning approachable,
+        practical and exciting — without making technology the barrier.
+      </p>
+    </div>
 
-  useEffect(() => {
-    if (visibleLines < bootLines.length) {
-      const t = setTimeout(() => setVisibleLines((v) => v + 1), 380);
-      return () => clearTimeout(t);
-    } else {
-      const t = setTimeout(() => setBooted(true), 400);
-      return () => clearTimeout(t);
-    }
-  }, [visibleLines]);
+    <div class="grid-3">
+      <article class="card">
+        <div class="card-icon">🆓</div>
+        <h3>Free Access</h3>
+        <p>Core evening education is offered without an admission fee.</p>
+        <span class="tag">ACCESS://OPEN</span>
+      </article>
+      <article class="card">
+        <div class="card-icon">💡</div>
+        <h3>Modern Learning</h3>
+        <p>Traditional subjects meet interactive activities and computer learning.</p>
+        <span class="tag">MODE://HYBRID</span>
+      </article>
+      <article class="card">
+        <div class="card-icon">🌱</div>
+        <h3>Build Confidence</h3>
+        <p>A friendly environment where students can ask, practice and create.</p>
+        <span class="tag">GOAL://GROW</span>
+      </article>
+    </div>
+  </div>
+</section>
 
-  return (
-    <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24 pt-32">
-      <div className="font-mono-cyber absolute left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 text-xs sm:text-sm" style={{ color: C.cyan, opacity: booted ? 0 : 1, pointerEvents: booted ? "none" : "auto" }}>
-        {bootLines.slice(0, visibleLines).map((line, i) => (
-          <p key={i} className="mb-1.5 leading-relaxed">
-            {line}{i === visibleLines - 1 && <span className="ml-1 caret">▍</span>}
+<section id="subjects">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">02 // LEARNING MODULES</div>
+      <h2>Three core systems.</h2>
+      <p>Simple foundations first. Curiosity and creativity next.</p>
+    </div>
+
+    <div class="grid-3">
+      <article class="card">
+        <div class="card-icon">🔤</div>
+        <h3>English</h3>
+        <p>Reading, vocabulary, writing, communication and confidence.</p>
+        <span class="tag">MODULE://LANGUAGE</span>
+      </article>
+      <article class="card">
+        <div class="card-icon">∑</div>
+        <h3>Mathematics</h3>
+        <p>Numbers, problem solving, concepts and practice at the student's level.</p>
+        <span class="tag">MODULE://LOGIC</span>
+      </article>
+      <article class="card">
+        <div class="card-icon">💻</div>
+        <h3>Computers</h3>
+        <p>Digital basics, safe technology use and hands-on computer exploration.</p>
+        <span class="tag">MODULE://DIGITAL</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="schedule">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">03 // EVENING PROTOCOL</div>
+      <h2>Built around the evening.</h2>
+      <p>The schedule shown here follows the current academy plan.</p>
+    </div>
+
+    <div class="schedule">
+      <div class="card">
+        <div class="schedule-row"><span>Class window</span><b>6:00 PM – 10:00 PM</b></div>
+        <div class="schedule-row"><span>Level</span><b>Class 0 – 8</b></div>
+        <div class="schedule-row"><span>Format</span><b>Evening learning</b></div>
+        <div class="schedule-row"><span>Admission</span><b>Free</b></div>
+      </div>
+
+      <div class="card">
+        <h3>Before you arrive</h3>
+        <p>
+          Please use the registration form below so the academy can understand
+          the student's class level and contact details.
+        </p>
+        <a class="btn btn-primary" style="display:inline-block;margin-top:20px" href="#enroll">REGISTER →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="neural">
+  <div class="container">
+    <div class="neural">
+      <div class="neural-grid">
+        <div>
+          <div class="eyebrow">04 // EXPERIMENTAL SYSTEM</div>
+          <h2>NEURAL LINK</h2>
+          <p style="color:var(--muted);line-height:1.7">
+            A futuristic learning layer for students who want to explore,
+            experiment and interact with technology.
           </p>
-        ))}
-      </div>
-
-      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center transition-all duration-1000" style={{ opacity: booted ? 1 : 0, transform: booted ? "translateY(0)" : "translateY(24px)" }}>
-        <div className="font-mono-cyber mb-6 flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] tracking-wide" style={{ borderColor:C.panelBorder, background:C.panel, color:C.cyan }}>
-          <FAIcon name="fas fa-satellite-dish" size={12}/> NEURAL LINK ACTIVE — FREE EVENING ACCESS
+          <button class="neural-btn" id="neuralBtn">INITIALIZE NEURAL MODE</button>
         </div>
-        
-        <h1 className="relative select-none text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-          <span className="glitch-layer absolute inset-0" style={{ color: C.red, animationDelay: "0.15s", opacity: 0.6 }} aria-hidden="true">ABHA ACADEMY</span>
-          <span className="glitch-layer absolute inset-0" style={{ color: C.cyan, animationDelay: "0.3s", opacity: 0.6 }} aria-hidden="true">ABHA ACADEMY</span>
-          <span className="relative bg-clip-text text-transparent" style={{ backgroundImage:`linear-gradient(120deg, #ffffff, ${C.cyan})` }}>ABHA ACADEMY</span>
-        </h1>
-        
-        <p className="font-mono-cyber mt-5 text-sm tracking-[0.3em]" style={{ color:`${C.purple}cc` }}>EVENING PROTOCOL · 18:00 — 22:00</p>
-        
-        <div className="float-med relative mt-12 max-w-xl rounded-3xl border p-8 backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:C.panel }}>
-          <div className="absolute -inset-px -z-10 rounded-3xl opacity-40 blur-lg" style={{ background:`linear-gradient(135deg, ${C.cyan}, ${C.purple})` }} />
-          <p className="text-base leading-relaxed text-white/80">A free, evening learning node for children in Class 0 to 8 — English, Maths and Computer fundamentals, taught in person, at zero cost.</p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="https://wa.me/916394254410" target="_blank" className="font-mono-cyber inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold text-black transition-transform hover:scale-105 active:scale-95" style={{ background:`linear-gradient(120deg, ${C.cyan}, ${C.purple})`, boxShadow:`0 0 25px ${C.purple}55`, textDecoration:'none' }}>
-              INITIATE WHATSAPP SYNC 
-            </a>
-          </div>
-          <p className="font-mono-cyber mt-6 text-[10px] text-white/40">psst — type ABHA2086 anywhere on this page.</p>
+
+        <div class="neural-code" id="terminal" aria-live="polite">
+          <div>&gt; ABHA_NEURAL_BOOT</div>
+          <div>&gt; checking learning modules...</div>
+          <div>&gt; English ........ <span>ONLINE</span></div>
+          <div>&gt; Mathematics .... <span>ONLINE</span></div>
+          <div>&gt; Computers ...... <span>ONLINE</span></div>
+          <div>&gt; student curiosity <span>DETECTED</span></div>
+          <div>&gt; awaiting command_</div>
         </div>
       </div>
-    </section>
-  );
-}
-
-function CyberVault({ open, onClose, C }) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-6 backdrop-blur-md">
-      <div className="w-full max-w-lg rounded-xl border p-6 text-sm transform transition-transform" style={{ borderColor: C.cyan, background: "#020010", boxShadow: `0 0 50px ${C.cyan}44`, animation: 'scaleIn 0.3s ease-out' }}>
-         <h3 className="font-mono-cyber text-2xl mb-4 glitch-layer" style={{ color: C.cyan }}><FAIcon name="fas fa-lock-open" size={20}/> DATA VAULT UNLOCKED</h3>
-         <p className="mb-4 text-white/80">You have successfully routed power to the Foundation Core.</p>
-         <div className="bg-black/50 border rounded p-4 mb-6" style={{borderColor: C.panelBorder}}>
-           <p className="text-white/60 mb-3 tracking-widest font-mono-cyber text-[10px]">CLASSIFIED STUDY HACKS [YEAR 2086]:</p>
-           <ul className="pl-4 space-y-3 text-white/90 font-mono-cyber text-xs list-disc">
-              <li><span style={{color: C.cyan}}>MATHEMATICS:</span> Do not memorize. Understand the pattern. The pattern is everything.</li>
-              <li><span style={{color: C.cyan}}>ENGLISH:</span> Vocabulary expands neural bandwidth. Read out loud to sync motor-vocal nodes.</li>
-              <li><span style={{color: C.cyan}}>COMPUTER:</span> The keyboard is an extension of your hands. Rest on ASDF/JKL; and do not look down.</li>
-           </ul>
-         </div>
-         <button onClick={onClose} className="w-full font-mono-cyber rounded-full py-3 text-black font-bold active:scale-95 transition-transform hover:scale-105" style={{ background: C.cyan, border: 'none', cursor: 'pointer' }}>REASSEMBLE CORE & CLOSE</button>
-      </div>
-      <style>{`@keyframes scaleIn { from{ transform: scale(0.9); opacity: 0; } to{ transform: scale(1); opacity: 1; } }`}</style>
     </div>
-  );
-}
+  </div>
+</section>
 
-function SkillTree({ C }){
-  const SKILLS = [
-    { 
-      id:"core", label:"FOUNDATION CORE", icon:"fas fa-brain", x:50, y:50, color:C.purple, 
-      dx: "0px", dy: "0px", rot: "0deg", s: 4,
-      facts: [
-        "The shared root — every subject at ABHA is taught to build durable fundamentals, not memorised shortcuts.",
-        "Neural pathways are strengthened through repetition and pattern recognition.",
-        "Cognitive load balancing ensures students absorb concepts at their natural frequency.",
-        "The core synchronises logic and language into a unified problem-solving engine.",
-        "System architecture relies on a strong base to prevent future logic collapse."
-      ]
-    },
-    { 
-      id:"english", label:"ENGLISH", icon:"fas fa-book-open", x:18, y:20, color:C.cyan, 
-      dx: "-200px", dy: "-200px", rot: "-180deg", s: 0,
-      facts: [
-        "Reading, handwriting and spoken confidence — built through stories, not just textbooks.",
-        "Sub-vocal language processing decrypted through daily syntax parsing.",
-        "Vocabulary acts as the primary interface for real-world data extraction.",
-        "Fluent communication protocols eliminate latency in human-to-human sync.",
-        "Storytelling algorithms rewrite the brain's baseline empathy centers."
-      ] 
-    },
-    { 
-      id:"maths", label:"MATHEMATICS", icon:"fas fa-calculator", x:82, y:20, color:C.cyan, 
-      dx: "200px", dy: "-200px", rot: "180deg", s: 0,
-      facts: [
-        "Tables, arithmetic and logical thinking, practised until the basics are genuinely secure.",
-        "Algorithmic pattern recognition accelerates mental computation speeds.",
-        "Real-world physics engine calculations rely entirely on this foundational math core.",
-        "Logical sequencing acts as a natural firewall against irrational data streams.",
-        "Numeric fluency unlocks direct access to universal matrix variables."
-      ] 
-    },
-    { 
-      id:"computer", label:"COMPUTER BASICS", icon:"fas fa-desktop", x:50, y:88, color:C.cyan, 
-      dx: "0px", dy: "300px", rot: "90deg", s: 0,
-      facts: [
-        "Typing, mouse and keyboard fluency, and the digital skills every child will need going forward.",
-        "Direct cybernetic interfacing via QWERTY matrix manipulation.",
-        "Terminal logic sequencing required to navigate the incoming Web 4.0 infrastructure.",
-        "Building digital immunity through fundamental OS navigation and data structure awareness.",
-        "Keyboard shortcut mapping increases input efficiency by over 300%."
-      ] 
-    },
-  ];
-  
-  const EDGES = [["core","english"],["core","maths"],["core","computer"]];
-  const [active, setActive] = useState(null);
-  const [activeFact, setActiveFact] = useState("");
-  const [revealed, setRevealed] = useState(false);
-  
-  const [powered, setPowered] = useState([]);
-  const [vaultOpen, setVaultOpen] = useState(false);
-  const [shattered, setShattered] = useState(false);
+<section id="challenge">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">05 // QUICK CHALLENGE</div>
+      <h2>Test the system.</h2>
+      <p>A tiny interactive challenge — more learning tools can be added later.</p>
+    </div>
 
-  const ref = useRef(null);
+    <div class="card quiz">
+      <div class="quiz-question" id="quizQuestion">Loading challenge...</div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.2 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+<section id="enroll">
+  <div class="container enroll">
+    <div>
+      <div class="eyebrow">06 // ACCESS REQUEST</div>
+      <h2>Join the academy.</h2>
+      <p style="color:var(--muted);line-height:1.8">
+        Submit the student's details below. The form is prepared for a real
+        backend endpoint; configure the endpoint in the JavaScript section
+        before using it for production registrations.
+      </p>
 
-  const findSkill = id => SKILLS.find(s=>s.id===id);
-  
-  const handleNodeClick = (id, e) => {
-    if (id === "core" && powered.length === 3) {
-       const rect = e.currentTarget.getBoundingClientRect();
-       if(window.cyberBurst) window.cyberBurst(rect.left + rect.width/2, rect.top + rect.height/2);
-       setShattered(true);
-       setTimeout(() => setVaultOpen(true), 600);
-       return;
-    }
-
-    const skill = findSkill(id);
-    const newFact = skill.facts[Math.floor(Math.random() * skill.facts.length)];
-    setActiveFact(newFact);
-    setActive(id);
-
-    if (id !== "core") {
-       if (powered.includes(id)) {
-          setPowered(powered.filter(n => n !== id));
-       } else {
-          setPowered([...powered, id]);
-       }
-    }
-  };
-
-  const handleNodeHover = (id) => {
-     if(active !== id && !shattered) {
-       setActive(id);
-       const skill = findSkill(id);
-       setActiveFact(skill.facts[Math.floor(Math.random() * skill.facts.length)]);
-     }
-  }
-
-  const closeVault = () => {
-    setVaultOpen(false);
-    setTimeout(() => {
-        setShattered(false);
-        setPowered([]);
-        setActive(null);
-    }, 100);
-  }
-
-  return (
-    <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16">
-      <CyberVault open={vaultOpen} onClose={closeVault} C={C} />
-      
-      <div className={`cyber-reveal ${revealed ? "in" : ""} mb-16 text-center`}>
-        <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.cyan}b3` }}>CURRICULUM MAP</p>
-        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Not subjects. A network of foundations.</h2>
-        <p className="font-mono-cyber text-xs mt-2 text-white/50">Click outer nodes to route power to the Foundation Core.</p>
-      </div>
-      
-      <div className={`cyber-reveal ${revealed ? "in" : ""} relative mx-auto aspect-square w-full max-w-2xl`}>
-        <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
-          {EDGES.map(([a,b],i)=>{
-            const from=findSkill(a), to=findSkill(b);
-            const isActiveHover = active===a||active===b;
-            const isPowered = powered.includes(a) || powered.includes(b);
-            
-            const lineColor = isPowered ? C.cyan : (isActiveHover ? C.cyan : "rgba(255,255,255,0.12)");
-            const lineWidth = isPowered ? 1.2 : (isActiveHover ? 0.8 : 0.3);
-            
-            return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lineColor} strokeWidth={lineWidth} className={isPowered || isActiveHover ? "flow-line" : ""} style={{ opacity: shattered ? 0 : 1, transition:"opacity 0.3s, stroke 0.3s, stroke-width 0.3s" }} />;
-          })}
-        </svg>
-        {SKILLS.map(skill=>{
-          const isActiveHover = active===skill.id;
-          const isPowered = powered.includes(skill.id);
-          const isCoreOverload = skill.id === "core" && powered.length === 3;
-          
-          let ringColor = skill.color;
-          let shadow = `0 0 12px ${skill.color}33`;
-          let transformScale = "scale(1)";
-          let animClass = "";
-          
-          if (isCoreOverload && !shattered) {
-             ringColor = C.red;
-             shadow = `0 0 40px ${C.red}aa`;
-             transformScale = "scale(1.25)";
-             animClass = "pulse-danger shake";
-          } else if (isActiveHover || isPowered) {
-             shadow = `0 0 40px ${skill.color}aa`;
-             transformScale = "scale(1.15)";
-             if (skill.id === "core") {
-                ringColor = powered.length > 0 ? C.cyan : skill.color;
-             }
-          }
-          
-          const shatterStyle = shattered ? {
-              transform: `translate(calc(-50% + ${skill.dx}), calc(-50% + ${skill.dy})) rotate(${skill.rot}) scale(${skill.s})`,
-              opacity: 0,
-              filter: 'blur(10px)'
-          } : {
-              transform: 'translate(-50%, -50%) rotate(0deg) scale(1)',
-              opacity: 1,
-              filter: 'blur(0px)'
-          };
-
-          return (
-            <div key={skill.id} className="absolute transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]" style={{ left:`${skill.x}%`, top:`${skill.y}%`, zIndex: isActiveHover || isCoreOverload ? 20 : 10, ...shatterStyle }}>
-               <button onMouseEnter={()=>handleNodeHover(skill.id)} onMouseLeave={()=>setActive(null)} onClick={(e)=>handleNodeClick(skill.id, e)}
-                 className={`float-fast flex flex-col items-center gap-2 outline-none ${animClass}`} style={{ animationDelay:`${skill.x%3}s`, background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                 <span className={`pulse-ring flex items-center justify-center rounded-full border-2 backdrop-blur-md transition-all duration-300 ${skill.id==="core"?"h-20 w-20 sm:h-24 sm:w-24":"h-16 w-16 sm:h-20 sm:w-20"}`}
-                   style={{ borderColor:ringColor, background:(isActiveHover || isPowered || isCoreOverload)?`${ringColor}33`:"rgba(255,255,255,0.03)", boxShadow:shadow, transform:transformScale }}>
-                   <FAIcon name={skill.icon} size={skill.id==="core"?28:22} color={isCoreOverload && !shattered ? '#fff' : ringColor} />
-                 </span>
-                 <span className="font-mono-cyber text-[10px] tracking-wider text-white/70 sm:text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm transition-all" style={{color: isCoreOverload ? C.red : 'rgba(255,255,255,0.7)', fontWeight: isCoreOverload ? 'bold' : 'normal', opacity: shattered ? 0 : 1}}>
-                   {isCoreOverload ? "CORE OVERLOAD" : skill.label}
-                 </span>
-               </button>
-            </div>
-          );
-        })}
-      </div>
-      
-      <div className="mx-auto mt-10 max-w-md rounded-2xl border p-6 text-center backdrop-blur-xl transition-all duration-300 min-h-[120px] flex items-center justify-center" style={{ borderColor: active && !shattered ? findSkill(active).color : C.panelBorder, background:C.panel, opacity: (active || shattered) ? 1 : 0.35, transform:(active || shattered) ? "translateY(0) scale(1.05)" : "translateY(6px) scale(1)", boxShadow: active && !shattered ? `0 10px 30px ${findSkill(active).color}22` : 'none' }}>
-        <p className="text-sm leading-relaxed text-white/85 transition-opacity">
-          {shattered ? (
-             <span style={{color: C.cyan}}><Typewriter text="CORE SHATTERED. ACCESSING CLASSIFIED VAULT..." /></span>
-          ) : (powered.length === 3 && active === "core") ? (
-             <span style={{color: C.red}}>SYSTEM OVERLOAD. CLICK CORE TO ACCESS VAULT.</span>
-          ) : (
-             active ? <Typewriter text={activeFact} /> : "Hover or click a node to scan its data stream."
-          )}
+      <div class="card" style="margin-top:20px">
+        <h3>What happens next?</h3>
+        <p>
+          Your registration is collected by the academy system. Once the
+          backend is connected, a confirmed response can be shown here.
         </p>
       </div>
-    </section>
-  );
-}
+    </div>
 
-function useCountUp(target, active, duration = 1400) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    let start = null, raf;
-    const step = (ts) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      setValue(Math.round(target * (1 - Math.pow(1 - progress, 3))));
-      if (progress < 1) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [active, target, duration]);
-  return value;
-}
-
-function ProgressRing({ percent, active, color, label, icon, suffix = "%" }) {
-  const radius = 38, circumference = 2 * Math.PI * radius;
-  const displayed = useCountUp(percent, active);
-  const offset = circumference - (displayed / 100) * circumference;
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative h-32 w-32 overflow-visible">
-        <svg className="h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
-          <circle cx="50" cy="50" r={radius} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
-            strokeDasharray={circumference} strokeDashoffset={active ? offset : circumference}
-            style={{ transition: "stroke-dashoffset 1.4s ease-out", filter: `drop-shadow(0 0 6px ${color})` }} />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <FAIcon name={icon} size={18} color={color} />
-          <span className="font-mono-cyber mt-2 text-xl font-bold text-white">{displayed}{suffix}</span>
+    <form class="form" id="enrollForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="studentName">Student name *</label>
+          <input id="studentName" name="studentName" autocomplete="name" required maxlength="80">
+        </div>
+        <div class="field">
+          <label for="classLevel">Class *</label>
+          <select id="classLevel" name="classLevel" required>
+            <option value="">Select class</option>
+            <option>Class 0</option><option>Class 1</option><option>Class 2</option>
+            <option>Class 3</option><option>Class 4</option><option>Class 5</option>
+            <option>Class 6</option><option>Class 7</option><option>Class 8</option>
+          </select>
         </div>
       </div>
-      <p className="font-mono-cyber text-center text-xs tracking-wide text-white/60">{label}</p>
-    </div>
-  );
-}
 
-function CyberStats({ C }){
-  const [revealed, setRevealed] = useState(false);
-  const [stats, setStats] = useState({ fees: 100, attendance: 92, uptime: 80, inPerson: 100 });
-  const ref = useRef(null);
-  
-  useEffect(() => {
-    if (window.STATS_API_URL) {
-      fetch(window.STATS_API_URL)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.fees !== undefined) {
-            setStats({
-              fees: parseInt(data.fees) || 100,
-              attendance: parseInt(data.attendance) || 92,
-              uptime: parseInt(data.uptime) || 80,
-              inPerson: parseInt(data.inPerson) || 100
-            });
-          }
-        }).catch(err => console.log("Using local telemetry"));
-    }
-
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setRevealed(true)), { threshold: 0.3 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <section ref={ref} className="relative z-10 mx-auto max-w-5xl px-6 py-16 mb-20">
-      <div className={`cyber-reveal ${revealed ? "in" : ""} mb-16 text-center`}>
-        <p className="font-mono-cyber text-xs tracking-[0.3em]" style={{ color:`${C.purple}b3` }}>SYSTEM TELEMETRY</p>
-        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Read directly from the source.</h2>
-      </div>
-      <div className={`cyber-reveal ${revealed ? "in" : ""} grid grid-cols-2 gap-10 sm:grid-cols-4`}>
-        <ProgressRing percent={stats.fees} active={revealed} color={C.cyan} label="FREE — ZERO FEES" icon="fas fa-medal" />
-        <ProgressRing percent={stats.attendance} active={revealed} color={C.purple} label="ATTENDANCE RATE" icon="fas fa-users" />
-        <ProgressRing percent={stats.uptime} active={revealed} color={C.red} label="UPTIME · 6PM—10PM" icon="fas fa-clock" />
-        <ProgressRing percent={stats.inPerson} active={revealed} color={C.cyan} label="IN-PERSON CLASSES" icon="fas fa-satellite-dish" />
-      </div>
-    </section>
-  );
-}
-
-function MidnightNotes({ C }) {
-  const tips = [
-    "Tables trick: for 9x, hold up 10 fingers, fold the nth finger — fingers before = tens, after = units.",
-    "Spelling trick: 'because' = Big Elephants Can Always Understand Small Elephants.",
-    "Typing trick: rest fingers on ASDF / JKL; — home row — to type without looking down.",
-  ];
-  return (
-    <section className="cyber-reveal in relative z-10 mx-auto max-w-3xl px-6 py-16">
-      <div className="rounded-2xl border p-6" style={{ borderColor: C.panelBorder, background: C.panel }}>
-        <p className="font-mono-cyber mb-3 text-xs tracking-widest" style={{ color: C.red }}>MIDNIGHT SNACKS — VISIBLE ONLY LATE NIGHT</p>
-        <ul className="space-y-2 text-sm text-white/80">
-          {tips.map((t, i) => <li key={i}>• {t}</li>)}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-function useAmbientTone(active) {
-  const ctxRef = useRef(null);
-  useEffect(() => {
-    if (!active) {
-      if (ctxRef.current) { ctxRef.current.ctx.close(); ctxRef.current = null; }
-      return;
-    }
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioCtx();
-      const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator();
-      osc1.frequency.value = 110; osc2.frequency.value = 114;
-      const gain = ctx.createGain(); gain.gain.value = 0.025;
-      osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
-      osc1.start(); osc2.start();
-      ctxRef.current = { ctx, osc1, osc2 };
-    } catch (err) { }
-    return () => {
-      if (ctxRef.current) { try { ctxRef.current.ctx.close(); } catch (e) {} ctxRef.current = null; }
-    };
-  }, [active]);
-}
-
-function FocusHealthBar({ active, C }) {
-  const [seconds, setSeconds] = useState(0);
-  const CAP = 25 * 60;
-  
-  useEffect(() => {
-    if (!active) { setSeconds(0); return; }
-    const id = setInterval(() => {
-      if (document.visibilityState === "visible") setSeconds((s) => Math.min(s + 1, CAP));
-    }, 1000);
-    return () => clearInterval(id);
-  }, [active]);
-  
-  if (!active) return null;
-  
-  const pct = (seconds / CAP) * 100;
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
-  
-  return (
-    <div className="font-mono-cyber fixed left-1/2 top-6 z-50 w-72 -translate-x-1/2 rounded-full border px-4 py-3 text-[10px] shadow-2xl" style={{ borderColor: C.cyan, background: "rgba(0,0,0,0.8)", backdropFilter: 'blur(10px)' }}>
-      <div className="mb-2 flex justify-between text-white/80"><span>FOCUS HEALTH</span><span className="text-cyan-400 font-bold text-xs">{mm}:{ss}</span></div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: C.cyan, transition: "width 1s linear" }} />
-      </div>
-    </div>
-  );
-}
-
-function ControlDock({ C, nightMode, setNightMode, syncMode, setSyncMode, setShowVoid }) {
-  useAmbientTone(syncMode);
-  return (
-    <>
-      <FocusHealthBar active={syncMode} C={C} />
-      <div className="font-mono-cyber fixed bottom-6 left-6 z-[600] flex flex-col gap-2 text-[10px]">
-        <button onClick={() => setSyncMode((s) => !s)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors hover:scale-105 active:scale-95"
-          style={{ borderColor: syncMode ? C.cyan : C.panelBorder, background: syncMode ? `${C.cyan}22` : "rgba(0,0,0,0.4)", color: syncMode ? C.cyan : "white", cursor: 'pointer' }}>
-          <FAIcon name="fas fa-sliders-h" size={12}/> NEURAL SYNC {syncMode ? "ON" : "OFF"}
-        </button>
-        <button onClick={() => setNightMode((n) => !n)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-colors hover:scale-105 active:scale-95"
-          style={{ borderColor: nightMode ? C.red : C.panelBorder, background: nightMode ? `${C.red}22` : "rgba(0,0,0,0.4)", color: nightMode ? C.red : "white", cursor: 'pointer' }}>
-          <FAIcon name="fas fa-moon" size={12}/> NIGHT OWL PREVIEW
-        </button>
-        <button onClick={() => setShowVoid(true)} className="flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md text-white/70 hover:scale-105 active:scale-95" style={{ borderColor: C.panelBorder, background: "rgba(0,0,0,0.4)", cursor: 'pointer' }}>
-          <FAIcon name="fas fa-redo-alt" size={12}/> SIMULATE 404 VOID
-        </button>
-      </div>
-    </>
-  );
-}
-
-function FloatingOrb({ C, syncMode }){
-  const [open, setOpen] = useState(false);
-  const [annoyed, setAnnoyed] = useState(false);
-  const [shake, setShake] = useState(false);
-  const [challenge, setChallenge] = useState(null);
-  const clickTimes = useRef([]);
-
-  function handleOrbClick(){
-    const now = Date.now();
-    clickTimes.current = [...clickTimes.current, now].filter(t=>now-t<6000);
-    setShake(true); setTimeout(()=>setShake(false),400);
-    
-    if (clickTimes.current.length>=10 && !annoyed){
-      setAnnoyed(true); setChallenge(PUZZLES[Math.floor(Math.random()*PUZZLES.length)]); setOpen(false); return;
-    }
-    if (!annoyed) setOpen(o=>!o);
-  }
-
-  if (syncMode) return null;
-
-  return (
-    <div className="fixed bottom-6 right-6 z-[600] flex flex-col items-end gap-3">
-      {open && !annoyed && (
-        <div className="cyber-reveal in font-mono-cyber flex flex-col gap-1 rounded-2xl border p-3 text-xs backdrop-blur-xl" style={{ borderColor:C.panelBorder, background:"rgba(3,0,20,0.85)" }}>
-          <a href="https://wa.me/916394254410" target="_blank" rel="noopener noreferrer" className="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-left text-white/80 transition-colors hover:bg-white/5" style={{ textDecoration: 'none' }} onClick={()=>setOpen(false)}>
-            <FAIcon name="fas fa-chevron-right" size={10}/> WhatsApp Comm
-          </a>
+      <div class="form-grid">
+        <div class="field">
+          <label for="parentName">Parent / guardian name *</label>
+          <input id="parentName" name="parentName" autocomplete="name" required maxlength="80">
         </div>
-      )}
-      
-      {annoyed && challenge && (
-        <div className="cyber-reveal in font-mono-cyber w-64 rounded-2xl border p-4 text-xs" style={{ borderColor:C.red, background:"rgba(20,0,5,0.9)" }}>
-          <p className="mb-2" style={{ color:C.red }}>Stop playing with the interface. Your exams are coming. Solve this:</p>
-          <p className="mb-3 text-sm text-white">{challenge.q}</p>
-          <AnnoyedAnswer C={C} challenge={challenge} onDone={()=>{ setAnnoyed(false); setChallenge(null); clickTimes.current=[]; }} />
+        <div class="field">
+          <label for="phone">Phone *</label>
+          <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel"
+                 pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required>
         </div>
-      )}
-      
-      <div className="float-slow">
-        <button onClick={handleOrbClick} aria-label="Neural link assistant" className={`pulse-ring flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-md hover:scale-110 active:scale-95 transition-transform ${shake?"shake":""}`} style={{ borderColor:annoyed?C.red:C.cyan, background:annoyed?`radial-gradient(circle at 30% 30%, ${C.red}66, ${C.red}22)`:`radial-gradient(circle at 30% 30%, ${C.cyan}55, ${C.purple}33)`, cursor: 'pointer', outline: 'none' }}>
-          <FAIcon name={open && !annoyed ? "fas fa-times" : "fas fa-magic"} size={20} color="#fff" />
-        </button>
       </div>
+
+      <div class="field">
+        <label for="subject">Primary learning interest</label>
+        <select id="subject" name="subject">
+          <option>English</option>
+          <option>Mathematics</option>
+          <option>Computers</option>
+          <option>All three</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="message">Anything we should know?</label>
+        <textarea id="message" name="message" rows="4" maxlength="500"
+                  placeholder="Optional"></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-submit" id="submitBtn" type="submit">
+        SEND REGISTRATION →
+      </button>
+
+      <div class="form-status" id="formStatus" role="status"></div>
+
+      <p class="form-note">
+        Demo protection: this page does not pretend that a registration was
+        saved. Set <code>REGISTRATION_ENDPOINT</code> in the script to your
+        real HTTPS backend/API before going live.
+      </p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© <span id="year"></span> ABHA Academy</div>
+    <div>LEARN // CREATE // GROW</div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <div class="eyebrow">NEURAL://ACTIVE</div>
+        <h2 id="modalTitle">Welcome to Neural Mode</h2>
+      </div>
+      <button class="close" id="closeModal" aria-label="Close">×</button>
     </div>
-  );
+    <p>
+      This is the experimental cyber layer of ABHA Academy. It can later become
+      the home for interactive lessons, hand-gesture experiments, games and
+      student challenges.
+    </p>
+    <ul>
+      <li>Interactive learning experiments</li>
+      <li>Computer and digital-safety activities</li>
+      <li>Creative coding projects</li>
+      <li>Future student challenges</li>
+    </ul>
+    <button class="btn btn-primary" id="modalOk">CONTINUE EXPLORING</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/*
+  ============================================================
+  ABHA ACADEMY — CORE CONFIG
+  ============================================================
+
+  IMPORTANT:
+  Replace this with your real HTTPS backend endpoint before
+  using the enrollment form in production.
+
+  Example:
+  const REGISTRATION_ENDPOINT = "https://your-domain.com/api/register";
+
+  The form intentionally DOES NOT report success when the
+  endpoint is not configured.
+*/
+const REGISTRATION_ENDPOINT = "";
+
+/* ---------- Navigation ---------- */
+const nav = document.getElementById("nav");
+const menuBtn = document.getElementById("menuBtn");
+
+menuBtn.addEventListener("click", () => {
+  const open = nav.classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", String(open));
+});
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("open");
+    menuBtn.setAttribute("aria-expanded", "false");
+  });
+});
+
+/* ---------- Year ---------- */
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ---------- Neural Mode ---------- */
+const modal = document.getElementById("modal");
+const neuralBtn = document.getElementById("neuralBtn");
+const closeModal = document.getElementById("closeModal");
+const modalOk = document.getElementById("modalOk");
+const terminal = document.getElementById("terminal");
+
+function openModal(){
+  modal.classList.add("open");
+  closeModal.focus();
 }
 
-function AnnoyedAnswer({ C, challenge, onDone }){
-  const [val, setVal] = useState("");
-  const [msg, setMsg] = useState(null);
-  
-  function submit(){
-    const correct = val.trim().toLowerCase() === challenge.a.toLowerCase();
-    setMsg(correct ? "Correct. I'll allow it." : `Wrong. It was ${challenge.a}. Go revise.`);
-    setTimeout(onDone, 1600);
-  }
-  
-  if (msg) return <p style={{ color:C.cyan }}>{msg}</p>;
-  
-  return (
-    <div className="flex gap-2">
-      <input autoFocus value={val} onChange={e=>setVal(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()} className="w-full rounded border bg-black/60 px-2 py-1 text-white outline-none" style={{ borderColor:C.panelBorder }} />
-      <button onClick={submit} className="rounded px-3 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background:C.red, border: 'none', cursor: 'pointer' }}>GO</button>
-    </div>
-  );
+function hideModal(){
+  modal.classList.remove("open");
+  neuralBtn.focus();
 }
 
-function ZeroGravityVoid({ C, onClose }){
-  const targets = [{ id:"p", letter:"P", tx:20, ty:50 }, { id:"a", letter:"A", tx:32, ty:50 }, { id:"g", letter:"G", tx:44, ty:50 }, { id:"e", letter:"E", tx:56, ty:50 }, { id:"4", letter:"4", tx:68, ty:50 }, { id:"0", letter:"0", tx:80, ty:50 }];
-  const [pieces, setPieces] = useState(targets.map(t => ({ ...t, x:10+Math.random()*80, y:10+Math.random()*30, placed:false })));
-  const [repaired, setRepaired] = useState(false); 
-  const containerRef = useRef(null);
-  const dragInfo = useRef({ id: null, active: false });
-  
-  function startDrag(e, id) {
-     e.preventDefault();
-     dragInfo.current = { id, active: true };
+neuralBtn.addEventListener("click", openModal);
+closeModal.addEventListener("click", hideModal);
+modalOk.addEventListener("click", hideModal);
+
+modal.addEventListener("click", e => {
+  if(e.target === modal) hideModal();
+});
+
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && modal.classList.contains("open")) hideModal();
+});
+
+neuralBtn.addEventListener("click", () => {
+  terminal.innerHTML = [
+    "&gt; NEURAL LINK REQUESTED",
+    "&gt; synchronizing learning core...",
+    "&gt; knowledge modules ........ <span>READY</span>",
+    "&gt; creativity engine ........ <span>READY</span>",
+    "&gt; curiosity level .......... <span>HIGH</span>",
+    "&gt; status: <span>ACCESS GRANTED</span>",
+    "&gt; welcome, learner_"
+  ].map((line, i) => `<div data-line="${i}">${line}</div>`).join("");
+});
+
+/* ---------- Quiz ---------- */
+const quizData = [
+  {
+    q: "Which subject helps you understand numbers and problem solving?",
+    options: ["English", "Mathematics", "Music", "Drawing"],
+    answer: 1
+  },
+  {
+    q: "Which skill is useful when learning computers?",
+    options: ["Digital safety", "Ignoring passwords", "Sharing every password", "None"],
+    answer: 0
+  },
+  {
+    q: "Which one is a good learning habit?",
+    options: ["Never ask questions", "Practice regularly", "Avoid mistakes", "Stop after one try"],
+    answer: 1
   }
-  
-  function onPointerMove(e) {
-    if (!dragInfo.current.active || !containerRef.current) return; 
-    
-    let clientX, clientY;
-    if (e.touches && e.touches.length > 0) {
-       clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
-    } else {
-       clientX = e.clientX; clientY = e.clientY;
-    }
+];
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width) * 100;
-    const y = ((clientY - rect.top) / rect.height) * 100;
+let quizIndex = 0;
+let quizScore = 0;
 
-    const safeX = Math.max(0, Math.min(100, x));
-    const safeY = Math.max(0, Math.min(100, y));
+const quizQuestion = document.getElementById("quizQuestion");
+const quizOptions = document.getElementById("quizOptions");
+const quizResult = document.getElementById("quizResult");
 
-    setPieces(prev => prev.map(p => p.id === dragInfo.current.id ? { ...p, x: safeX, y: safeY } : p));
-  }
-  
-  function onPointerUp(){
-    if (!dragInfo.current.active) return;
-    const id = dragInfo.current.id;
-    setPieces(prev => {
-      const next = prev.map(p => { if (p.id !== id) return p; const dist = Math.hypot(p.x - p.tx, p.y - p.ty); return dist < 8 ? { ...p, x: p.tx, y: p.ty, placed: true } : p; });
-      if (next.every(p => p.placed)) setRepaired(true); return next;
+function renderQuiz(){
+  const item = quizData[quizIndex];
+  quizQuestion.textContent = item.q;
+  quizOptions.innerHTML = "";
+  quizResult.textContent = "";
+
+  item.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.className = "option";
+    button.type = "button";
+    button.textContent = option;
+
+    button.addEventListener("click", () => {
+      [...quizOptions.children].forEach(b => b.disabled = true);
+
+      if(index === item.answer){
+        button.classList.add("correct");
+        quizScore++;
+        quizResult.textContent = "✓ Correct. Nice work.";
+      }else{
+        button.classList.add("wrong");
+        quizResult.textContent = `Not quite. The answer is "${item.options[item.answer]}".`;
+        quizOptions.children[item.answer].classList.add("correct");
+      }
+
+      setTimeout(() => {
+        quizIndex++;
+        if(quizIndex < quizData.length){
+          renderQuiz();
+        }else{
+          quizQuestion.textContent = `Challenge complete — ${quizScore}/${quizData.length} correct.`;
+          quizOptions.innerHTML = "";
+          quizResult.textContent = "More interactive learning modules can be added here.";
+        }
+      }, 1100);
     });
-    dragInfo.current = { id: null, active: false };
-  }
 
-  return (
-    <div className="fixed inset-0 z-[800] flex flex-col items-center justify-center bg-black/95 p-6 backdrop-blur-sm touch-none select-none" onMouseMove={onPointerMove} onMouseUp={onPointerUp} onTouchMove={onPointerMove} onTouchEnd={onPointerUp}>
-      <p className="font-mono-cyber mb-4 text-center text-sm" style={{ color:C.red }}>404 — GRAVITY OFFLINE. Drag back to repair.</p>
-      
-      <div ref={containerRef} className="relative h-72 w-full max-w-xl rounded-xl border flex items-center justify-center overflow-hidden touch-none" style={{ borderColor:C.panelBorder, background:"rgba(255,255,255,0.02)" }}>
-        {targets.map(t => (
-          <div key={t.id} className="font-mono-cyber absolute flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded border border-dashed text-white/20" style={{ left:`${t.tx}%`, top:`${t.ty}%`, borderColor:C.panelBorder }}>{t.letter}</div>
-        ))}
-        {pieces.map(p => (
-          <div key={p.id} className="absolute" style={{ left:`${p.x}%`, top:`${p.y}%`, transform: 'translate(-50%, -50%)', transition: p.placed ? "left 0.2s, top 0.2s" : "none" }}>
-            <button onMouseDown={(e) => startDrag(e, p.id)} onTouchStart={(e) => startDrag(e, p.id)} className={`font-mono-cyber flex h-10 w-10 cursor-grab items-center justify-center rounded-full border-2 font-bold active:cursor-grabbing ${!p.placed?"float-fast":""}`} style={{ borderColor:p.placed?C.cyan:C.purple, background:p.placed?`${C.cyan}22`:`${C.purple}22`, color:"white", outline: 'none', touchAction: 'none' }}>{p.letter}</button>
-          </div>
-        ))}
-      </div>
-      
-      {repaired ? (
-        <div className="mt-6 text-center">
-          <p className="font-mono-cyber text-sm mb-4" style={{ color:C.cyan }}>PAGE REPAIRED</p>
-          <button onClick={onClose} className="font-mono-cyber rounded-full px-5 py-2 text-black hover:scale-105 active:scale-95 transition-transform" style={{ background:C.cyan, border: 'none', cursor: 'pointer' }}>RETURN TO SITE</button>
-        </div>
-      ) : ( 
-        <button onClick={onClose} className="mt-8 font-mono-cyber rounded border px-6 py-2 text-xs text-white hover:bg-white/10" style={{borderColor:C.panelBorder, background: 'transparent', cursor: 'pointer'}}>Skip / Close</button> 
-      )}
-    </div>
-  );
+    quizOptions.appendChild(button);
+  });
 }
 
-ReactDOM.createRoot(document.getElementById('neural-root')).render(<AbhaNeuralLink />);
+renderQuiz();
+
+/* ---------- Enrollment ---------- */
+const form = document.getElementById("enrollForm");
+const submitBtn = document.getElementById("submitBtn");
+const formStatus = document.getElementById("formStatus");
+
+function showFormStatus(type, message){
+  formStatus.className = `form-status ${type}`;
+  formStatus.textContent = message;
+}
+
+function validIndianMobile(value){
+  return /^[0-9]{10}$/.test(value);
+}
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if(!form.checkValidity()){
+    form.reportValidity();
+    return;
+  }
+
+  const phone = document.getElementById("phone").value.trim();
+
+  if(!validIndianMobile(phone)){
+    showFormStatus("error", "Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  if(!REGISTRATION_ENDPOINT){
+    showFormStatus(
+      "error",
+      "Registration backend is not connected yet. The form is safe to test, but it will not claim that your registration was saved."
+    );
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "SENDING...";
+  formStatus.className = "form-status";
+  formStatus.textContent = "";
+
+  try{
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    const response = await fetch(REGISTRATION_ENDPOINT, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(payload),
+      credentials: "omit"
+    });
+
+    if(!response.ok){
+      throw new Error(`Server returned ${response.status}`);
+    }
+
+    const data = await response.json().catch(() => ({}));
+
+    showFormStatus(
+      "success",
+      data.message || "Registration received successfully. The academy will contact you."
+    );
+
+    form.reset();
+
+  }catch(error){
+    console.error("Registration error:", error);
+    showFormStatus(
+      "error",
+      "We could not submit the registration right now. Please try again later."
+    );
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = "SEND REGISTRATION →";
+  }
+});
+
+/* ---------- Global error visibility for development ---------- */
+window.addEventListener("unhandledrejection", event => {
+  console.error("Unhandled promise rejection:", event.reason);
+});
+
+window.addEventListener("error", event => {
+  console.error("ABHA Academy error:", event.error || event.message);
+});
 </script>
 
 </body>
