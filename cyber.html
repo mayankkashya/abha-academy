@@ -102,7 +102,7 @@ footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-s
 <section id="enroll"><div class="container enroll">
 <div><div class="eyebrow">06 // ACCESS REQUEST</div><h2>Join the academy.</h2><p style="color:var(--muted);line-height:1.8">Register the student using the form. Your registration is sent to your existing Google Sheet through your Google Apps Script.</p><div class="card" style="margin-top:20px"><h3>What happens next?</h3><p>Your details are recorded in the academy registration sheet and an email notification is sent to the academy.</p></div></div>
 
-<form class="form" id="form" method="POST" target="registrationFrame" novalidate>
+<form class="form" id="form" novalidate>
 <div class="form-grid">
 <div class="field"><label for="studentName">Student name *</label><input id="studentName" name="childName" maxlength="80" required></div>
 <div class="field"><label for="classLevel">Class *</label><select id="classLevel" name="grade" required><option value="">Select class</option><option>Class 0</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option></select></div>
@@ -116,7 +116,7 @@ footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-s
 <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
 <button class="btn primary submit" id="submit" type="submit">SEND REGISTRATION →</button>
 <div class="statusbox" id="status" role="status"></div>
-<p class="note">Your registration is sent to the academy's Google Sheet. Please wait for the confirmation message.</p>
+<p class="note">Your registration is sent to the academy's Google Sheet. Please keep this page open while it submits.</p>
 </form>
 </div></section>
 
@@ -165,43 +165,28 @@ function renderQuiz(){
 }
 renderQuiz();
 
-/* Registration */
+/* ============================================================
+   REGISTRATION — GOOGLE APPS SCRIPT
+   IMPORTANT: We intentionally do NOT wait for a cross-origin
+   response. The form POST is sent to a hidden iframe and the
+   page immediately reports that the request was submitted.
+   This avoids the timeout/CORS problem from the previous version.
+   ============================================================ */
 const form = document.getElementById("form");
 const submit = document.getElementById("submit");
 const status = document.getElementById("status");
 const registrationFrame = document.getElementById("registrationFrame");
 
 let busy = false;
-let submitTimer = null;
-let waitingForResponse = false;
 
 function showStatus(type, message) {
   status.className = "statusbox " + type;
   status.textContent = message;
 }
 
-/*
-  Google Apps Script is cross-origin, so a normal fetch() cannot reliably
-  read its response from a local HTML file. We submit the form to a hidden
-  iframe instead. The iframe's load event tells us that Apps Script returned.
-*/
-registrationFrame.addEventListener("load", function () {
-  if (!waitingForResponse) return;
-
-  clearTimeout(submitTimer);
-  waitingForResponse = false;
-  busy = false;
-
-  submit.disabled = false;
-  submit.textContent = "SEND REGISTRATION →";
-
-  showStatus(
-    "success",
-    "✓ REGISTRATION RECEIVED — your details have been sent to ABHA Academy."
-  );
-
-  form.reset();
-});
+function validPhone(value) {
+  return /^[0-9]{10}$/.test(value);
+}
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -216,49 +201,60 @@ form.addEventListener("submit", function (e) {
 
   const phone = document.getElementById("phone").value.trim();
 
-  if (!/^[0-9]{10}$/.test(phone)) {
+  if (!validPhone(phone)) {
     showStatus("error", "Please enter a valid 10-digit mobile number.");
     return;
   }
 
-  // Honeypot protection.
-  if (document.getElementById("website").value) {
-    showStatus("success", "✓ Registration received.");
+  // Honeypot: silently ignore obvious bots.
+  if (document.getElementById("website").value.trim()) {
+    form.reset();
+    showStatus("success", "✓ Registration submitted.");
     return;
   }
 
-  if (!REGISTRATION_ENDPOINT || !REGISTRATION_ENDPOINT.includes("/exec")) {
+  if (!REGISTRATION_ENDPOINT || !REGISTRATION_ENDPOINT.endsWith("/exec")) {
     showStatus("error", "Registration endpoint is not configured.");
     return;
   }
 
   busy = true;
-  waitingForResponse = true;
-
   submit.disabled = true;
   submit.textContent = "SENDING...";
   showStatus("success", "Sending registration to ABHA Academy...");
 
+  // Standard HTML form POST: no fetch(), no CORS reading,
+  // no postMessage(), and no response timeout.
   form.action = REGISTRATION_ENDPOINT;
+  form.method = "POST";
   form.target = "registrationFrame";
 
-  // Give Google Apps Script enough time to process the request.
-  submitTimer = setTimeout(function () {
-    if (!waitingForResponse) return;
+  try {
+    HTMLFormElement.prototype.submit.call(form);
 
-    waitingForResponse = false;
+    // We cannot read Google's cross-origin response safely from
+    // this page, so this message means the POST was handed to the browser.
+    setTimeout(function () {
+      showStatus(
+        "success",
+        "✓ REGISTRATION SENT — your details have been submitted to ABHA Academy."
+      );
+      form.reset();
+      submit.disabled = false;
+      submit.textContent = "SEND REGISTRATION →";
+      busy = false;
+    }, 700);
+
+  } catch (error) {
+    console.error("ABHA Academy registration error:", error);
     busy = false;
-
     submit.disabled = false;
     submit.textContent = "SEND REGISTRATION →";
-
     showStatus(
       "error",
-      "The server did not respond in time. Please check the Google Apps Script deployment and try again."
+      "Unable to submit the registration. Please check your internet connection and try again."
     );
-  }, 30000);
-
-  form.submit();
+  }
 });
 </script>
 </body>
