@@ -1,869 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#050816">
-<meta name="description" content="ABHA Academy — free evening education for Class 0 to 8 in English, Maths and Computers.">
-<title>ABHA Academy // CYBER LEARNING</title>
-
+<meta name="description" content="ABHA Academy — free evening education for Class 0 to 8.">
+<title>ABHA Academy // Cyber Learning</title>
 <style>
-:root{
-  --bg:#050816;
-  --panel:rgba(10,16,38,.78);
-  --panel-2:rgba(14,23,49,.92);
-  --cyan:#38f5ff;
-  --blue:#4d7cff;
-  --purple:#b66cff;
-  --green:#42ff9b;
-  --yellow:#ffe66d;
-  --pink:#ff4fd8;
-  --red:#ff5577;
-  --text:#eef7ff;
-  --muted:#8da1bd;
-  --line:rgba(80,220,255,.18);
-  --shadow:0 0 35px rgba(56,245,255,.12);
-  --radius:22px;
-  --max:1180px;
-}
-
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:
-    radial-gradient(circle at 20% 10%,rgba(77,124,255,.14),transparent 28%),
-    radial-gradient(circle at 85% 20%,rgba(182,108,255,.12),transparent 26%),
-    var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  overflow-x:hidden;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.35;
-  background-image:
-    linear-gradient(rgba(56,245,255,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(56,245,255,.035) 1px,transparent 1px);
-  background-size:42px 42px;
-  mask-image:linear-gradient(to bottom,#000,transparent 80%);
-  z-index:-2;
-}
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:radial-gradient(circle at center,transparent 30%,rgba(0,0,0,.42));
-  z-index:-1;
-}
-a{color:inherit;text-decoration:none}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.container{width:min(calc(100% - 32px),var(--max));margin:auto}
-
-/* NAV */
-.nav{
-  position:sticky;
-  top:0;
-  z-index:50;
-  backdrop-filter:blur(18px);
-  background:rgba(5,8,22,.72);
-  border-bottom:1px solid var(--line);
-}
-.nav-inner{
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-}
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:900;
-  letter-spacing:.12em;
-}
-.logo-mark{
-  width:38px;height:38px;border:1px solid var(--cyan);
-  border-radius:11px;display:grid;place-items:center;
-  color:var(--cyan);
-  box-shadow:0 0 20px rgba(56,245,255,.25),inset 0 0 14px rgba(56,245,255,.1);
-}
-.logo small{display:block;color:var(--muted);font-size:9px;letter-spacing:.2em}
-.nav-links{display:flex;gap:22px;color:#b7c9df;font-size:14px}
-.nav-links a:hover{color:var(--cyan)}
-.nav-cta{
-  border:1px solid var(--cyan);
-  color:var(--cyan);
-  background:rgba(56,245,255,.06);
-  padding:10px 16px;border-radius:999px;font-weight:800;
-}
-.nav-cta:hover{background:rgba(56,245,255,.14);box-shadow:0 0 22px rgba(56,245,255,.18)}
-.menu{display:none;background:none;border:0;color:var(--text);font-size:25px}
-
-/* HERO */
-.hero{min-height:calc(100vh - 72px);display:grid;place-items:center;padding:72px 0 55px}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
-.status{
-  display:inline-flex;align-items:center;gap:9px;
-  border:1px solid rgba(66,255,155,.28);
-  background:rgba(66,255,155,.06);
-  color:var(--green);padding:8px 12px;border-radius:999px;
-  font-size:12px;font-weight:800;letter-spacing:.08em;
-}
-.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
-.kicker{margin:22px 0 10px;color:var(--cyan);font:700 12px ui-monospace,monospace;letter-spacing:.2em}
-h1{
-  margin:0;
-  font-size:clamp(48px,8vw,92px);
-  line-height:.88;
-  letter-spacing:-.06em;
-  text-transform:uppercase;
-}
-.gradient{
-  background:linear-gradient(100deg,var(--cyan),#fff,var(--purple));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero-copy{max-width:680px;color:#aebed2;font-size:18px;line-height:1.75;margin:25px 0}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
-.btn{
-  border:1px solid var(--line);
-  border-radius:14px;padding:13px 18px;
-  font-weight:900;transition:.2s ease;
-}
-.btn-primary{background:linear-gradient(135deg,var(--cyan),#76a0ff);color:#03101a;border:0}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(56,245,255,.2)}
-.btn-ghost{background:rgba(255,255,255,.03);color:var(--text)}
-.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
-.hero-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-size:13px}
-.hero-meta strong{color:var(--text);display:block;font-size:17px}
-
-/* CYBER CORE */
-.core-wrap{display:grid;place-items:center}
-.cyber-core{
-  width:min(420px,82vw);aspect-ratio:1;
-  position:relative;display:grid;place-items:center;
-}
-.core-ring{
-  position:absolute;inset:8%;
-  border:1px solid rgba(56,245,255,.35);
-  border-radius:50%;
-  box-shadow:0 0 50px rgba(56,245,255,.12);
-  animation:spin 18s linear infinite;
-}
-.core-ring:nth-child(2){inset:18%;border-color:rgba(182,108,255,.4);animation-direction:reverse;animation-duration:13s}
-.core-ring:nth-child(3){inset:29%;border-style:dashed;animation-duration:9s}
-.core-ring::after{
-  content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;
-  border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan);
-}
-.core-center{
-  width:42%;aspect-ratio:1;border-radius:50%;
-  display:grid;place-items:center;text-align:center;
-  border:1px solid var(--cyan);
-  background:radial-gradient(circle,rgba(56,245,255,.22),rgba(8,15,35,.95) 62%);
-  box-shadow:0 0 50px rgba(56,245,255,.2),inset 0 0 40px rgba(56,245,255,.1);
-}
-.core-center b{font-size:34px;letter-spacing:.08em}
-.core-center span{font:700 10px ui-monospace,monospace;color:var(--cyan)}
-.orbit-label{
-  position:absolute;padding:8px 10px;border:1px solid var(--line);
-  background:rgba(5,8,22,.8);border-radius:10px;color:#c8d8ea;
-  font:700 10px ui-monospace,monospace;backdrop-filter:blur(10px)
-}
-.l1{top:5%;right:8%}.l2{bottom:13%;left:2%}.l3{top:48%;right:-3%}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* SECTIONS */
-section{padding:90px 0}
-.section-head{max-width:720px;margin-bottom:32px}
-.eyebrow{font:800 11px ui-monospace,monospace;color:var(--cyan);letter-spacing:.18em}
-h2{font-size:clamp(32px,5vw,58px);margin:10px 0 12px;letter-spacing:-.04em}
-.section-head p{color:var(--muted);line-height:1.7;margin:0}
-
-/* CARDS */
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{
-  background:linear-gradient(145deg,rgba(15,25,54,.82),rgba(7,12,29,.85));
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:25px;
-  box-shadow:var(--shadow);
-  position:relative;overflow:hidden;
-}
-.card::before{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(120deg,rgba(56,245,255,.07),transparent 35%,rgba(182,108,255,.05));
-  pointer-events:none;
-}
-.card-icon{font-size:30px;margin-bottom:18px}
-.card h3{margin:0 0 8px;font-size:21px}
-.card p{margin:0;color:var(--muted);line-height:1.65}
-.tag{display:inline-block;margin-top:18px;color:var(--cyan);font:700 11px ui-monospace,monospace}
-
-/* SCHEDULE */
-.schedule{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.schedule-row{
-  display:flex;justify-content:space-between;gap:20px;
-  padding:17px 0;border-bottom:1px solid var(--line)
-}
-.schedule-row:last-child{border-bottom:0}
-.schedule-row span{color:var(--muted)}
-.schedule-row b{color:var(--text)}
-
-/* NEURAL */
-.neural{
-  border:1px solid rgba(182,108,255,.3);
-  background:radial-gradient(circle at 70% 20%,rgba(182,108,255,.14),transparent 35%),rgba(10,13,34,.8);
-  border-radius:30px;padding:35px;overflow:hidden;position:relative;
-}
-.neural-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
-.neural-code{
-  min-height:250px;border:1px solid var(--line);border-radius:18px;
-  padding:18px;background:#02050e;font:12px/1.8 ui-monospace,monospace;color:#86f7ff;
-  overflow:hidden;
-}
-.neural-code span{color:#a67cff}
-.neural-btn{
-  margin-top:18px;border:1px solid var(--purple);background:rgba(182,108,255,.08);
-  color:#d9c0ff;border-radius:12px;padding:12px 15px;font-weight:900
-}
-
-/* QUIZ */
-.quiz{max-width:760px}
-.quiz-question{font-size:23px;font-weight:800;margin-bottom:18px}
-.quiz-options{display:grid;gap:10px}
-.option{
-  text-align:left;width:100%;border:1px solid var(--line);
-  background:rgba(255,255,255,.025);color:var(--text);
-  padding:14px;border-radius:13px
-}
-.option:hover{border-color:var(--cyan)}
-.option.correct{border-color:var(--green);background:rgba(66,255,155,.08)}
-.option.wrong{border-color:var(--red);background:rgba(255,85,119,.08)}
-.quiz-result{margin-top:15px;color:var(--muted);min-height:24px}
-
-/* ENROLL */
-.enroll{
-  display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:start
-}
-.form{
-  background:rgba(8,13,31,.86);border:1px solid var(--line);
-  border-radius:24px;padding:25px
-}
-.field{margin-bottom:15px}
-.field label{display:block;color:#bdcce0;font-size:13px;font-weight:800;margin-bottom:7px}
-.field input,.field select,.field textarea{
-  width:100%;border:1px solid var(--line);background:#050a19;
-  color:var(--text);border-radius:12px;padding:13px;outline:none
-}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,245,255,.07)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-note{color:var(--muted);font-size:12px;line-height:1.6;margin-top:12px}
-.form-status{margin-top:15px;padding:12px;border-radius:12px;display:none;font-size:13px}
-.form-status.success{display:block;background:rgba(66,255,155,.08);border:1px solid rgba(66,255,155,.25);color:var(--green)}
-.form-status.error{display:block;background:rgba(255,85,119,.08);border:1px solid rgba(255,85,119,.25);color:#ff9bb0}
-.btn-submit[disabled]{opacity:.55;cursor:not-allowed}
-
-/* FOOTER */
-footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:13px}
-.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-
-/* MODAL */
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);
-  display:none;place-items:center;padding:20px;z-index:100
-}
-.modal.open{display:grid}
-.modal-box{
-  width:min(680px,100%);background:#070c20;border:1px solid var(--cyan);
-  border-radius:24px;padding:28px;box-shadow:0 0 70px rgba(56,245,255,.18)
-}
-.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:start}
-.close{background:none;border:0;color:var(--muted);font-size:25px}
-.modal p{color:var(--muted);line-height:1.7}
-.modal ul{color:#b7c9df;line-height:2}
-
-/* MOBILE */
-@media(max-width:850px){
-  .nav-links,.nav-cta{display:none}
-  .menu{display:block}
-  .nav.open .nav-links{
-    display:flex;position:absolute;top:72px;left:0;right:0;
-    padding:18px 20px;background:rgba(5,8,22,.97);
-    flex-direction:column;border-bottom:1px solid var(--line)
-  }
-  .hero-grid,.neural-grid,.enroll,.schedule{grid-template-columns:1fr}
-  .hero{padding-top:50px}
-  .core-wrap{order:-1}
-  .grid-3{grid-template-columns:1fr}
-  .hero-copy{font-size:16px}
-}
-@media(max-width:520px){
-  .container{width:min(calc(100% - 22px),var(--max))}
-  section{padding:65px 0}
-  .form-grid{grid-template-columns:1fr}
-  .cyber-core{width:92vw}
-  .neural{padding:22px}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
-}
+:root{--bg:#050816;--panel:#0b1228;--cyan:#38f5ff;--blue:#6d9cff;--purple:#b66cff;--green:#42ff9b;--red:#ff5577;--text:#eef7ff;--muted:#91a4bd;--line:rgba(80,220,255,.18);--max:1180px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at 15% 5%,#18356a33,transparent 28%),radial-gradient(circle at 85% 15%,#7b35a333,transparent 28%),var(--bg);overflow-x:hidden}body:before{content:"";position:fixed;inset:0;z-index:-1;opacity:.28;background-image:linear-gradient(#38f5ff09 1px,transparent 1px),linear-gradient(90deg,#38f5ff09 1px,transparent 1px);background-size:42px 42px;pointer-events:none}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.container{width:min(calc(100% - 32px),var(--max));margin:auto}
+.nav{position:sticky;top:0;z-index:50;background:#050816cc;backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.nav-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.logo{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.12em}.mark{width:38px;height:38px;border:1px solid var(--cyan);border-radius:11px;display:grid;place-items:center;color:var(--cyan);box-shadow:0 0 20px #38f5ff40}.logo small{display:block;color:var(--muted);font-size:9px;letter-spacing:.2em}.nav-links{display:flex;gap:22px;color:#b7c9df;font-size:14px}.nav-links a:hover{color:var(--cyan)}.nav-cta{border:1px solid var(--cyan);color:var(--cyan);padding:10px 16px;border-radius:999px;font-weight:800}.menu{display:none;background:none;border:0;color:white;font-size:25px}
+.hero{min-height:calc(100vh - 72px);display:grid;place-items:center;padding:70px 0}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:45px;align-items:center}.status{display:inline-flex;gap:9px;align-items:center;border:1px solid #42ff9b44;background:#42ff9b0d;color:var(--green);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}.kicker,.eyebrow{color:var(--cyan);font:800 11px ui-monospace,monospace;letter-spacing:.18em}.kicker{margin:22px 0 10px}h1{margin:0;font-size:clamp(48px,8vw,92px);line-height:.88;letter-spacing:-.06em}.gradient{background:linear-gradient(100deg,var(--cyan),white,var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}.hero-copy{max-width:680px;color:#aebed2;font-size:18px;line-height:1.75;margin:25px 0}.actions{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-block;border:1px solid var(--line);border-radius:14px;padding:13px 18px;font-weight:900;transition:.2s}.primary{background:linear-gradient(135deg,var(--cyan),#76a0ff);color:#03101a;border:0}.primary:hover{transform:translateY(-2px);box-shadow:0 10px 35px #38f5ff33}.ghost{background:#ffffff08}.ghost:hover{border-color:var(--cyan);color:var(--cyan)}.meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-size:13px}.meta strong{display:block;color:white;font-size:17px}
+.core{width:min(420px,82vw);aspect-ratio:1;position:relative;display:grid;place-items:center}.ring{position:absolute;inset:8%;border:1px solid #38f5ff59;border-radius:50%;box-shadow:0 0 50px #38f5ff1f;animation:spin 18s linear infinite}.ring:nth-child(2){inset:18%;border-color:#b66cff66;animation-direction:reverse;animation-duration:13s}.ring:nth-child(3){inset:29%;border-style:dashed;animation-duration:9s}.ring:after{content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan)}.center{width:42%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid var(--cyan);background:radial-gradient(circle,#38f5ff38,#080f23 62%);box-shadow:0 0 50px #38f5ff33,inset 0 0 40px #38f5ff1a}.center b{font-size:34px}.center span{font:700 10px ui-monospace,monospace;color:var(--cyan)}.orbit{position:absolute;padding:8px 10px;border:1px solid var(--line);background:#050816cc;border-radius:10px;color:#c8d8ea;font:700 10px ui-monospace,monospace}.o1{top:5%;right:8%}.o2{bottom:13%;left:2%}.o3{top:48%;right:-3%}@keyframes spin{to{transform:rotate(360deg)}}
+section{padding:85px 0}.head{max-width:720px;margin-bottom:30px}.head h2{font-size:clamp(32px,5vw,58px);margin:10px 0 12px;letter-spacing:-.04em}.head p,.card p{color:var(--muted);line-height:1.7}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:linear-gradient(145deg,#0f1936d1,#070c1dd9);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 0 35px #38f5ff14}.card h3{margin:0 0 8px}.icon{font-size:30px;margin-bottom:16px}.tag{display:inline-block;margin-top:16px;color:var(--cyan);font:700 11px ui-monospace,monospace}
+.schedule{display:grid;grid-template-columns:1fr 1fr;gap:16px}.row{display:flex;justify-content:space-between;gap:15px;padding:17px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.row span{color:var(--muted)}
+.neural{border:1px solid #b66cff4d;background:radial-gradient(circle at 70% 20%,#b66cff24,transparent 35%),#0a0d22cc;border-radius:30px;padding:35px}.neural-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.terminal{min-height:240px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#02050e;font:12px/1.8 ui-monospace,monospace;color:#86f7ff}.terminal span{color:#a67cff}.neural-btn{margin-top:18px;border:1px solid var(--purple);background:#b66cff14;color:#d9c0ff;border-radius:12px;padding:12px 15px;font-weight:900}
+.quiz{max-width:760px}.question{font-size:23px;font-weight:800;margin-bottom:18px}.options{display:grid;gap:10px}.option{width:100%;text-align:left;border:1px solid var(--line);background:#ffffff06;color:white;padding:14px;border-radius:13px}.option:hover{border-color:var(--cyan)}.correct{border-color:var(--green)!important;background:#42ff9b14!important}.wrong{border-color:var(--red)!important;background:#ff557714!important}.result{margin-top:15px;color:var(--muted);min-height:24px}
+.enroll{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:start}.form{background:#080d1fd9;border:1px solid var(--line);border-radius:24px;padding:25px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:15px}.field label{display:block;color:#bdcce0;font-size:13px;font-weight:800;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#050a19;color:white;border-radius:12px;padding:13px;outline:0}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #38f5ff12}.statusbox{margin-top:15px;padding:12px;border-radius:12px;display:none;font-size:13px;line-height:1.5}.statusbox.success{display:block;background:#42ff9b0d;border:1px solid #42ff9b40;color:var(--green)}.statusbox.error{display:block;background:#ff55770d;border:1px solid #ff557740;color:#ff9bb0}.submit:disabled{opacity:.55;cursor:not-allowed}.note{color:var(--muted);font-size:12px;line-height:1.6}
+footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:13px}.footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;background:#000b;backdrop-filter:blur(10px);display:none;place-items:center;padding:20px;z-index:100}.modal.open{display:grid}.modalbox{width:min(680px,100%);background:#070c20;border:1px solid var(--cyan);border-radius:24px;padding:28px;box-shadow:0 0 70px #38f5ff2e}.modalhead{display:flex;justify-content:space-between}.close{background:none;border:0;color:var(--muted);font-size:25px}
+#registrationFrame{position:absolute;width:1px;height:1px;border:0;opacity:0;pointer-events:none}
+@media(max-width:850px){.nav-links,.nav-cta{display:none}.menu{display:block}.nav.open .nav-links{display:flex;position:absolute;top:72px;left:0;right:0;padding:18px 20px;background:#050816f7;flex-direction:column;border-bottom:1px solid var(--line)}.hero-grid,.neural-grid,.enroll,.schedule{grid-template-columns:1fr}.core{order:-1}.grid3{grid-template-columns:1fr}}
+@media(max-width:520px){.container{width:min(calc(100% - 22px),var(--max))}section{padding:65px 0}.form-grid{grid-template-columns:1fr}.core{width:92vw}.neural{padding:22px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
-
 <body>
 
 <header class="nav" id="nav">
-  <div class="container nav-inner">
-    <a class="logo" href="#top" aria-label="ABHA Academy home">
-      <span class="logo-mark">A</span>
-      <span>ABHA <small>ACADEMY // 01</small></span>
-    </a>
-
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="#mission">Mission</a>
-      <a href="#subjects">Learning</a>
-      <a href="#neural">Neural</a>
-      <a href="#enroll">Join</a>
-    </nav>
-
-    <a class="nav-cta" href="#enroll">JOIN FREE</a>
-    <button class="menu" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
-  </div>
+<div class="container nav-inner">
+<a class="logo" href="#top"><span class="mark">A</span><span>ABHA<small>ACADEMY // 01</small></span></a>
+<nav class="nav-links">
+<a href="#mission">Mission</a><a href="#subjects">Learning</a><a href="#schedule">Schedule</a><a href="#neural">Neural</a><a href="#enroll">Join</a>
+</nav>
+<a class="nav-cta" href="#enroll">JOIN FREE</a>
+<button class="menu" id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+</div>
 </header>
 
 <main id="top">
 
 <section class="hero">
-  <div class="container hero-grid">
-    <div>
-      <div class="status"><span class="status-dot"></span>SYSTEM ONLINE // EVENING LEARNING</div>
-      <div class="kicker">ABHA ACADEMY / EDUCATION NETWORK</div>
-      <h1>LEARN<br><span class="gradient">BEYOND</span><br>LIMITS.</h1>
-      <p class="hero-copy">
-        Free evening education for students from Class 0 to 8.
-        English, Maths and Computers — taught in a modern, friendly environment.
-      </p>
-
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#enroll">START LEARNING →</a>
-        <a class="btn btn-ghost" href="#neural">ENTER NEURAL MODE</a>
-      </div>
-
-      <div class="hero-meta">
-        <div><strong>0–8</strong>Classes</div>
-        <div><strong>6–10 PM</strong>Evening classes</div>
-        <div><strong>₹0</strong>Admission fee</div>
-      </div>
-    </div>
-
-    <div class="core-wrap" aria-hidden="true">
-      <div class="cyber-core">
-        <div class="core-ring"></div>
-        <div class="core-ring"></div>
-        <div class="core-ring"></div>
-        <div class="core-center">
-          <div><b>ABHA</b><br><span>LEARNING CORE</span></div>
-        </div>
-        <div class="orbit-label l1">KNOWLEDGE://ACTIVE</div>
-        <div class="orbit-label l2">CLASS://0-8</div>
-        <div class="orbit-label l3">FREE://ACCESS</div>
-      </div>
-    </div>
-  </div>
+<div class="container hero-grid">
+<div>
+<div class="status"><span class="dot"></span>SYSTEM ONLINE // EVENING LEARNING</div>
+<div class="kicker">ABHA ACADEMY / EDUCATION NETWORK</div>
+<h1>LEARN<br><span class="gradient">BEYOND</span><br>LIMITS.</h1>
+<p class="hero-copy">Free evening education for students from Class 0 to 8. English, Maths and Computers — taught in a modern, friendly learning environment.</p>
+<div class="actions"><a class="btn primary" href="#enroll">START LEARNING →</a><a class="btn ghost" href="#neural">ENTER NEURAL MODE</a></div>
+<div class="meta"><div><strong>0–8</strong>Classes</div><div><strong>6–10 PM</strong>Evening classes</div><div><strong>₹0</strong>Admission fee</div></div>
+</div>
+<div class="core">
+<div class="ring"></div><div class="ring"></div><div class="ring"></div>
+<div class="center"><div><b>ABHA</b><br><span>LEARNING CORE</span></div></div>
+<div class="orbit o1">KNOWLEDGE://ACTIVE</div><div class="orbit o2">CLASS://0-8</div><div class="orbit o3">FREE://ACCESS</div>
+</div>
+</div>
 </section>
 
-<section id="mission">
-  <div class="container">
-    <div class="section-head">
-      <div class="eyebrow">01 // MISSION</div>
-      <h2>Education should feel possible.</h2>
-      <p>
-        ABHA Academy is designed to make evening learning approachable,
-        practical and exciting — without making technology the barrier.
-      </p>
-    </div>
+<section id="mission"><div class="container">
+<div class="head"><div class="eyebrow">01 // MISSION</div><h2>Education should feel possible.</h2><p>ABHA Academy is designed to make evening learning approachable, practical and exciting.</p></div>
+<div class="grid3">
+<article class="card"><div class="icon">🆓</div><h3>Free Access</h3><p>Core evening education is offered without an admission fee.</p><span class="tag">ACCESS://OPEN</span></article>
+<article class="card"><div class="icon">💡</div><h3>Modern Learning</h3><p>Traditional subjects meet interactive activities and computer learning.</p><span class="tag">MODE://HYBRID</span></article>
+<article class="card"><div class="icon">🌱</div><h3>Build Confidence</h3><p>A friendly environment where students can ask, practice and create.</p><span class="tag">GOAL://GROW</span></article>
+</div>
+</div></section>
 
-    <div class="grid-3">
-      <article class="card">
-        <div class="card-icon">🆓</div>
-        <h3>Free Access</h3>
-        <p>Core evening education is offered without an admission fee.</p>
-        <span class="tag">ACCESS://OPEN</span>
-      </article>
-      <article class="card">
-        <div class="card-icon">💡</div>
-        <h3>Modern Learning</h3>
-        <p>Traditional subjects meet interactive activities and computer learning.</p>
-        <span class="tag">MODE://HYBRID</span>
-      </article>
-      <article class="card">
-        <div class="card-icon">🌱</div>
-        <h3>Build Confidence</h3>
-        <p>A friendly environment where students can ask, practice and create.</p>
-        <span class="tag">GOAL://GROW</span>
-      </article>
-    </div>
-  </div>
-</section>
+<section id="subjects"><div class="container">
+<div class="head"><div class="eyebrow">02 // LEARNING MODULES</div><h2>Three core systems.</h2><p>Simple foundations first. Curiosity and creativity next.</p></div>
+<div class="grid3">
+<article class="card"><div class="icon">🔤</div><h3>English</h3><p>Reading, vocabulary, writing, communication and confidence.</p><span class="tag">MODULE://LANGUAGE</span></article>
+<article class="card"><div class="icon">∑</div><h3>Mathematics</h3><p>Numbers, problem solving, concepts and practice at the student's level.</p><span class="tag">MODULE://LOGIC</span></article>
+<article class="card"><div class="icon">💻</div><h3>Computers</h3><p>Digital basics, safe technology use and hands-on computer exploration.</p><span class="tag">MODULE://DIGITAL</span></article>
+</div>
+</div></section>
 
-<section id="subjects">
-  <div class="container">
-    <div class="section-head">
-      <div class="eyebrow">02 // LEARNING MODULES</div>
-      <h2>Three core systems.</h2>
-      <p>Simple foundations first. Curiosity and creativity next.</p>
-    </div>
+<section id="schedule"><div class="container">
+<div class="head"><div class="eyebrow">03 // EVENING PROTOCOL</div><h2>Built around the evening.</h2><p>The schedule shown here follows the current academy plan.</p></div>
+<div class="schedule">
+<div class="card">
+<div class="row"><span>Class window</span><b>6:00 PM – 10:00 PM</b></div>
+<div class="row"><span>Level</span><b>Class 0 – 8</b></div>
+<div class="row"><span>Format</span><b>Evening learning</b></div>
+<div class="row"><span>Admission</span><b>Free</b></div>
+</div>
+<div class="card"><h3>Before you arrive</h3><p>Please use the registration form below so the academy can understand the student's class level and contact details.</p><a class="btn primary" style="display:inline-block;margin-top:20px" href="#enroll">REGISTER →</a></div>
+</div>
+</div></section>
 
-    <div class="grid-3">
-      <article class="card">
-        <div class="card-icon">🔤</div>
-        <h3>English</h3>
-        <p>Reading, vocabulary, writing, communication and confidence.</p>
-        <span class="tag">MODULE://LANGUAGE</span>
-      </article>
-      <article class="card">
-        <div class="card-icon">∑</div>
-        <h3>Mathematics</h3>
-        <p>Numbers, problem solving, concepts and practice at the student's level.</p>
-        <span class="tag">MODULE://LOGIC</span>
-      </article>
-      <article class="card">
-        <div class="card-icon">💻</div>
-        <h3>Computers</h3>
-        <p>Digital basics, safe technology use and hands-on computer exploration.</p>
-        <span class="tag">MODULE://DIGITAL</span>
-      </article>
-    </div>
-  </div>
-</section>
+<section id="neural"><div class="container"><div class="neural"><div class="neural-grid">
+<div><div class="eyebrow">04 // EXPERIMENTAL SYSTEM</div><h2>NEURAL LINK</h2><p style="color:var(--muted);line-height:1.7">A futuristic learning layer for students who want to explore, experiment and interact with technology.</p><button class="neural-btn" id="neuralBtn">INITIALIZE NEURAL MODE</button></div>
+<div class="terminal" id="terminal"><div>&gt; ABHA_NEURAL_BOOT</div><div>&gt; checking learning modules...</div><div>&gt; English ........ <span>ONLINE</span></div><div>&gt; Mathematics .... <span>ONLINE</span></div><div>&gt; Computers ...... <span>ONLINE</span></div><div>&gt; student curiosity <span>DETECTED</span></div><div>&gt; awaiting command_</div></div>
+</div></div></div></section>
 
-<section id="schedule">
-  <div class="container">
-    <div class="section-head">
-      <div class="eyebrow">03 // EVENING PROTOCOL</div>
-      <h2>Built around the evening.</h2>
-      <p>The schedule shown here follows the current academy plan.</p>
-    </div>
+<section id="challenge"><div class="container">
+<div class="head"><div class="eyebrow">05 // QUICK CHALLENGE</div><h2>Test the system.</h2><p>A small interactive challenge for students.</p></div>
+<div class="card quiz"><div class="question" id="question"></div><div class="options" id="options"></div><div class="result" id="result" aria-live="polite"></div></div>
+</div></section>
 
-    <div class="schedule">
-      <div class="card">
-        <div class="schedule-row"><span>Class window</span><b>6:00 PM – 10:00 PM</b></div>
-        <div class="schedule-row"><span>Level</span><b>Class 0 – 8</b></div>
-        <div class="schedule-row"><span>Format</span><b>Evening learning</b></div>
-        <div class="schedule-row"><span>Admission</span><b>Free</b></div>
-      </div>
+<section id="enroll"><div class="container enroll">
+<div><div class="eyebrow">06 // ACCESS REQUEST</div><h2>Join the academy.</h2><p style="color:var(--muted);line-height:1.8">Register the student using the form. Your registration is sent to your existing Google Sheet through your Google Apps Script.</p><div class="card" style="margin-top:20px"><h3>What happens next?</h3><p>Your details are recorded in the academy registration sheet and an email notification is sent to the academy.</p></div></div>
 
-      <div class="card">
-        <h3>Before you arrive</h3>
-        <p>
-          Please use the registration form below so the academy can understand
-          the student's class level and contact details.
-        </p>
-        <a class="btn btn-primary" style="display:inline-block;margin-top:20px" href="#enroll">REGISTER →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="neural">
-  <div class="container">
-    <div class="neural">
-      <div class="neural-grid">
-        <div>
-          <div class="eyebrow">04 // EXPERIMENTAL SYSTEM</div>
-          <h2>NEURAL LINK</h2>
-          <p style="color:var(--muted);line-height:1.7">
-            A futuristic learning layer for students who want to explore,
-            experiment and interact with technology.
-          </p>
-          <button class="neural-btn" id="neuralBtn">INITIALIZE NEURAL MODE</button>
-        </div>
-
-        <div class="neural-code" id="terminal" aria-live="polite">
-          <div>&gt; ABHA_NEURAL_BOOT</div>
-          <div>&gt; checking learning modules...</div>
-          <div>&gt; English ........ <span>ONLINE</span></div>
-          <div>&gt; Mathematics .... <span>ONLINE</span></div>
-          <div>&gt; Computers ...... <span>ONLINE</span></div>
-          <div>&gt; student curiosity <span>DETECTED</span></div>
-          <div>&gt; awaiting command_</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="challenge">
-  <div class="container">
-    <div class="section-head">
-      <div class="eyebrow">05 // QUICK CHALLENGE</div>
-      <h2>Test the system.</h2>
-      <p>A tiny interactive challenge — more learning tools can be added later.</p>
-    </div>
-
-    <div class="card quiz">
-      <div class="quiz-question" id="quizQuestion">Loading challenge...</div>
-      <div class="quiz-options" id="quizOptions"></div>
-      <div class="quiz-result" id="quizResult" aria-live="polite"></div>
-    </div>
-  </div>
-</section>
-
-<section id="enroll">
-  <div class="container enroll">
-    <div>
-      <div class="eyebrow">06 // ACCESS REQUEST</div>
-      <h2>Join the academy.</h2>
-      <p style="color:var(--muted);line-height:1.8">
-        Submit the student's details below. The form is prepared for a real
-        backend endpoint; configure the endpoint in the JavaScript section
-        before using it for production registrations.
-      </p>
-
-      <div class="card" style="margin-top:20px">
-        <h3>What happens next?</h3>
-        <p>
-          Your registration is collected by the academy system. Once the
-          backend is connected, a confirmed response can be shown here.
-        </p>
-      </div>
-    </div>
-
-    <form class="form" id="enrollForm" novalidate>
-      <div class="form-grid">
-        <div class="field">
-          <label for="studentName">Student name *</label>
-          <input id="studentName" name="studentName" autocomplete="name" required maxlength="80">
-        </div>
-        <div class="field">
-          <label for="classLevel">Class *</label>
-          <select id="classLevel" name="classLevel" required>
-            <option value="">Select class</option>
-            <option>Class 0</option><option>Class 1</option><option>Class 2</option>
-            <option>Class 3</option><option>Class 4</option><option>Class 5</option>
-            <option>Class 6</option><option>Class 7</option><option>Class 8</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-grid">
-        <div class="field">
-          <label for="parentName">Parent / guardian name *</label>
-          <input id="parentName" name="parentName" autocomplete="name" required maxlength="80">
-        </div>
-        <div class="field">
-          <label for="phone">Phone *</label>
-          <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel"
-                 pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required>
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="subject">Primary learning interest</label>
-        <select id="subject" name="subject">
-          <option>English</option>
-          <option>Mathematics</option>
-          <option>Computers</option>
-          <option>All three</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="message">Anything we should know?</label>
-        <textarea id="message" name="message" rows="4" maxlength="500"
-                  placeholder="Optional"></textarea>
-      </div>
-
-      <button class="btn btn-primary btn-submit" id="submitBtn" type="submit">
-        SEND REGISTRATION →
-      </button>
-
-      <div class="form-status" id="formStatus" role="status"></div>
-
-      <p class="form-note">
-        Demo protection: this page does not pretend that a registration was
-        saved. Set <code>REGISTRATION_ENDPOINT</code> in the script to your
-        real HTTPS backend/API before going live.
-      </p>
-    </form>
-  </div>
-</section>
+<form class="form" id="form" method="POST" target="registrationFrame" novalidate>
+<div class="form-grid">
+<div class="field"><label for="studentName">Student name *</label><input id="studentName" name="studentName" maxlength="80" required></div>
+<div class="field"><label for="classLevel">Class *</label><select id="classLevel" name="classLevel" required><option value="">Select class</option><option>Class 0</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option></select></div>
+</div>
+<div class="form-grid">
+<div class="field"><label for="parentName">Parent / guardian name *</label><input id="parentName" name="parentName" maxlength="80" required></div>
+<div class="field"><label for="phone">Phone *</label><input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required></div>
+</div>
+<div class="field"><label for="subject">Primary learning interest</label><select id="subject" name="subject"><option>English</option><option>Mathematics</option><option>Computers</option><option>All three</option></select></div>
+<div class="field"><label for="message">Anything we should know?</label><textarea id="message" name="message" rows="4" maxlength="500" placeholder="Optional"></textarea></div>
+<input type="text" name="website" id="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+<button class="btn primary submit" id="submit" type="submit">SEND REGISTRATION →</button>
+<div class="statusbox" id="status" role="status"></div>
+<p class="note">Your registration is sent to the academy's Google Sheet. Please don't press the button repeatedly.</p>
+</form>
+</div></section>
 
 </main>
 
-<footer>
-  <div class="container footer-inner">
-    <div>© <span id="year"></span> ABHA Academy</div>
-    <div>LEARN // CREATE // GROW</div>
-  </div>
-</footer>
+<footer><div class="container footer"><div>© <span id="year"></span> ABHA Academy</div><div>LEARN // CREATE // GROW</div></div></footer>
+
+<iframe name="registrationFrame" id="registrationFrame" title="Registration response"></iframe>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div>
-        <div class="eyebrow">NEURAL://ACTIVE</div>
-        <h2 id="modalTitle">Welcome to Neural Mode</h2>
-      </div>
-      <button class="close" id="closeModal" aria-label="Close">×</button>
-    </div>
-    <p>
-      This is the experimental cyber layer of ABHA Academy. It can later become
-      the home for interactive lessons, hand-gesture experiments, games and
-      student challenges.
-    </p>
-    <ul>
-      <li>Interactive learning experiments</li>
-      <li>Computer and digital-safety activities</li>
-      <li>Creative coding projects</li>
-      <li>Future student challenges</li>
-    </ul>
-    <button class="btn btn-primary" id="modalOk">CONTINUE EXPLORING</button>
-  </div>
+<div class="modalbox"><div class="modalhead"><div><div class="eyebrow">NEURAL://ACTIVE</div><h2 id="modalTitle">Welcome to Neural Mode</h2></div><button class="close" id="close" type="button">×</button></div><p>This is the experimental cyber layer of ABHA Academy. It can later become the home for interactive lessons, games and student challenges.</p><ul><li>Interactive learning experiments</li><li>Computer and digital-safety activities</li><li>Creative coding projects</li><li>Future student challenges</li></ul><button class="btn primary" id="ok" type="button">CONTINUE EXPLORING</button></div>
 </div>
 
 <script>
 "use strict";
 
-/*
-  ============================================================
-  ABHA ACADEMY — CORE CONFIG
-  ============================================================
+/* YOUR REAL GOOGLE APPS SCRIPT WEB APP URL */
+const REGISTRATION_ENDPOINT="https://script.google.com/macros/s/AKfycbyiDXO-ihMJcYe82KtmAXwJ-vAGiaD-KJd4v3M_jJkHSGEaraDzpGgkMJvxm5PAV0CL/exec";
 
-  IMPORTANT:
-  Replace this with your real HTTPS backend endpoint before
-  using the enrollment form in production.
+/* Navigation */
+const nav=document.getElementById("nav"),menu=document.getElementById("menu");
+menu.addEventListener("click",()=>{const open=nav.classList.toggle("open");menu.setAttribute("aria-expanded",String(open));});
+document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",()=>{nav.classList.remove("open");menu.setAttribute("aria-expanded","false");}));
+document.getElementById("year").textContent=new Date().getFullYear();
 
-  Example:
-  const REGISTRATION_ENDPOINT = "https://your-domain.com/api/register";
+/* Neural */
+const modal=document.getElementById("modal"),neuralBtn=document.getElementById("neuralBtn");
+function hideModal(){modal.classList.remove("open");neuralBtn.focus();}
+neuralBtn.addEventListener("click",()=>{modal.classList.add("open");document.getElementById("close").focus();document.getElementById("terminal").innerHTML=["&gt; NEURAL LINK REQUESTED","&gt; synchronizing learning core...","&gt; knowledge modules ........ <span>READY</span>","&gt; creativity engine ........ <span>READY</span>","&gt; curiosity level .......... <span>HIGH</span>","&gt; status: <span>ACCESS GRANTED</span>","&gt; welcome, learner_"].map(x=>"<div>"+x+"</div>").join("");});
+document.getElementById("close").addEventListener("click",hideModal);
+document.getElementById("ok").addEventListener("click",hideModal);
+modal.addEventListener("click",e=>{if(e.target===modal)hideModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("open"))hideModal();});
 
-  The form intentionally DOES NOT report success when the
-  endpoint is not configured.
-*/
-const REGISTRATION_ENDPOINT = "";
-
-/* ---------- Navigation ---------- */
-const nav = document.getElementById("nav");
-const menuBtn = document.getElementById("menuBtn");
-
-menuBtn.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  menuBtn.setAttribute("aria-expanded", String(open));
-});
-
-document.querySelectorAll(".nav-links a").forEach(link => {
-  link.addEventListener("click", () => {
-    nav.classList.remove("open");
-    menuBtn.setAttribute("aria-expanded", "false");
-  });
-});
-
-/* ---------- Year ---------- */
-document.getElementById("year").textContent = new Date().getFullYear();
-
-/* ---------- Neural Mode ---------- */
-const modal = document.getElementById("modal");
-const neuralBtn = document.getElementById("neuralBtn");
-const closeModal = document.getElementById("closeModal");
-const modalOk = document.getElementById("modalOk");
-const terminal = document.getElementById("terminal");
-
-function openModal(){
-  modal.classList.add("open");
-  closeModal.focus();
-}
-
-function hideModal(){
-  modal.classList.remove("open");
-  neuralBtn.focus();
-}
-
-neuralBtn.addEventListener("click", openModal);
-closeModal.addEventListener("click", hideModal);
-modalOk.addEventListener("click", hideModal);
-
-modal.addEventListener("click", e => {
-  if(e.target === modal) hideModal();
-});
-
-document.addEventListener("keydown", e => {
-  if(e.key === "Escape" && modal.classList.contains("open")) hideModal();
-});
-
-neuralBtn.addEventListener("click", () => {
-  terminal.innerHTML = [
-    "&gt; NEURAL LINK REQUESTED",
-    "&gt; synchronizing learning core...",
-    "&gt; knowledge modules ........ <span>READY</span>",
-    "&gt; creativity engine ........ <span>READY</span>",
-    "&gt; curiosity level .......... <span>HIGH</span>",
-    "&gt; status: <span>ACCESS GRANTED</span>",
-    "&gt; welcome, learner_"
-  ].map((line, i) => `<div data-line="${i}">${line}</div>`).join("");
-});
-
-/* ---------- Quiz ---------- */
-const quizData = [
-  {
-    q: "Which subject helps you understand numbers and problem solving?",
-    options: ["English", "Mathematics", "Music", "Drawing"],
-    answer: 1
-  },
-  {
-    q: "Which skill is useful when learning computers?",
-    options: ["Digital safety", "Ignoring passwords", "Sharing every password", "None"],
-    answer: 0
-  },
-  {
-    q: "Which one is a good learning habit?",
-    options: ["Never ask questions", "Practice regularly", "Avoid mistakes", "Stop after one try"],
-    answer: 1
-  }
+/* Quiz */
+const quiz=[
+{q:"Which subject helps you understand numbers and problem solving?",o:["English","Mathematics","Music","Drawing"],a:1},
+{q:"Which skill is useful when learning computers?",o:["Digital safety","Ignoring passwords","Sharing every password","None"],a:0},
+{q:"Which one is a good learning habit?",o:["Never ask questions","Practice regularly","Avoid mistakes","Stop after one try"],a:1}
 ];
-
-let quizIndex = 0;
-let quizScore = 0;
-
-const quizQuestion = document.getElementById("quizQuestion");
-const quizOptions = document.getElementById("quizOptions");
-const quizResult = document.getElementById("quizResult");
-
+let qi=0,score=0;
+const q=document.getElementById("question"),opts=document.getElementById("options"),res=document.getElementById("result");
 function renderQuiz(){
-  const item = quizData[quizIndex];
-  quizQuestion.textContent = item.q;
-  quizOptions.innerHTML = "";
-  quizResult.textContent = "";
-
-  item.options.forEach((option, index) => {
-    const button = document.createElement("button");
-    button.className = "option";
-    button.type = "button";
-    button.textContent = option;
-
-    button.addEventListener("click", () => {
-      [...quizOptions.children].forEach(b => b.disabled = true);
-
-      if(index === item.answer){
-        button.classList.add("correct");
-        quizScore++;
-        quizResult.textContent = "✓ Correct. Nice work.";
-      }else{
-        button.classList.add("wrong");
-        quizResult.textContent = `Not quite. The answer is "${item.options[item.answer]}".`;
-        quizOptions.children[item.answer].classList.add("correct");
-      }
-
-      setTimeout(() => {
-        quizIndex++;
-        if(quizIndex < quizData.length){
-          renderQuiz();
-        }else{
-          quizQuestion.textContent = `Challenge complete — ${quizScore}/${quizData.length} correct.`;
-          quizOptions.innerHTML = "";
-          quizResult.textContent = "More interactive learning modules can be added here.";
-        }
-      }, 1100);
-    });
-
-    quizOptions.appendChild(button);
-  });
+ const item=quiz[qi];q.textContent=item.q;opts.innerHTML="";res.textContent="";
+ item.o.forEach((text,i)=>{const b=document.createElement("button");b.type="button";b.className="option";b.textContent=text;b.onclick=()=>{[...opts.children].forEach(x=>x.disabled=true);if(i===item.a){b.classList.add("correct");score++;res.textContent="✓ Correct. Nice work."}else{b.classList.add("wrong");opts.children[item.a].classList.add("correct");res.textContent='Not quite. The answer is "'+item.o[item.a]+'".'}setTimeout(()=>{qi++;if(qi<quiz.length)renderQuiz();else{q.textContent="Challenge complete — "+score+"/"+quiz.length+" correct.";opts.innerHTML="";res.textContent="More learning modules can be added here."}},1000)};opts.appendChild(b);});
 }
-
 renderQuiz();
 
-/* ---------- Enrollment ---------- */
-const form = document.getElementById("enrollForm");
-const submitBtn = document.getElementById("submitBtn");
-const formStatus = document.getElementById("formStatus");
-
-function showFormStatus(type, message){
-  formStatus.className = `form-status ${type}`;
-  formStatus.textContent = message;
-}
-
-function validIndianMobile(value){
-  return /^[0-9]{10}$/.test(value);
-}
-
-form.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  if(!form.checkValidity()){
-    form.reportValidity();
-    return;
-  }
-
-  const phone = document.getElementById("phone").value.trim();
-
-  if(!validIndianMobile(phone)){
-    showFormStatus("error", "Please enter a valid 10-digit mobile number.");
-    return;
-  }
-
-  if(!REGISTRATION_ENDPOINT){
-    showFormStatus(
-      "error",
-      "Registration backend is not connected yet. The form is safe to test, but it will not claim that your registration was saved."
-    );
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = "SENDING...";
-  formStatus.className = "form-status";
-  formStatus.textContent = "";
-
-  try{
-    const payload = Object.fromEntries(new FormData(form).entries());
-
-    const response = await fetch(REGISTRATION_ENDPOINT, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(payload),
-      credentials: "omit"
-    });
-
-    if(!response.ok){
-      throw new Error(`Server returned ${response.status}`);
-    }
-
-    const data = await response.json().catch(() => ({}));
-
-    showFormStatus(
-      "success",
-      data.message || "Registration received successfully. The academy will contact you."
-    );
-
-    form.reset();
-
-  }catch(error){
-    console.error("Registration error:", error);
-    showFormStatus(
-      "error",
-      "We could not submit the registration right now. Please try again later."
-    );
-  }finally{
-    submitBtn.disabled = false;
-    submitBtn.textContent = "SEND REGISTRATION →";
-  }
+/* Registration */
+const form=document.getElementById("form"),submit=document.getElementById("submit"),status=document.getElementById("status");
+let busy=false,timer=null;
+function show(type,msg){status.className="statusbox "+type;status.textContent=msg;}
+form.addEventListener("submit",e=>{
+ e.preventDefault();
+ if(busy)return;
+ if(!form.checkValidity()){form.reportValidity();show("error","Please complete the required fields.");return;}
+ const phone=document.getElementById("phone").value.trim();
+ if(!/^[0-9]{10}$/.test(phone)){show("error","Please enter a valid 10-digit mobile number.");return;}
+ if(document.getElementById("website").value){show("success","✓ Registration received.");return;}
+ busy=true;submit.disabled=true;submit.textContent="SENDING...";show("success","Sending registration to ABHA Academy...");
+ form.action=REGISTRATION_ENDPOINT;
+ timer=setTimeout(()=>{if(!busy)return;busy=false;submit.disabled=false;submit.textContent="SEND REGISTRATION →";show("error","The request timed out. Please check your internet connection and try again.");},20000);
+ form.submit();
 });
 
-/* ---------- Global error visibility for development ---------- */
-window.addEventListener("unhandledrejection", event => {
-  console.error("Unhandled promise rejection:", event.reason);
-});
-
-window.addEventListener("error", event => {
-  console.error("ABHA Academy error:", event.error || event.message);
+/* Response from Apps Script */
+window.addEventListener("message",e=>{
+ if(!e.data||e.data.type!=="ABHA_REGISTRATION")return;
+ clearTimeout(timer);busy=false;submit.disabled=false;submit.textContent="SEND REGISTRATION →";
+ if(e.data.result==="success"){show("success",e.data.message||"✓ REGISTRATION RECEIVED — your details were saved successfully.");form.reset();}
+ else show("error",e.data.message||"Registration could not be completed. Please try again.");
 });
 </script>
-
 </body>
 </html>
