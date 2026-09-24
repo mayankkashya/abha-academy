@@ -116,7 +116,7 @@ footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-s
 <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
 <button class="btn primary submit" id="submit" type="submit">SEND REGISTRATION →</button>
 <div class="statusbox" id="status" role="status"></div>
-<p class="note">Your registration is sent to the academy's Google Sheet. Please don't press the button repeatedly.</p>
+<p class="note">Your registration is sent to the academy's Google Sheet. Please wait for the confirmation message.</p>
 </form>
 </div></section>
 
@@ -166,28 +166,99 @@ function renderQuiz(){
 renderQuiz();
 
 /* Registration */
-const form=document.getElementById("form"),submit=document.getElementById("submit"),status=document.getElementById("status");
-let busy=false,timer=null;
-function show(type,msg){status.className="statusbox "+type;status.textContent=msg;}
-form.addEventListener("submit",e=>{
- e.preventDefault();
- if(busy)return;
- if(!form.checkValidity()){form.reportValidity();show("error","Please complete the required fields.");return;}
- const phone=document.getElementById("phone").value.trim();
- if(!/^[0-9]{10}$/.test(phone)){show("error","Please enter a valid 10-digit mobile number.");return;}
- if(document.getElementById("website").value){show("success","✓ Registration received.");return;}
- busy=true;submit.disabled=true;submit.textContent="SENDING...";show("success","Sending registration to ABHA Academy...");
- form.action=REGISTRATION_ENDPOINT;
- timer=setTimeout(()=>{if(!busy)return;busy=false;submit.disabled=false;submit.textContent="SEND REGISTRATION →";show("error","The request timed out. Please check your internet connection and try again.");},20000);
- form.submit();
+const form = document.getElementById("form");
+const submit = document.getElementById("submit");
+const status = document.getElementById("status");
+const registrationFrame = document.getElementById("registrationFrame");
+
+let busy = false;
+let submitTimer = null;
+let waitingForResponse = false;
+
+function showStatus(type, message) {
+  status.className = "statusbox " + type;
+  status.textContent = message;
+}
+
+/*
+  Google Apps Script is cross-origin, so a normal fetch() cannot reliably
+  read its response from a local HTML file. We submit the form to a hidden
+  iframe instead. The iframe's load event tells us that Apps Script returned.
+*/
+registrationFrame.addEventListener("load", function () {
+  if (!waitingForResponse) return;
+
+  clearTimeout(submitTimer);
+  waitingForResponse = false;
+  busy = false;
+
+  submit.disabled = false;
+  submit.textContent = "SEND REGISTRATION →";
+
+  showStatus(
+    "success",
+    "✓ REGISTRATION RECEIVED — your details have been sent to ABHA Academy."
+  );
+
+  form.reset();
 });
 
-/* Response from Apps Script */
-window.addEventListener("message",e=>{
- if(!e.data||e.data.type!=="ABHA_REGISTRATION")return;
- clearTimeout(timer);busy=false;submit.disabled=false;submit.textContent="SEND REGISTRATION →";
- if(e.data.result==="success"){show("success",e.data.message||"✓ REGISTRATION RECEIVED — your details were saved successfully.");form.reset();}
- else show("error",e.data.message||"Registration could not be completed. Please try again.");
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  if (busy) return;
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    showStatus("error", "Please complete all required fields.");
+    return;
+  }
+
+  const phone = document.getElementById("phone").value.trim();
+
+  if (!/^[0-9]{10}$/.test(phone)) {
+    showStatus("error", "Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  // Honeypot protection.
+  if (document.getElementById("website").value) {
+    showStatus("success", "✓ Registration received.");
+    return;
+  }
+
+  if (!REGISTRATION_ENDPOINT || !REGISTRATION_ENDPOINT.includes("/exec")) {
+    showStatus("error", "Registration endpoint is not configured.");
+    return;
+  }
+
+  busy = true;
+  waitingForResponse = true;
+
+  submit.disabled = true;
+  submit.textContent = "SENDING...";
+  showStatus("success", "Sending registration to ABHA Academy...");
+
+  form.action = REGISTRATION_ENDPOINT;
+  form.target = "registrationFrame";
+
+  // Give Google Apps Script enough time to process the request.
+  submitTimer = setTimeout(function () {
+    if (!waitingForResponse) return;
+
+    waitingForResponse = false;
+    busy = false;
+
+    submit.disabled = false;
+    submit.textContent = "SEND REGISTRATION →";
+
+    showStatus(
+      "error",
+      "The server did not respond in time. Please check the Google Apps Script deployment and try again."
+    );
+  }, 30000);
+
+  form.submit();
 });
 </script>
 </body>
